@@ -2,37 +2,44 @@ package controller;
 
 import java.io.IOException;
 
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.dao.StudentDAO;
+import model.entity.Student;
+
 /**
- * Servlet implementation class StudentsServlet
+ * Servlet implementation class StudentsJSONServlet
  */
-@WebServlet("/StudentsServlet")
-public class StudentsServlet extends BootstrapServlet {
+@WebServlet("/StudentsJSONServlet")
+public class StudentsJSONServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public StudentsServlet() {
+    public StudentsJSONServlet() {
         super();
         // TODO Auto-generated constructor stub
-        this.relatedMenuClass = "students";
-        this.addJavascriptFile("students.js");
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		StudentDAO studentDAO = new StudentDAO();
+		List<Student> students = studentDAO.findAll();
+		
+		request.setAttribute("students", students);
+		
+        this.getServletContext().getRequestDispatcher("/StudentsJSON.jsp").forward(request, response);
 		// TODO Auto-generated method stub
-		String message = request.getPathInfo();
-		request.setAttribute("message", message);
-		this.proceedGet("/Students.jsp", request, response);
 	}
 
 	/**
