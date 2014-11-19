@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 public class BootstrapServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
+	public static String rootPath = "/PIMS/"; // Change for your installation, in production use "/"
 	public String relatedMenuClass;
+	private ArrayList<String> javascriptFileNames = new ArrayList<String>();
 
 	public AlertType alertType;
 	public String alertMessage;
@@ -33,7 +36,22 @@ public class BootstrapServlet extends HttpServlet {
     }
     
     public void proceedGet(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    	// Set rootPath
+		request.setAttribute("rootPath", BootstrapServlet.rootPath);
+		
+    	// Set related menu for the view
 		request.setAttribute("activeMenu", this.relatedMenuClass);
+		
+		// Add conditional ressources
+		request.setAttribute("javascriptFiles", this.javascriptFileNames);
+
+		// Set Module
+		String moduleSlug = this.getModuleSlug(request);
+		if (moduleSlug == null) {
+			moduleSlug = "default-module";
+		}
+		request.setAttribute("moduleSlug", moduleSlug);
 		
 		String alertTypeName = this.alertTypeName();
 		if (this.alertType != AlertType.AlertTypeNone) {
@@ -46,7 +64,23 @@ public class BootstrapServlet extends HttpServlet {
     }
     
     public void proceedPost(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    	// Set rootPath
+		request.setAttribute("rootPath", BootstrapServlet.rootPath);
+		
+    	// Set related menu for the view
 		request.setAttribute("activeMenu", this.relatedMenuClass);
+		
+		// Add conditional ressources
+		request.setAttribute("javascriptFiles", this.javascriptFileNames);
+
+		// Set Module
+		String moduleSlug = this.getModuleSlug(request);
+		if (moduleSlug == null) {
+			moduleSlug = "default-module";
+		}
+		request.setAttribute("moduleSlug", moduleSlug);
+		
         this.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
     }
     
@@ -104,6 +138,42 @@ public class BootstrapServlet extends HttpServlet {
     	list.add("Inspector");
     	list.add("Project Coordinator");
     	return list;
+    }
+    
+    public void addJavascriptFile(String fileName) {
+    	this.javascriptFileNames.add(fileName);
+    }
+    
+    public String[] getValueFromRequestPath(HttpServletRequest request) {
+		String path = request.getPathInfo();
+		if (path == null) {
+			return new String[0];
+		}
+		String[] pathValues = path.split("/");
+		//return new ArrayList<String>(Arrays.asList(pathValues));
+		return pathValues;
+    }
+    
+    public String getModuleSlug(HttpServletRequest request) {
+		String[] pathValues = this.getValueFromRequestPath(request);
+		
+		if (pathValues.length >= 2) {
+			if (!pathValues[1].equals("")) {
+				return pathValues[1];
+			}
+		}
+		return null;
+    }
+    
+    public String getObjectSlug(HttpServletRequest request) {
+		String[] pathValues = this.getValueFromRequestPath(request);
+		
+		if (pathValues.length >= 3) {
+			if (!pathValues[2].equals("")) {
+				return pathValues[2];
+			}
+		}
+		return null;
     }
 
 }

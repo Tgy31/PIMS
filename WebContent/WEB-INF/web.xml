@@ -43,6 +43,14 @@
     <url-pattern>/students/*</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>StudentsJSON</servlet-name>
+    <servlet-class>controller.StudentsJSONServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StudentsJSON</servlet-name>
+    <url-pattern>/students.json</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>Inspectors</servlet-name>
     <servlet-class>controller.InspectorsServlet</servlet-class>
   </servlet>
@@ -50,6 +58,14 @@
     <servlet-name>Inspectors</servlet-name>
     <url-pattern>/inspectors</url-pattern>
     <url-pattern>/inspectors/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>InspectorsJSON</servlet-name>
+    <servlet-class>controller.InspectorsJSONServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InspectorsJSON</servlet-name>
+    <url-pattern>/inspectors.json</url-pattern>
   </servlet-mapping>
   <jsp-config>
     <jsp-property-group>

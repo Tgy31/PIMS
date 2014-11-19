@@ -8,15 +8,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PIMS</title>
-<link rel="stylesheet" href="/PIMS/Ressources/style/main.css">
 
+<!-- DataTables CSS -->
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css">
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-
 <!-- Optional theme -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="${ rootPath }Ressources/style/main.css">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -44,9 +48,9 @@
 
 					<c:if test="${ !empty sessionScope.username }">
 
-						<li class="projects"><a href="/PIMS/projects">Projects</a></li>
-						<li class="students"><a href="/PIMS/students">Students</a></li>
-						<li class="inspectors"><a href="/PIMS/inspectors">Inspectors</a></li>
+						<li class="projects"><a href="${ rootPath }projects/">Projects</a></li>
+						<li class="students"><a href="${ rootPath }students/${ moduleSlug }/">Students</a></li>
+						<li class="inspectors"><a href="${ rootPath }inspectors/${ moduleSlug }/">Inspectors</a></li>
 
 					</c:if>
 
@@ -57,7 +61,7 @@
 					<c:choose>
 						<c:when test="${ empty sessionScope.username }">
 
-							<li class="login"><a href="/PIMS/login">Log in</a></li>
+							<li class="login"><a href="${ rootPath }login">Log in</a></li>
 
 						</c:when>
 						<c:when test="${ !empty sessionScope.username }">
@@ -67,7 +71,7 @@
 									<span class="caret"></span>
 							</a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="/PIMS/logout">Log out</a></li>
+									<li><a href="${ rootPath }logout">Log out</a></li>
 									<li class="divider"></li>
 									<li class="dropdown-header">Profile</li>
 									<li><a href="#">Edit</a></li>

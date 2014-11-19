@@ -17,3 +17,13 @@ body.login .navbar li.login {
 #body-container {
 	margin-top: 80px;
 }
+
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	margin: 0px;
+	padding: 0px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	border: #428bca 1px solid;
+}

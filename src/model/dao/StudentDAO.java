@@ -54,4 +54,19 @@ public class StudentDAO {
 			}
 		return student;
 	}
+	
+	public List<Student> findAll(){
+		String sql = "SELECT * " + 
+							"FROM student ";
+		List<Student> students = null;
+		try {
+			students = template.query(sql, new StudentMapping());
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				System.out.println("Class not found !");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return students;
+	}
 }
