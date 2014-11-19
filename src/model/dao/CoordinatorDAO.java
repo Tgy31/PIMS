@@ -14,7 +14,7 @@ public class CoordinatorDAO {
 	private Template template = new Template();
 	
 	public boolean save(Coordinator coordinator){
-		String sql = "INSERT INTO projct_coordinator"+ENTER+
+		String sql = "INSERT INTO project_coordinator"+ENTER+
 							"			(pc_id, " +
 							"			 title, " 	+
 							"			 username, "+
@@ -36,15 +36,14 @@ public class CoordinatorDAO {
 		return false;
 	}
 	
-	public Coordinator findByUsernamePassword(String username, String password){
+	public Coordinator findByUsername(String username){
 		String sql = "SELECT * " + 
-							"FROM projct_coordinator " + 
-							"WHERE username= ? " + 
-							"and password= ?";
+							"FROM project_coordinator " + 
+							"WHERE username= ? ";
 		Coordinator coordinator = null;
 		List<Coordinator> coordinators = null;
 		try {
-			coordinators = template.query(sql, new CoordinatorMapping(), username, password);
+			coordinators = template.query(sql, new CoordinatorMapping(), username);
 			if (coordinators.size() != 0) {
 				coordinator = coordinators.get(0);
 			}

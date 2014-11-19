@@ -38,7 +38,7 @@ public class InspectorDAO {
 		return false;
 	}
 	
-	public Inspector findByUsernamePassword(String username){
+	public Inspector findByUsername(String username){
 		String sql = "SELECT * " + 
 							"FROM inspector " + 
 							"WHERE username= ? ";

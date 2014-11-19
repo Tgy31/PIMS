@@ -1,14 +1,9 @@
 package model.entity;
 
-public class Inspector {
+public class Inspector extends User {
 	int inspector_id;
 	int timetable_id;
-	int capacity;
-	String username;
-	String password;
-	String first_name;
-	String last_name;
-	String email;	
+	int capacity;	
 	String title;
 	String keywords;
 
@@ -54,46 +49,6 @@ public class Inspector {
 
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getFirst_name() {
-		return first_name;
-	}
-
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
-	}
-
-	public String getLast_name() {
-		return last_name;
-	}
-
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getTitle() {
