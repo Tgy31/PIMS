@@ -31,7 +31,7 @@ public class StudentsServlet extends BootstrapServlet {
     
     public Student getStudentBySlug(String studentSlug) {
 		StudentDAO studentDAO = new StudentDAO();
-		Student student = studentDAO.findByUsernamePassword(studentSlug);
+		Student student = studentDAO.findByUsername(studentSlug);
 		return student;
     }
 
