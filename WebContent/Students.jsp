@@ -9,7 +9,7 @@
         
 	${ message }
 	
-	<table id="student-table" class="user-table">
+	<table id="student-table" class="user-table row-border hover order-column">
         <thead>
             <tr>
                 <th>First Name</th>
