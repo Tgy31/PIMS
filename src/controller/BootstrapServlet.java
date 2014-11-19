@@ -17,6 +17,7 @@ public class BootstrapServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	public String relatedMenuClass;
+	private ArrayList<String> javascriptFileNames = new ArrayList<String>();
 
 	public AlertType alertType;
 	public String alertMessage;
@@ -33,7 +34,12 @@ public class BootstrapServlet extends HttpServlet {
     }
     
     public void proceedGet(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	// Set related menu for the view
 		request.setAttribute("activeMenu", this.relatedMenuClass);
+		
+		// Add conditional ressources
+		request.setAttribute("javascriptFiles", this.javascriptFileNames);
 		
 		String alertTypeName = this.alertTypeName();
 		if (this.alertType != AlertType.AlertTypeNone) {
@@ -46,7 +52,13 @@ public class BootstrapServlet extends HttpServlet {
     }
     
     public void proceedPost(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	// Set related menu for the view
 		request.setAttribute("activeMenu", this.relatedMenuClass);
+		
+		// Add conditional ressources
+		request.setAttribute("javascriptFiles", this.javascriptFileNames);
+		
         this.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
     }
     
@@ -104,6 +116,10 @@ public class BootstrapServlet extends HttpServlet {
     	list.add("Inspector");
     	list.add("Project Coordinator");
     	return list;
+    }
+    
+    public void addJavascriptFile(String fileName) {
+    	this.javascriptFileNames.add(fileName);
     }
 
 }
