@@ -48,66 +48,80 @@ public class LoginServlet extends BootstrapServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
+		// Username and password
 		String username = (String) request.getParameter("username").trim();
 		String password = (String) request.getParameter("password").trim();
-		String user = (String) request.getParameter("user").trim();
-
-		if (user.equals("student")) {
-			
-			StudentDAO studentDAO = new StudentDAO();
-			Student student = studentDAO.findByUsernamePassword(username);
-			Boolean loginSucceeded = password.equals(student.getPassword());
-			request.setAttribute("loginSucceeded", loginSucceeded);
-			// if (ModelManager.loginSucceeded(user, pass)) {
-			if (loginSucceeded) {
-				HttpSession session = request.getSession();
-				session.setAttribute("username", username);
-				session.setAttribute("firstName", student.getFirst_name());
-				this.alertType = AlertType.AlertTypeSuccess;
-				this.alertMessage = "You are now logged in as "
-						+ student.getFirst_name();
-			} else {
-				this.alertType = AlertType.AlertTypeDanger;
-				this.alertMessage = "Log in failed"; // 为什么失败以后不提示这个
-			}
-		} else if (user.equals("inspector")) {
-			
-			InspectorDAO inspectorDAO = new InspectorDAO();
-			Inspector inspector = inspectorDAO.findByUsernamePassword(username);
-			Boolean loginSucceeded = password.equals(inspector.getPassword());
-			request.setAttribute("loginSucceeded", loginSucceeded);
-			// if (ModelManager.loginSucceeded(user, pass)) {
-			if (loginSucceeded) {
-				HttpSession session = request.getSession();
-				session.setAttribute("username", username);
-				session.setAttribute("firstName", inspector.getFirst_name());
-				this.alertType = AlertType.AlertTypeSuccess;
-				this.alertMessage = "You are now logged in as "
-						+ inspector.getFirst_name();
-			} else {
-				this.alertType = AlertType.AlertTypeDanger;
-				this.alertMessage = "Log in failed";
-			}
-		} else { // coordinator
-			CoordinatorDAO coordinatorDAO = new CoordinatorDAO();
-			Coordinator coordinator = coordinatorDAO.findByUsernamePassword(
-					username, password);
-			Boolean loginSucceeded = password.equals(coordinator.getPassword());
-			request.setAttribute("loginSucceeded", loginSucceeded);
-			if (loginSucceeded) {
-				HttpSession session = request.getSession();
-				session.setAttribute("username", username);
-				session.setAttribute("firstName", coordinator.getFirst_name());
-				this.alertType = AlertType.AlertTypeSuccess;
-				this.alertMessage = "You are now logged in as "
-						+ coordinator.getFirst_name();
-			} else {
-				this.alertType = AlertType.AlertTypeDanger;
-				this.alertMessage = "Log in failed"; // 为什么失败以后不提示这个
-			}
-		}
-
+		
+		// UserType
+		String userTypeString = (String) request.getParameter("userType").trim();
+		UserType userType = this.userTypeForString(userTypeString);
+		
+		switch (userType) {
+	        case UserTypeStudent: {
+				
+				StudentDAO studentDAO = new StudentDAO();
+				Student student = studentDAO.findByUsernamePassword(username);
+				Boolean loginSucceeded = password.equals(student.getPassword());
+				request.setAttribute("loginSucceeded", loginSucceeded);
+				// if (ModelManager.loginSucceeded(user, pass)) {
+				if (loginSucceeded) {
+					HttpSession session = request.getSession();
+					session.setAttribute("username", username);
+					session.setAttribute("firstName", student.getFirst_name());
+					this.alertType = AlertType.AlertTypeSuccess;
+					this.alertMessage = "You are now logged in as "
+							+ student.getFirst_name();
+				} else {
+					this.alertType = AlertType.AlertTypeDanger;
+					this.alertMessage = "Log in failed"; 
+				}
+	        	
+	        }
+	        case UserTypeInspector: {
+				
+				InspectorDAO inspectorDAO = new InspectorDAO();
+				Inspector inspector = inspectorDAO.findByUsernamePassword(username);
+				Boolean loginSucceeded = password.equals(inspector.getPassword());
+				request.setAttribute("loginSucceeded", loginSucceeded);
+				// if (ModelManager.loginSucceeded(user, pass)) {
+				if (loginSucceeded) {
+					HttpSession session = request.getSession();
+					session.setAttribute("username", username);
+					session.setAttribute("firstName", inspector.getFirst_name());
+					this.alertType = AlertType.AlertTypeSuccess;
+					this.alertMessage = "You are now logged in as "
+							+ inspector.getFirst_name();
+				} else {
+					this.alertType = AlertType.AlertTypeDanger;
+					this.alertMessage = "Log in failed";
+				}
+	        	
+	        }
+	        case UserTypeProjectCoordinator: {
+	        	
+				CoordinatorDAO coordinatorDAO = new CoordinatorDAO();
+				Coordinator coordinator = coordinatorDAO.findByUsernamePassword(
+						username, password);
+				Boolean loginSucceeded = password.equals(coordinator.getPassword());
+				request.setAttribute("loginSucceeded", loginSucceeded);
+				if (loginSucceeded) {
+					HttpSession session = request.getSession();
+					session.setAttribute("username", username);
+					session.setAttribute("firstName", coordinator.getFirst_name());
+					this.alertType = AlertType.AlertTypeSuccess;
+					this.alertMessage = "You are now logged in as "
+							+ coordinator.getFirst_name();
+				} else {
+					this.alertType = AlertType.AlertTypeDanger;
+					this.alertMessage = "Log in failed";
+				}
+	        	
+	        }
+	    }
+		
 		this.proceedGet("/Login.jsp", request, response);
+
 	}
 
 }

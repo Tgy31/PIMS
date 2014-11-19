@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -66,6 +68,42 @@ public class BootstrapServlet extends HttpServlet {
 	        default:
 	            return null;
 	    }
+    }
+    
+    public String stringForUserType(UserType type) {
+    	switch (type) {
+	        case UserTypeStudent:
+	            return "UserTypeStudent";
+	        case UserTypeInspector:
+	            return "UserTypeInspector";
+	        case UserTypeProjectCoordinator:
+	            return "UserTypeProjectCoordinator";
+	                    
+	        default:
+	            return null;
+	    }
+    }
+    
+    public UserType userTypeForString(String string) {
+    	switch (string) {
+	        case "UserTypeStudent":
+	            return UserType.UserTypeStudent;
+	        case "UserTypeInspector":
+	            return UserType.UserTypeInspector;
+	        case "UserTypeProjectCoordinator":
+	            return UserType.UserTypeProjectCoordinator;
+	                    
+	        default:
+	            return null;
+	    }
+    }
+    
+    public ArrayList<String> getStringForAllUserTypes() {
+    	ArrayList<String> list = new ArrayList<String>();
+    	list.add("UserTypeStudent");
+    	list.add("UserTypeInspector");
+    	list.add("UserTypeProjectCoordinator");
+    	return list;
     }
 
 }
