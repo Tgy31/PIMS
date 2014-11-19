@@ -3,13 +3,16 @@
 
 {
   "data": [
-	<c:forEach items="${ inspectors }" var="inspector">
+	<c:forEach items="${ inspectors }" var="inspector" varStatus="inspectorStatus">
 		[
-			${ inspector.getFirst_name() },
-			${ inspector.getLast_name() },
-			${ inspector.getTitle() },
-			${ inspector.getEmail() }
+			"${ inspector.getFirst_name() }",
+			"${ inspector.getLast_name() }",
+			"${ inspector.getTitle() }",
+			"${ inspector.getEmail() }"
 		]
+		<c:if test="${ inspectorStatus.index < inspectors.size() - 1 }">
+		,
+		</c:if>
 	</c:forEach>
 	]
 }
