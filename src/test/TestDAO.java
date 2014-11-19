@@ -34,7 +34,7 @@ public class TestDAO {
 	
 	public void testStudentLogin(){
 		StudentDAO studentDAO = new StudentDAO();
-		System.out.println(studentDAO.findByUsernamePassword("cxz413"));
+		System.out.println(studentDAO.findByUsername("cxz413"));
 	}
 	
 	public void testCoordinatorSave(){
