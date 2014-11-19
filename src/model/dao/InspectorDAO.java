@@ -58,4 +58,19 @@ public class InspectorDAO {
 			}
 		return inspector;
 	}
+	
+	public List<Inspector> findAllInspectors(){
+		String sql = "SELECT * " + 
+							"FROM inspector";
+		List<Inspector> inspectors = null;
+		try {
+			inspectors = template.query(sql, new InspectorMapping());
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				System.out.println("Class not found !");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return inspectors;
+	}
 }
