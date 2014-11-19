@@ -35,7 +35,6 @@ public class InspectorsJSONServlet extends HttpServlet {
 		List<Inspector> inspectors = inspectorDAO.findAllInspectors();
 		
 		request.setAttribute("inspectors", inspectors);
-		System.out.println(inspectors);
 		
         this.getServletContext().getRequestDispatcher("/InspectorsJSON.jsp").forward(request, response);
 		
