@@ -58,18 +58,22 @@ public class LoginServlet extends BootstrapServlet {
 
 		if (user != null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("username", user.getUsername());
-			session.setAttribute("firstName", user.getFirst_name());
+			session.setAttribute("user", user);
 			this.alertType = AlertType.AlertTypeSuccess;
 			this.alertMessage = "You are now logged in as "
 					+ user.getFirst_name();
+			response.sendRedirect("/PIMS/students/");
 		} else {
 			this.alertType = AlertType.AlertTypeDanger;
 			this.alertMessage = "Log in failed"; 
+			this.proceedPost("/Login.jsp", request, response);
 		}
-		
-		this.proceedGet("/Login.jsp", request, response);
 
+	}
+	
+	@Override
+    public Boolean shouldDenyAcces(HttpServletRequest request) {
+		return !super.shouldDenyAcces(request);
 	}
 
 }

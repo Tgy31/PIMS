@@ -46,7 +46,7 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 
-					<c:if test="${ !empty sessionScope.username }">
+					<c:if test="${ !empty sessionScope.user }">
 
 						<li class="projects"><a href="${ rootPath }projects/">Projects</a></li>
 						<li class="students"><a href="${ rootPath }students/${ moduleSlug }/">Students</a></li>
@@ -59,22 +59,22 @@
 
 
 					<c:choose>
-						<c:when test="${ empty sessionScope.username }">
+						<c:when test="${ empty sessionScope.user }">
 
-							<li class="login"><a href="${ rootPath }login">Log in</a></li>
+							<li class="${ rootPath }login/"><a href="${ rootPath }login">Log in</a></li>
 
 						</c:when>
-						<c:when test="${ !empty sessionScope.username }">
+						<c:when test="${ !empty sessionScope.user }">
 
 							<li class="dropdown user"><a href="#"
-								class="dropdown-toggle" data-toggle="dropdown">${ sessionScope.firstName }
+								class="dropdown-toggle" data-toggle="dropdown">${ sessionScope.user.getFirst_name() }
 									<span class="caret"></span>
 							</a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="${ rootPath }logout">Log out</a></li>
+									<li><a href="${ rootPath }logout/">Log out</a></li>
 									<li class="divider"></li>
 									<li class="dropdown-header">Profile</li>
-									<li><a href="#">Edit</a></li>
+									<li><a href="${ userProfilePath }">Edit</a></li>
 								</ul></li>
 
 						</c:when>

@@ -47,7 +47,7 @@ public class StudentsServlet extends BootstrapServlet {
 			this.proceedSingleStudent(student, request, response);
 		} else if (studentSlug != null) {
 			this.alertType = AlertType.AlertTypeDanger;
-			this.alertMessage = "Studen not found";
+			this.alertMessage = "Student not found";
 			this.proceedSingleStudentError(request, response);
 		} else {
 			this.proceedStudentList(request, response);

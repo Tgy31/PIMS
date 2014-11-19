@@ -2,13 +2,15 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import model.entity.User;
 
 /**
  * Servlet implementation class BootstrapServlet
@@ -36,22 +38,7 @@ public class BootstrapServlet extends HttpServlet {
     }
     
     public void proceedGet(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    	// Set rootPath
-		request.setAttribute("rootPath", BootstrapServlet.rootPath);
-		
-    	// Set related menu for the view
-		request.setAttribute("activeMenu", this.relatedMenuClass);
-		
-		// Add conditional ressources
-		request.setAttribute("javascriptFiles", this.javascriptFileNames);
-
-		// Set Module
-		String moduleSlug = this.getModuleSlug(request);
-		if (moduleSlug == null) {
-			moduleSlug = "default-module";
-		}
-		request.setAttribute("moduleSlug", moduleSlug);
+		this.setEnvironmentAttributes(request, response);
 		
 		String alertTypeName = this.alertTypeName();
 		if (this.alertType != AlertType.AlertTypeNone) {
@@ -60,19 +47,39 @@ public class BootstrapServlet extends HttpServlet {
 		}
 		this.alertType = AlertType.AlertTypeNone;
 		this.alertMessage = null;
-        this.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
+
+		this.proceedRequest(jspFile, request, response);
     }
     
     public void proceedPost(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.setEnvironmentAttributes(request, response);
+		this.proceedRequest(jspFile, request, response);
+    }
 
+    public void proceedRequest(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		if (this.shouldDenyAcces(request)) {
+	        this.getServletContext().getRequestDispatcher("/AccessDenied.jsp").forward(request, response);
+		} else {
+	        this.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
+		}
+    	
+    }
+    
+    public void setEnvironmentAttributes(HttpServletRequest request, HttpServletResponse response) {
     	// Set rootPath
 		request.setAttribute("rootPath", BootstrapServlet.rootPath);
 		
     	// Set related menu for the view
 		request.setAttribute("activeMenu", this.relatedMenuClass);
-		
+
 		// Add conditional ressources
 		request.setAttribute("javascriptFiles", this.javascriptFileNames);
+
+		// Add user profile path
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		request.setAttribute("userProfilePath", this.getProfilePathForUser(user));
 
 		// Set Module
 		String moduleSlug = this.getModuleSlug(request);
@@ -80,8 +87,6 @@ public class BootstrapServlet extends HttpServlet {
 			moduleSlug = "default-module";
 		}
 		request.setAttribute("moduleSlug", moduleSlug);
-		
-        this.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
     }
     
     private String alertTypeName() {
@@ -174,6 +179,20 @@ public class BootstrapServlet extends HttpServlet {
 			}
 		}
 		return null;
+    }
+    
+    public String getProfilePathForUser(User user) {
+    	if (user == null) {
+    		return null;
+    	} else {
+        	return BootstrapServlet.rootPath + "students/default-module" + "/" + user.getUsername();
+    	}
+    }
+    
+    public Boolean shouldDenyAcces(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+    	return (user == null); // deny any access if no user
     }
 
 }
