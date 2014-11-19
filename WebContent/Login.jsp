@@ -19,9 +19,9 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<select name="user" style="width: 200px">
-					<option value="student">Student</option>
-					<option value="inspector">Inspector</option>
-					<option value="coordinator">Project Co-ordinator</option>
+					<c:forEach items="${ userTypes }" var="userType">
+						<option value="${ userType }">${ userType }</option>
+					</c:forEach>
 				</select>
 			</div>
 		</div>

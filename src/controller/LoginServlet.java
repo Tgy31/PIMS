@@ -38,7 +38,10 @@ public class LoginServlet extends BootstrapServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		// Set user types
+		request.setAttribute("userTypes", this.getStringForAllUserTypes());
+		
 		this.proceedGet("/Login.jsp", request, response);
 	}
 
@@ -119,6 +122,9 @@ public class LoginServlet extends BootstrapServlet {
 	        	
 	        }
 	    }
+
+		// Set user types
+		request.setAttribute("userTypes", this.getStringForAllUserTypes());
 		
 		this.proceedGet("/Login.jsp", request, response);
 

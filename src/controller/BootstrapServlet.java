@@ -73,11 +73,11 @@ public class BootstrapServlet extends HttpServlet {
     public String stringForUserType(UserType type) {
     	switch (type) {
 	        case UserTypeStudent:
-	            return "UserTypeStudent";
+	            return "Student";
 	        case UserTypeInspector:
-	            return "UserTypeInspector";
+	            return "Inspector";
 	        case UserTypeProjectCoordinator:
-	            return "UserTypeProjectCoordinator";
+	            return "Project Coordinator";
 	                    
 	        default:
 	            return null;
@@ -86,11 +86,11 @@ public class BootstrapServlet extends HttpServlet {
     
     public UserType userTypeForString(String string) {
     	switch (string) {
-	        case "UserTypeStudent":
+	        case "Student":
 	            return UserType.UserTypeStudent;
-	        case "UserTypeInspector":
+	        case "Inspector":
 	            return UserType.UserTypeInspector;
-	        case "UserTypeProjectCoordinator":
+	        case "Project Coordinator":
 	            return UserType.UserTypeProjectCoordinator;
 	                    
 	        default:
@@ -100,9 +100,9 @@ public class BootstrapServlet extends HttpServlet {
     
     public ArrayList<String> getStringForAllUserTypes() {
     	ArrayList<String> list = new ArrayList<String>();
-    	list.add("UserTypeStudent");
-    	list.add("UserTypeInspector");
-    	list.add("UserTypeProjectCoordinator");
+    	list.add("Student");
+    	list.add("Inspector");
+    	list.add("Project Coordinator");
     	return list;
     }
 
