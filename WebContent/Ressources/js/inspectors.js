@@ -10,8 +10,4 @@ $(document).ready( function () {
             "render": showRender
           }]
     });
-    
-    $('#inspector-table').on( 'click', 'tbody tr', function () {
-    	window.location.href = $(this).attr('href');
-    } );
 } );
