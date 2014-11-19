@@ -51,6 +51,14 @@
     <url-pattern>/inspectors</url-pattern>
     <url-pattern>/inspectors/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>InspectorsJSON</servlet-name>
+    <servlet-class>controller.InspectorsJSONServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InspectorsJSON</servlet-name>
+    <url-pattern>/inspectors.json</url-pattern>
+  </servlet-mapping>
   <jsp-config>
     <jsp-property-group>
       <url-pattern>*.jsp</url-pattern>

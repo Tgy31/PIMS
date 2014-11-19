@@ -1,3 +1,5 @@
 $(document).ready( function () {
-    $('#inspector-table').DataTable();
+    $('#inspector-table').DataTable( {
+        "ajax": '/PIMS/inspectors.json'
+    });
 } );
