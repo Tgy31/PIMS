@@ -22,6 +22,7 @@ public class InspectorsServlet extends BootstrapServlet {
         super();
         // TODO Auto-generated constructor stub
         this.relatedMenuClass = "inspectors";
+        this.addJavascriptFile("inspectors.js");
     }
 
 	/**
