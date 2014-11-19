@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class BootstrapServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
+	public static String rootPath = "/PIMS/"; // Change for your installation, in production use "/"
 	public String relatedMenuClass;
 	private ArrayList<String> javascriptFileNames = new ArrayList<String>();
 
@@ -35,7 +36,10 @@ public class BootstrapServlet extends HttpServlet {
     }
     
     public void proceedGet(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	
+
+    	// Set rootPath
+		request.setAttribute("rootPath", BootstrapServlet.rootPath);
+		
     	// Set related menu for the view
 		request.setAttribute("activeMenu", this.relatedMenuClass);
 		
@@ -60,7 +64,10 @@ public class BootstrapServlet extends HttpServlet {
     }
     
     public void proceedPost(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	
+
+    	// Set rootPath
+		request.setAttribute("rootPath", BootstrapServlet.rootPath);
+		
     	// Set related menu for the view
 		request.setAttribute("activeMenu", this.relatedMenuClass);
 		

@@ -17,7 +17,7 @@
 	
 	<!-- Include additional files -->
 	<c:forEach items="${ javascriptFiles }" var="fileName">
-		<script src="/PIMS/Ressources/js/${ fileName }"></script>
+		<script src="${ rootPath }Ressources/js/${ fileName }"></script>
 	</c:forEach>
 	
   </body>
