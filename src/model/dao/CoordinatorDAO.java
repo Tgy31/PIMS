@@ -14,7 +14,7 @@ public class CoordinatorDAO {
 	private Template template = new Template();
 	
 	public boolean save(Coordinator coordinator){
-		String sql = "INSERT INTO projct_coordinator"+ENTER+
+		String sql = "INSERT INTO project_coordinator"+ENTER+
 							"			(pc_id, " +
 							"			 title, " 	+
 							"			 username, "+
@@ -38,7 +38,7 @@ public class CoordinatorDAO {
 	
 	public Coordinator findByUsernamePassword(String username, String password){
 		String sql = "SELECT * " + 
-							"FROM projct_coordinator " + 
+							"FROM project_coordinator " + 
 							"WHERE username= ? " + 
 							"and password= ?";
 		Coordinator coordinator = null;
