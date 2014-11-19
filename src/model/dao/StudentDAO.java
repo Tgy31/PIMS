@@ -34,7 +34,7 @@ public class StudentDAO {
 		return false;
 	}
 	
-	public Student findByUsernamePassword(String username){
+	public Student findByUsername(String username){
 		String sql = "SELECT * " + 
 							"FROM student " + 
 							"WHERE username= ? ";

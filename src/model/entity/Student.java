@@ -1,18 +1,13 @@
 package model.entity;
 
-public class Student {
+public class Student extends User {
 	int  student_id;
 	int  project_id;
 	int module_id;
 	int course_id;
 	int timetable_id;
-	String username;
-	String password;
 	String  project_title;
-	String  project_description;
-	String first_name;
-	String last_name;
-	String email;	
+	String  project_description;	
 	String supervisor;
 
 	public Student() {
@@ -79,22 +74,6 @@ public class Student {
 		this.timetable_id = timetable_id;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getProject_title() {
 		return project_title;
 	}
@@ -110,31 +89,7 @@ public class Student {
 	public void setProject_description(String project_description) {
 		this.project_description = project_description;
 	}
-
-	public String getFirst_name() {
-		return first_name;
-	}
-
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
-	}
-
-	public String getLast_name() {
-		return last_name;
-	}
-
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
+	
 	public String getSupervisor() {
 		return supervisor;
 	}

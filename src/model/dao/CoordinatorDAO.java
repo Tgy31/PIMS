@@ -36,15 +36,14 @@ public class CoordinatorDAO {
 		return false;
 	}
 	
-	public Coordinator findByUsernamePassword(String username, String password){
+	public Coordinator findByUsername(String username){
 		String sql = "SELECT * " + 
 							"FROM project_coordinator " + 
-							"WHERE username= ? " + 
-							"and password= ?";
+							"WHERE username= ? ";
 		Coordinator coordinator = null;
 		List<Coordinator> coordinators = null;
 		try {
-			coordinators = template.query(sql, new CoordinatorMapping(), username, password);
+			coordinators = template.query(sql, new CoordinatorMapping(), username);
 			if (coordinators.size() != 0) {
 				coordinator = coordinators.get(0);
 			}
