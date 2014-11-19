@@ -5,9 +5,7 @@
 
 <%@ include file="Header.jsp" %>
 
-	<h2>Students</h2>
-        
-	${ message }
+	<h2>Students from ${ moduleSlug }</h2>
 	
 	<table id="student-table" class="user-table row-border hover order-column">
         <thead>
@@ -15,6 +13,7 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
+                <th>Action</th>
             </tr>
         </thead>
     </table>

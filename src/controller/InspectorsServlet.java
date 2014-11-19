@@ -28,10 +28,7 @@ public class InspectorsServlet extends BootstrapServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String message = request.getPathInfo();
-		request.setAttribute("message", message);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		this.proceedGet("/Inspectors.jsp", request, response);
 	}
 

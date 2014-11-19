@@ -7,7 +7,8 @@
 		[
 			"${ student.getFirst_name() }",
 			"${ student.getLast_name() }",
-			"${ student.getEmail() }"
+			"${ student.getEmail() }",
+			"${ student.getUsername() }"
 		]
 		<c:if test="${ studentStatus.index < students.size() - 1 }">
 		,
