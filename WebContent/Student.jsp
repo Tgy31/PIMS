@@ -17,12 +17,24 @@
       <div class="caption">
 		<form class="form-horizontal" role="form">
 		
-          <h3>Student</h3>
+		  <h2>${ student.getFirst_name() } ${ student.getLast_name() }</h2>
+		  
+		  <hr>
+		
+		  <div class="col-sm-offset-2 col-sm-10">
+		    <h2>Student</h2>
+		  </div>
 		
 		  <div class="form-group">
 		    <label class="col-sm-2 control-label">Module</label>
 		    <div class="col-sm-10">
 		      <p class="form-control-static">${ student.getModule_id() }</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="col-sm-2 control-label">Username</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static">${ student.getUsername() }</p>
 		    </div>
 		  </div>
 		  <div class="form-group">
@@ -53,7 +65,9 @@
 		  
 		  <hr>
 		  
-		  <h3>Project</h3>
+		  <div class="col-sm-offset-2 col-sm-10">
+		    <h2>Project</h2>
+		  </div>
 		  
 		  <div class="form-group">
 		    <label for="inputTitle" class="col-sm-2 control-label">Title</label>
