@@ -31,7 +31,8 @@ public class ModulesServlet extends BootstrapServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String moduleSlug = this.getObjectSlug(request);
+		String moduleSlug = this.getModuleSlug(request);
+		System.out.println(moduleSlug);
 		//Student student = this.getStudentBySlug(studentSlug);
 		
 		if (moduleSlug != null) {
