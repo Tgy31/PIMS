@@ -47,5 +47,17 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public Boolean isStudent() {
+		return (this instanceof Student);
+	}
+	
+	public Boolean isInspector() {
+		return (this instanceof Inspector);
+	}
+	
+	public Boolean isCoordinator() {
+		return (this instanceof Coordinator);
+	}
 
 }

@@ -6,7 +6,5 @@
 <%@ include file="Header.jsp" %>
 
 	<h2>Projects</h2>
-        
-	${ message }
 
 <%@ include file="Footer.jsp" %>

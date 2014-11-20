@@ -5,15 +5,14 @@
 
 <%@ include file="Header.jsp" %>
 
-	<h2>Inspectors</h2>
+	<h2>Modules</h2>
 	
-	<table id="inspector-table" class="user-table  row-border hover order-column">
+	<table id="module-table" class="user-table row-border hover order-column">
         <thead>
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Title</th>
-                <th>Email</th>
+                <th>Name</th>
+                <th>Year</th>
+                <th>Active</th>
             </tr>
         </thead>
     </table>

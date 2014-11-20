@@ -58,6 +58,23 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 
+					<c:if test="${ !empty sessionScope.user.isCoordinator() }">
+
+						<li class="dropdown user">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">${ moduleSlug }
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="${ rootPath }modules/">All modules</a></li>
+								<li class="divider"></li>
+								<li class="dropdown-header">Active module</li>
+								<li><a href="${ rootPath }modules/${ moduleSlug }/">${ moduleSlug }</a></li>
+								<li class="divider"></li>
+								<li class="dropdown-header">Other modules</li>
+							</ul>
+						</li>
+
+					</c:if>
 
 					<c:choose>
 						<c:when test="${ empty sessionScope.user }">
@@ -67,17 +84,17 @@
 						</c:when>
 						<c:when test="${ !empty sessionScope.user }">
 
-							<li class="dropdown user"><a href="#"
-								class="dropdown-toggle" data-toggle="dropdown">${ sessionScope.user.getFirst_name() }
+							<li class="dropdown user">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">${ sessionScope.user.getFirst_name() }
 									<span class="caret"></span>
-							</a>
+								</a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="${ rootPath }logout/">Log out</a></li>
 									<li class="divider"></li>
 									<li class="dropdown-header">Profile</li>
 									<li><a href="${ userProfilePath }">Edit</a></li>
-								</ul></li>
-
+								</ul>
+							</li>
 						</c:when>
 					</c:choose>
 				</ul>
