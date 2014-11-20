@@ -47,21 +47,10 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 
-					<c:if test="${ !empty sessionScope.user }">
-
-						<li class="projects"><a href="${ rootPath }projects/">Projects</a></li>
-						<li class="students"><a href="${ rootPath }students/${ moduleSlug }/">Students</a></li>
-						<li class="inspectors"><a href="${ rootPath }inspectors/${ moduleSlug }/">Inspectors</a></li>
-
-					</c:if>
-
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-
 					<c:if test="${ !empty sessionScope.user.isCoordinator() }">
 
-						<li class="dropdown user">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">${ moduleSlug }
+						<li class="dropdown modules">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Modules
 								<span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu" role="menu">
@@ -75,6 +64,16 @@
 						</li>
 
 					</c:if>
+
+					<c:if test="${ !empty sessionScope.user }">
+					
+						<li class="students"><a href="${ rootPath }students/${ moduleSlug }/">Students</a></li>
+						<li class="inspectors"><a href="${ rootPath }inspectors/${ moduleSlug }/">Inspectors</a></li>
+
+					</c:if>
+
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
 
 					<c:choose>
 						<c:when test="${ empty sessionScope.user }">
