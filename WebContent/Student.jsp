@@ -18,13 +18,12 @@
 		<form class="form-horizontal" role="form">
 		
 		  <h2>${ student.getFirst_name() } ${ student.getLast_name() }</h2>
-		  
+		  <br />
+		
+		  <h3>Student</h3>
+		
 		  <hr>
-		
-		  <div class="col-sm-offset-2 col-sm-10">
-		    <h2>Student</h2>
-		  </div>
-		
+		  
 		  <div class="form-group">
 		    <label class="col-sm-2 control-label">Module</label>
 		    <div class="col-sm-10">
@@ -63,11 +62,10 @@
 		    </div>
 		  </div>
 		  
-		  <hr>
+		  <br />
+		  <h3>Project</h3>
 		  
-		  <div class="col-sm-offset-2 col-sm-10">
-		    <h2>Project</h2>
-		  </div>
+		  <hr>
 		  
 		  <div class="form-group">
 		    <label for="inputTitle" class="col-sm-2 control-label">Title</label>
@@ -91,7 +89,8 @@
 		    </div>
 		  </div>		  
 		  
-		  <hr>
+		  <br />
+		  <br />
 		  
 		  <div class="form-group">
 		    <div class="col-sm-offset-2 col-sm-10">
