@@ -11,16 +11,17 @@
 
 <!-- DataTables CSS -->
 <link rel="stylesheet"
-	href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+	href="${ rootPath }Ressources/css/jquery.dataTables.min.css">
 <link rel="stylesheet"
-	href="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css">
+	href="${ rootPath }Ressources/css/dataTables.bootstrap.css">
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	href="${ rootPath }Ressources/css/bootstrap.min.css">
 <!-- Optional theme -->
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="${ rootPath }Ressources/style/main.css">
+	href="${ rootPath }Ressources/css/bootstrap-theme.min.css">
+<link rel="stylesheet"
+	href="${ rootPath }Ressources/css/main.css">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
