@@ -86,9 +86,9 @@
 	</div> <!-- panel -->
   
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-primary">Save</button>
-      <button type="submit" class="btn btn-default">Cancel</button>
+    <div class="pull-right">
+      <button type="submit" class="btn btn-default margin-14">Cancel</button>
+      <button type="submit" class="btn btn-primary margin-14">Save</button>
     </div>
   </div>
 </form>

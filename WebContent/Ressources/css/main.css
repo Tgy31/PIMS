@@ -31,3 +31,7 @@ body.login .navbar li.login {
 textarea {
 	max-width: 100%;
 }
+
+.pull-right .margin-14 {
+	margin-right: 14px;
+}
