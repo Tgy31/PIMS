@@ -1,11 +1,11 @@
 package model.entity;
 
 public class Inspector extends User {
-	int inspector_id;
-	int timetable_id;
-	int capacity;	
-	String title;
-	String keywords;
+	private int inspector_id;
+	private int timetable_id;
+	private int capacity;	
+	private String title;
+	private String keywords;
 
 	public Inspector() {
 		super();

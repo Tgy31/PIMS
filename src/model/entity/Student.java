@@ -1,14 +1,14 @@
 package model.entity;
 
 public class Student extends User {
-	int  student_id;
-	int  project_id;
-	int module_id;
-	int course_id;
-	int timetable_id;
-	String  project_title;
-	String  project_description;	
-	String supervisor;
+	private int  student_id;
+	private int  project_id;
+	private int module_id;
+	private int course_id;
+	private int timetable_id;
+	private String  project_title;
+	private String  project_description;	
+	private String supervisor;
 
 	public Student() {
 		super();
@@ -189,6 +189,13 @@ public class Student extends User {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Student [student_id=" + student_id + ", project_id="
+				+ project_id + ", module_id=" + module_id + ", course_id="
+				+ course_id + ", timetable_id=" + timetable_id
+				+ ", project_title=" + project_title + ", project_description="
+				+ project_description + ", supervisor=" + supervisor + "]";
+	}
 
-	
 }
