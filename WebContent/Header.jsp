@@ -87,13 +87,20 @@
 	</nav>
 
 	<div id="body-container" class="container">
-
-
-		<c:if test="${ !empty alertType }">
-			<div class="alert ${ alertType } alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				${ alertMessage }
+	
+	
+	<c:if test="${ !empty alertType }">
+		<div class="alert ${ alertType } alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert">
+				<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+			</button>
+			${ alertMessage }
+		</div>
+	</c:if>
+	
+		<div class="row">
+			<div class="col-xs-3 col-lg-3">
+			
 			</div>
-		</c:if>
+			<div class="col-xs-9 col-lg-9">
+
