@@ -52,23 +52,30 @@
 						<form class="navbar-form navbar-left" role="search">
 							<div class="form-group">
 								<select class="form-control" onchange="selectedModuleChanged()" id="inputSelectedModule">
-									<c:forEach items="${ modules }" var="module">
-										<option value="${ module.getModule_id() }">${ module.getModule_name() }</option>
+									<c:forEach items="${ modules }" var="module">		
+										<c:choose>
+											<c:when test="${ module eq selectedModule }">
+												<option value="${ module.getModule_id() }" selected>${ module.getModule_name() }</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${ module.getModule_id() }">${ module.getModule_name() }</option>
+											</c:otherwise>
+										</c:choose>
 									</c:forEach>
 								</select>
 							</div>
 						</form>
 
 						<li class="module">
-							<a href="${ rootPath }modules/${ moduleSlug }/">Module</a>
+							<a href="${ rootPath }modules/${ selectedModule.getModule_id() }/">Module</a>
 						</li>
 
 					</c:if>
 
 					<c:if test="${ !empty sessionScope.user }">
 					
-						<li class="students"><a href="${ rootPath }students/${ moduleSlug }/">Students</a></li>
-						<li class="inspectors"><a href="${ rootPath }inspectors/${ moduleSlug }/">Inspectors</a></li>
+						<li class="students"><a href="${ rootPath }students/${ selectedModule.getModule_id() }/">Students</a></li>
+						<li class="inspectors"><a href="${ rootPath }inspectors/${ selectedModule.getModule_id() }/">Inspectors</a></li>
 
 					</c:if>
 

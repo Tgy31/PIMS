@@ -85,11 +85,8 @@ public class BootstrapServlet extends HttpServlet {
 		request.setAttribute("userProfilePath", this.getProfilePathForUser(user));
 
 		// Set Module
-		String moduleSlug = this.getModuleSlug(request);
-		if (moduleSlug == null) {
-			moduleSlug = "26581";
-		}
-		request.setAttribute("moduleSlug", moduleSlug);
+		Module selectedModule = this.getSelectedModule(request);
+		request.setAttribute("selectedModule", selectedModule);
 		
 		// Set for coordinator
 		if (user != null && user.isCoordinator()) {
@@ -197,7 +194,7 @@ public class BootstrapServlet extends HttpServlet {
 		return null;
     }
     
-    public Module getModule(HttpServletRequest request) {
+    public Module getSelectedModule(HttpServletRequest request) {
 
 		String moduleSlug = this.getModuleSlug(request);
 		if (moduleSlug == null || moduleSlug.equals("")) {
