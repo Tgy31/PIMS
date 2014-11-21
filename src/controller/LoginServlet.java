@@ -62,7 +62,7 @@ public class LoginServlet extends BootstrapServlet {
 			this.alertType = AlertType.AlertTypeSuccess;
 			this.alertMessage = "You are now logged in as "
 					+ user.getFirst_name();
-			response.sendRedirect("/PIMS/students/");
+			response.sendRedirect("/PIMS/students/26581/");
 		} else {
 			this.alertType = AlertType.AlertTypeDanger;
 			this.alertMessage = "Log in failed"; 

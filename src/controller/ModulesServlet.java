@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.entity.Student;
+import model.dao.ModuleDAO;
+import model.entity.Module;
 
 /**
  * Servlet implementation class ModulesServlet
@@ -32,10 +33,14 @@ public class ModulesServlet extends BootstrapServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String moduleSlug = this.getModuleSlug(request);
-		//Student student = this.getStudentBySlug(studentSlug);
+		Module module = this.getModule(request);
 		
-		if (moduleSlug != null) {
-			this.proceedSingleModule(moduleSlug, request, response);
+		if (module != null) {
+			this.proceedSingleModule(module, request, response);
+		} else if (moduleSlug != null) {
+			this.alertType = AlertType.AlertTypeDanger;
+			this.alertMessage = "Student not found";
+			this.proceedSingleModuleError(request, response);
 		} else {
 			this.proceedModuleList(request, response);
 		}
@@ -52,7 +57,7 @@ public class ModulesServlet extends BootstrapServlet {
 		this.proceedGet("/Modules.jsp", request, response);
 	}
 	
-	protected void proceedSingleModule(String module, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void proceedSingleModule(Module module, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("module", module);
 		this.proceedGet("/Module.jsp", request, response);
 	}

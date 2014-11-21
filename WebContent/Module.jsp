@@ -9,13 +9,13 @@
   <div class="col-xs-12 col-lg-12">
     <div class="thumbnail">
       <div class="caption">
-        <h3>${ module }</h3>
+        <h3>${ module.getModule_name() }</h3>
         <hr/>
 		<form class="form-horizontal" role="form">
 		  <div class="form-group">
 		    <label for="inputName" class="col-sm-2 control-label">Name</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="inputName" placeholder="Name" value="${ module }">
+		      <input type="text" class="form-control" id="inputName" placeholder="Name" value="${ module.getModule_name() }">
 		    </div>
 		  </div>
 		  <div class="form-group">

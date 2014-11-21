@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.ModuleDAO;
+import model.entity.Module;
 import model.entity.User;
 
 /**
@@ -84,7 +86,7 @@ public class BootstrapServlet extends HttpServlet {
 		// Set Module
 		String moduleSlug = this.getModuleSlug(request);
 		if (moduleSlug == null) {
-			moduleSlug = "default-module";
+			moduleSlug = "26581";
 		}
 		request.setAttribute("moduleSlug", moduleSlug);
     }
@@ -179,6 +181,19 @@ public class BootstrapServlet extends HttpServlet {
 			}
 		}
 		return null;
+    }
+    
+    public Module getModule(HttpServletRequest request) {
+
+		String moduleSlug = this.getModuleSlug(request);
+		if (moduleSlug == null || moduleSlug.equals("")) {
+			return null;
+		}
+  
+		ModuleDAO moduleDao = new ModuleDAO();
+		int moduleID = Integer.parseInt(moduleSlug);
+		Module module = moduleDao.findByModuleID(moduleID);
+		return module;
     }
     
     public String getProfilePathForUser(User user) {
