@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.ModuleDAO;
 import model.dao.UserDAO;
+import model.entity.Module;
 import model.entity.User;
 
 /**
@@ -37,6 +40,11 @@ public class LoginServlet extends BootstrapServlet {
 		
 		// Set user types
 		request.setAttribute("userTypes", this.getStringForAllUserTypes());
+		
+		// Set module list
+		ModuleDAO moduleDAO = new ModuleDAO();
+		List<Module> modules = moduleDAO.findAll();
+		request.setAttribute("modules", modules);
 		
 		this.proceedGet("/Login.jsp", request, response);
 	}
