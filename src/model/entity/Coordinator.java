@@ -1,8 +1,8 @@
 package model.entity;
 
 public class Coordinator extends User {
-	int pc_id;
-	String title;
+	private int pc_id;
+	private String title;
 	
 	public Coordinator() {
 		super();

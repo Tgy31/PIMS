@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.ModuleDAO;
+import model.entity.Module;
 import model.entity.User;
 
 /**
@@ -78,11 +81,21 @@ public class BootstrapServlet extends HttpServlet {
 		request.setAttribute("userProfilePath", this.getProfilePathForUser(user));
 
 		// Set Module
-		String moduleSlug = this.getModuleSlug(request);
-		if (moduleSlug == null) {
-			moduleSlug = "default-module";
+		Module selectedModule = this.getSelectedModule(request);
+		request.setAttribute("selectedModule", selectedModule);
+		
+		// Set for coordinator
+		if (user != null && user.isCoordinator()) {
+			this.setEnvironmentAttributesForCoordinator(request, response);
 		}
-		request.setAttribute("moduleSlug", moduleSlug);
+    }
+    
+    public void setEnvironmentAttributesForCoordinator(HttpServletRequest request, HttpServletResponse response) {
+    	
+    	// Set module list
+    	ModuleDAO moduleDAO = new ModuleDAO();
+    	List<Module> modules = moduleDAO.findAll();
+    	request.setAttribute("modules", modules);
     }
     
     private String nameForAlertType(AlertType alertType) {
@@ -175,6 +188,45 @@ public class BootstrapServlet extends HttpServlet {
 			}
 		}
 		return null;
+    }
+    
+    public Module getSelectedModule(HttpServletRequest request) {
+
+		String moduleSlug = this.getModuleSlug(request);
+
+		HttpSession session = request.getSession();
+		ModuleDAO moduleDAO = new ModuleDAO();
+		Module module = null;
+		
+		// Get from path
+		module = this.getModuleFromRequestPath(request);
+		
+		// If not selectedMenu from path try from session
+		if (module == null) {
+			module = (Module) session.getAttribute("lastSelectedModule");
+		}
+		
+		// If still no selectedMenu, get default
+		if (module == null) {
+			List<Module> modules = moduleDAO.findAll();
+			module = modules.get(0);
+		}
+
+		session.setAttribute("lastSelectedModule", module);
+		return module;
+    }
+    
+    public Module getModuleFromRequestPath(HttpServletRequest request) {
+		String moduleSlug = this.getModuleSlug(request);
+		ModuleDAO moduleDAO = new ModuleDAO();
+		Module module = null;
+		
+		// Get from path
+		if (moduleSlug != null && !moduleSlug.equals("")) {
+			int moduleID = Integer.parseInt(moduleSlug);
+			module = moduleDAO.findByModuleID(moduleID);
+		}
+    	return module;
     }
     
     public String getProfilePathForUser(User user) {

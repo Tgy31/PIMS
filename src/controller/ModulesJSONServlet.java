@@ -9,21 +9,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.dao.InspectorDAO;
-import model.entity.Inspector;
+import model.dao.ModuleDAO;
+import model.entity.Module;
 
 /**
- * Servlet implementation class InspectorsJSONServlet
+ * Servlet implementation class ModulesJSONServlet
  */
-@WebServlet("/InspectorsJSONServlet")
-public class InspectorsJSONServlet extends HttpServlet {
+@WebServlet("/ModulesJSONServlet")
+public class ModulesJSONServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InspectorsJSONServlet() {
+    public ModulesJSONServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -31,13 +32,12 @@ public class InspectorsJSONServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		InspectorDAO inspectorDAO = new InspectorDAO();
-		List<Inspector> inspectors = inspectorDAO.findAll();
+		ModuleDAO moduleDAO = new ModuleDAO();
+		List<Module> modules = moduleDAO.findAll();
 		
-		request.setAttribute("inspectors", inspectors);
+		request.setAttribute("modules", modules);
 		
-        this.getServletContext().getRequestDispatcher("/InspectorsJSON.jsp").forward(request, response);
-		
+        this.getServletContext().getRequestDispatcher("/ModulesJSON.jsp").forward(request, response);
 	}
 
 	/**

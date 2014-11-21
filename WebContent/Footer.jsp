@@ -24,6 +24,7 @@
 	<script src="${ rootPath }Ressources/js/dataTables.bootstrap.js"></script>
 	
 	<!-- Include additional files -->
+	<script src="${ rootPath }Ressources/js/main.js"></script>
 	<c:forEach items="${ javascriptFiles }" var="fileName">
 		<script src="${ rootPath }Ressources/js/${ fileName }"></script>
 	</c:forEach>

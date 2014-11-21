@@ -20,7 +20,6 @@ public class InspectorsServlet extends BootstrapServlet {
      */
     public InspectorsServlet() {
         super();
-        // TODO Auto-generated constructor stub
         this.relatedMenuClass = "inspectors";
         this.addJavascriptFile("inspectors.js");
         this.layoutType = LayoutType.Grid;
