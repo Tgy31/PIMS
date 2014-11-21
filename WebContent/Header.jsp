@@ -51,9 +51,9 @@
 					
 						<form class="navbar-form navbar-left" role="search">
 							<div class="form-group">
-								<select class="form-control">
+								<select class="form-control" onchange="selectedModuleChanged()" id="inputSelectedModule">
 									<c:forEach items="${ modules }" var="module">
-										<option>${ module.getModule_name() }</option>
+										<option value="${ module.getModule_id() }">${ module.getModule_name() }</option>
 									</c:forEach>
 								</select>
 							</div>
