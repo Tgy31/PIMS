@@ -85,47 +85,48 @@
 			<!--/.nav-collapse -->
 		</div>
 	</nav>
-
-	<div id="body-container" class="container">		
 	
-		<div class="row">
-		
-			<div class="col-xs-12 col-lg-12">
-				<ol class="breadcrumb">
-				  <li><a href="#">Module name</a></li>
-				  <li><a href="#">Entity type</a></li>
-				  <li class="active">Entity name</li>
-				</ol>
-			</div>
+	<div id="body-container" class="container">	
+	
+<c:choose>
+    <c:when test="${ layoutType eq 'Grid' }">
+	
+			<div class="row">
 			
-			<div class="col-xs-3 col-lg-3">
-				<div class="list-group">
-					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">List group item heading</h4>
-						<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-					</a>
-					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">List group item heading</h4>
-						<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-					</a>
-					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">List group item heading</h4>
-						<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-					</a>
-					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">List group item heading</h4>
-						<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-					</a>
+				<div class="col-xs-12 col-lg-12">
+					<ol class="breadcrumb">
+					  <li><a href="#">Module name</a></li>
+					  <li><a href="#">Entity type</a></li>
+					  <li class="active">Entity name</li>
+					</ol>
 				</div>
-			</div>
-			<div class="col-xs-9 col-lg-9">
-			
-				<c:if test="${ !empty alertType }">
-					<div class="alert ${ alertType } alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert">
-							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-						</button>
-						${ alertMessage }
+				
+				<div class="col-xs-3 col-lg-3">
+					<div class="list-group">
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">List group item heading</h4>
+							<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+						</a>
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">List group item heading</h4>
+							<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+						</a>
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">List group item heading</h4>
+							<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+						</a>
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">List group item heading</h4>
+							<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+						</a>
 					</div>
-				</c:if>
+				</div>
+				<div class="col-xs-9 col-lg-9">
+		
+		</c:when>
+		<c:otherwise>
+		
+		</c:otherwise>	
+</c:choose>
+			
 

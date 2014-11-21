@@ -20,8 +20,11 @@ public class BootstrapServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	public static String rootPath = "/PIMS/"; // Change for your installation, in production use "/"
-	public String relatedMenuClass;
 	private ArrayList<String> javascriptFileNames = new ArrayList<String>();
+	
+	public String relatedMenuClass;
+	
+	public LayoutType layoutType;
 
 	public AlertType alertType;
 	public String alertMessage;
@@ -35,6 +38,7 @@ public class BootstrapServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
         this.relatedMenuClass = "BootstrapServlet";
         this.alertType = AlertType.AlertTypeNone;
+        this.layoutType = LayoutType.Default;
     }
     
     public void proceedGet(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -72,6 +76,9 @@ public class BootstrapServlet extends HttpServlet {
 		
     	// Set related menu for the view
 		request.setAttribute("activeMenu", this.relatedMenuClass);
+		
+    	// Set layout
+		request.setAttribute("layoutType", this.layoutType);
 
 		// Add conditional ressources
 		request.setAttribute("javascriptFiles", this.javascriptFileNames);

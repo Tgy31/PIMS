@@ -27,6 +27,7 @@ public class StudentsServlet extends BootstrapServlet {
         // TODO Auto-generated constructor stub
         this.relatedMenuClass = "students";
         this.addJavascriptFile("students.js");
+        this.layoutType = LayoutType.Grid;
     }
     
     public Student getStudentBySlug(String studentSlug) {
