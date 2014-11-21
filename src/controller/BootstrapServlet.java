@@ -203,10 +203,7 @@ public class BootstrapServlet extends HttpServlet {
 		Module module = null;
 		
 		// Get from path
-		if (moduleSlug != null && !moduleSlug.equals("")) {
-			int moduleID = Integer.parseInt(moduleSlug);
-			module = moduleDAO.findByModuleID(moduleID);
-		}
+		module = this.getModuleFromRequestPath(request);
 		
 		// If not selectedMenu from path try from session
 		if (module == null) {
@@ -221,6 +218,19 @@ public class BootstrapServlet extends HttpServlet {
 
 		session.setAttribute("lastSelectedModule", module);
 		return module;
+    }
+    
+    public Module getModuleFromRequestPath(HttpServletRequest request) {
+		String moduleSlug = this.getModuleSlug(request);
+		ModuleDAO moduleDAO = new ModuleDAO();
+		Module module = null;
+		
+		// Get from path
+		if (moduleSlug != null && !moduleSlug.equals("")) {
+			int moduleID = Integer.parseInt(moduleSlug);
+			module = moduleDAO.findByModuleID(moduleID);
+		}
+    	return module;
     }
     
     public String getProfilePathForUser(User user) {

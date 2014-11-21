@@ -33,7 +33,7 @@ public class ModulesServlet extends BootstrapServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String moduleSlug = this.getModuleSlug(request);
-		Module module = this.getSelectedModule(request);
+		Module module = this.getModuleFromRequestPath(request);
 		
 		if (module != null) {
 			this.proceedSingleModule(module, request, response);
