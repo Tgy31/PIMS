@@ -49,6 +49,8 @@ public class BootstrapServlet extends HttpServlet {
 		this.setEnvironmentAttributes(request, response);
 		
 		if (this.shouldDenyAcces(request)) {
+	    	// Set layout
+			request.setAttribute("layoutType", LayoutType.Default);
 	        this.getServletContext().getRequestDispatcher("/AccessDenied.jsp").forward(request, response);
 		} else {
 	        this.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
