@@ -5,18 +5,25 @@
 
 <%@ include file="Header.jsp" %>
 
-	<h2>Modules</h2>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Modules</h3>
+	</div>
+	<div class="panel-body">
 	
-	<table id="module-table" class="user-table row-border hover order-column">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Year</th>
-                <th>Active</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    </table>
+		<table id="module-table" class="user-table row-border hover order-column">
+	        <thead>
+	            <tr>
+	                <th>Name</th>
+	                <th>Year</th>
+	                <th>Active</th>
+	                <th>Action</th>
+	            </tr>
+	        </thead>
+	    </table>
+	    
+	</div>
+</div>
     
     <!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
