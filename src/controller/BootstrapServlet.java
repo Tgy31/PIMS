@@ -197,13 +197,29 @@ public class BootstrapServlet extends HttpServlet {
     public Module getSelectedModule(HttpServletRequest request) {
 
 		String moduleSlug = this.getModuleSlug(request);
-		if (moduleSlug == null || moduleSlug.equals("")) {
-			return null;
+
+		HttpSession session = request.getSession();
+		ModuleDAO moduleDAO = new ModuleDAO();
+		Module module = null;
+		
+		// Get from path
+		if (moduleSlug != null && !moduleSlug.equals("")) {
+			int moduleID = Integer.parseInt(moduleSlug);
+			module = moduleDAO.findByModuleID(moduleID);
 		}
-  
-		ModuleDAO moduleDao = new ModuleDAO();
-		int moduleID = Integer.parseInt(moduleSlug);
-		Module module = moduleDao.findByModuleID(moduleID);
+		
+		// If not selectedMenu from path try from session
+		if (module == null) {
+			module = (Module) session.getAttribute("lastSelectedModule");
+		}
+		
+		// If still no selectedMenu, get default
+		if (module == null) {
+			List<Module> modules = moduleDAO.findAll();
+			module = modules.get(0);
+		}
+
+		session.setAttribute("lastSelectedModule", module);
 		return module;
     }
     
