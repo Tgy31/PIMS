@@ -32,7 +32,7 @@ public class InspectorsJSONServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		InspectorDAO inspectorDAO = new InspectorDAO();
-		List<Inspector> inspectors = inspectorDAO.findAllInspectors();
+		List<Inspector> inspectors = inspectorDAO.findAll();
 		
 		request.setAttribute("inspectors", inspectors);
 		
