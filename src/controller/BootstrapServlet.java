@@ -25,9 +25,6 @@ public class BootstrapServlet extends HttpServlet {
 	public String relatedMenuClass;
 	
 	public LayoutType layoutType;
-
-	public AlertType alertType;
-	public String alertMessage;
 	
        
     /**
@@ -37,30 +34,19 @@ public class BootstrapServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
         this.relatedMenuClass = "BootstrapServlet";
-        this.alertType = AlertType.AlertTypeNone;
         this.layoutType = LayoutType.Default;
     }
     
     public void proceedGet(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.setEnvironmentAttributes(request, response);
-		
-		String alertTypeName = this.alertTypeName();
-		if (this.alertType != AlertType.AlertTypeNone) {
-			request.setAttribute("alertType", alertTypeName);
-			request.setAttribute("alertMessage", this.alertMessage);
-		}
-		this.alertType = AlertType.AlertTypeNone;
-		this.alertMessage = null;
-
 		this.proceedRequest(jspFile, request, response);
     }
     
     public void proceedPost(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.setEnvironmentAttributes(request, response);
 		this.proceedRequest(jspFile, request, response);
     }
 
     public void proceedRequest(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.setEnvironmentAttributes(request, response);
 		
 		if (this.shouldDenyAcces(request)) {
 	        this.getServletContext().getRequestDispatcher("/AccessDenied.jsp").forward(request, response);
@@ -68,6 +54,7 @@ public class BootstrapServlet extends HttpServlet {
 	        this.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
 		}
     	
+		this.clearAlertView(request);
     }
     
     public void setEnvironmentAttributes(HttpServletRequest request, HttpServletResponse response) {
@@ -96,8 +83,8 @@ public class BootstrapServlet extends HttpServlet {
 		request.setAttribute("moduleSlug", moduleSlug);
     }
     
-    private String alertTypeName() {
-    	switch (this.alertType) {
+    private String nameForAlertType(AlertType alertType) {
+    	switch (alertType) {
 	        case AlertTypeDefault:
 	            return "alert-default";
 	        case AlertTypeInfo:
@@ -200,6 +187,21 @@ public class BootstrapServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
     	return (user == null); // deny any access if no user
+    }
+    
+    public void setAlertView(AlertType alertType, String alertMessage, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String alertTypeName = this.nameForAlertType(alertType);
+		if (alertType != null && alertType != AlertType.AlertTypeNone && alertMessage != null) {
+			session.setAttribute("alertType", alertTypeName);
+			session.setAttribute("alertMessage", alertMessage);
+		}
+    }
+    
+    public void clearAlertView(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		session.removeAttribute("alertType");
+		session.removeAttribute("alertMessage");
     }
 
 }

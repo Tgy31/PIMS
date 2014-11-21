@@ -86,10 +86,11 @@
 		</div>
 	</nav>
 	
-	<div id="body-container" class="container">	
-	
 <c:choose>
     <c:when test="${ layoutType eq 'Grid' }">
+    
+		<div id="body-container" class="container">	
+			<%@ include file="AlertView.jsp" %>
 	
 			<div class="row">
 			
@@ -123,10 +124,13 @@
 				</div>
 				<div class="col-xs-9 col-lg-9">
 		
-		</c:when>
-		<c:otherwise>
-		
-		</c:otherwise>	
+	</c:when>
+	<c:otherwise>
+	
+		<div id="body-container" class="container">	
+			<%@ include file="AlertView.jsp" %>
+			
+	</c:otherwise>	
 </c:choose>
 			
 

@@ -59,13 +59,10 @@ public class LoginServlet extends BootstrapServlet {
 		if (user != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
-			this.alertType = AlertType.AlertTypeSuccess;
-			this.alertMessage = "You are now logged in as "
-					+ user.getFirst_name();
-			response.sendRedirect("/PIMS/students/");
+			this.setAlertView(AlertType.AlertTypeSuccess, "You are now logged in as "+user.getFirst_name(), request);
+			response.sendRedirect("/PIMS/students/default-module/");
 		} else {
-			this.alertType = AlertType.AlertTypeDanger;
-			this.alertMessage = "Log in failed"; 
+			this.setAlertView(AlertType.AlertTypeDanger, "Log in failled", request);
 			this.proceedPost("/Login.jsp", request, response);
 		}
 
