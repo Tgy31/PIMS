@@ -73,6 +73,13 @@
 		    </div>
 		  </div>
 		  <div class="form-group">
+		    <label class="col-sm-2 control-label">Keywords</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static">5 keywords</p>
+		      <p><a href="#">Show</a> | <a href="#">Edit</a></p>
+		    </div>
+		  </div>
+		  <div class="form-group">
 		    <label for="inputSupervisor" class="col-sm-2 control-label">Supervisor</label>
 		    <div class="col-sm-10">
 		      <select class="form-control">
