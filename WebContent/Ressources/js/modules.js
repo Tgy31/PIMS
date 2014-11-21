@@ -12,7 +12,7 @@ var showRender = function ( data, type, full, meta ) {
 
 $(document).ready( function () {
     $('#module-table').DataTable( {
-        "ajax": '/PIMS/Ressources/fake/modules.html',
+        "ajax": '/PIMS/modules.json',
         "columnDefs": [
           {
             "targets": 2,

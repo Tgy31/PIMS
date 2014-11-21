@@ -76,6 +76,14 @@
     <url-pattern>/modules</url-pattern>
     <url-pattern>/modules/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>ModulesJSON</servlet-name>
+    <servlet-class>controller.ModulesJSONServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ModulesJSON</servlet-name>
+    <url-pattern>/modules.json</url-pattern>
+  </servlet-mapping>
   <jsp-config>
     <jsp-property-group>
       <url-pattern>*.jsp</url-pattern>
