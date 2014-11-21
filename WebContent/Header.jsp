@@ -48,19 +48,19 @@
 				<ul class="nav navbar-nav">
 
 					<c:if test="${ !empty sessionScope.user.isCoordinator() }">
+					
+						<form class="navbar-form navbar-left" role="search">
+							<div class="form-group">
+								<select class="form-control">
+									<c:forEach items="${ modules }" var="module">
+										<option>${ module.getModule_name() }</option>
+									</c:forEach>
+								</select>
+							</div>
+						</form>
 
-						<li class="dropdown modules">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Modules
-								<span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="${ rootPath }modules/">All modules</a></li>
-								<li class="divider"></li>
-								<li class="dropdown-header">Active module</li>
-								<li><a href="${ rootPath }modules/${ moduleSlug }/">${ moduleSlug }</a></li>
-								<li class="divider"></li>
-								<li class="dropdown-header">Other modules</li>
-							</ul>
+						<li class="module">
+							<a href="${ rootPath }modules/${ moduleSlug }/">Module</a>
 						</li>
 
 					</c:if>
@@ -82,6 +82,10 @@
 
 						</c:when>
 						<c:when test="${ !empty sessionScope.user }">
+						
+							<c:if test="${ !empty sessionScope.user.isCoordinator() }">
+								<li class="modules"><a href="${ rootPath }modules/">All modules</a></li>	
+							</c:if>
 
 							<li class="dropdown user">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">${ sessionScope.user.getFirst_name() }

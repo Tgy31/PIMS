@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -89,6 +90,19 @@ public class BootstrapServlet extends HttpServlet {
 			moduleSlug = "26581";
 		}
 		request.setAttribute("moduleSlug", moduleSlug);
+		
+		// Set for coordinator
+		if (user != null && user.isCoordinator()) {
+			this.setEnvironmentAttributesForCoordinator(request, response);
+		}
+    }
+    
+    public void setEnvironmentAttributesForCoordinator(HttpServletRequest request, HttpServletResponse response) {
+    	
+    	// Set module list
+    	ModuleDAO moduleDAO = new ModuleDAO();
+    	List<Module> modules = moduleDAO.findAll();
+    	request.setAttribute("modules", modules);
     }
     
     private String alertTypeName() {

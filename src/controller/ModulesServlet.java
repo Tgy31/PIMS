@@ -54,10 +54,12 @@ public class ModulesServlet extends BootstrapServlet {
 	}
 	
 	protected void proceedModuleList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.relatedMenuClass = "modules"; // Menu for module list
 		this.proceedGet("/Modules.jsp", request, response);
 	}
 	
 	protected void proceedSingleModule(Module module, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.relatedMenuClass = "module"; // Menu for selected module
 		request.setAttribute("module", module);
 		this.proceedGet("/Module.jsp", request, response);
 	}
