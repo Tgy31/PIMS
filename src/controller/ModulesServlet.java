@@ -24,6 +24,7 @@ public class ModulesServlet extends BootstrapServlet {
     public ModulesServlet() {
         super();
         this.relatedMenuClass = "modules";
+        this.layoutType = LayoutType.Grid;
         this.addJavascriptFile("modules.js");
     }
 
@@ -38,8 +39,7 @@ public class ModulesServlet extends BootstrapServlet {
 		if (module != null) {
 			this.proceedSingleModule(module, request, response);
 		} else if (moduleSlug != null) {
-			this.alertType = AlertType.AlertTypeDanger;
-			this.alertMessage = "Student not found";
+			this.setAlertView(AlertType.AlertTypeDanger, "Student not found", request);
 			this.proceedSingleModuleError(request, response);
 		} else {
 			this.proceedModuleList(request, response);
