@@ -212,7 +212,7 @@ public class StudentDAO {
 		return students.get(0);
 	}
 	
-	public Student findByModuleID(int ID){
+	public List<Student> findByModuleID(int ID){
 		String sql = "SELECT  * " + 
 							"FROM student " + 
 							"WHERE module_id= " + "'" + ID + "'";
@@ -226,8 +226,34 @@ public class StudentDAO {
 		e.printStackTrace();
 		System.out.println("Find by No operation is failed ");
 		}
-		return students.get(0);
+		return students;
 	}
+	
+	/**
+	 * 
+	 * @param name: module name 
+	 * @param year: please give a module year
+	 * @return
+	 */
+	public List<Student> findByModuleName(String name, String year){ 
+		String sql = "SELECT  * " + 
+							"FROM student, module " + 
+							"WHERE module.module_name= " + "'" + name + "' " +
+							"AND " +
+							"module.year= " + "'" + year + "'";
+		List<Student> students = null;
+		try {
+			students = template.query(sql, new StudentMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return students;
+	}
+	
 	
 	public List<Student> findAll(){
 		String sql = "SELECT * " + 

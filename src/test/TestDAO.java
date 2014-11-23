@@ -47,6 +47,7 @@ public class TestDAO {
 //		testDAO.testStudentFindByID();
 //		testDAO.testStudentDeleteByID();
 //		testDAO.testStudentDeleteByName();
+		testDAO.testStudentFindByModuleName();
 		
 //*********Project-Coordinator******		
 //		testDAO.testCoordinatorSave();
@@ -136,6 +137,12 @@ public class TestDAO {
 		StudentDAO studentDAO = new StudentDAO();
 		System.out.println(studentDAO.findByStudentID(10002).getFirst_name());
 	}
+	
+	public void testStudentFindByModuleName(){
+		StudentDAO studentDAO = new StudentDAO();
+		System.out.println(studentDAO.findByModuleName("BSc project", "2014/15"));
+	}
+	
 	
 	public void testStudentDeleteByID(){
 		StudentDAO studentDAO = new StudentDAO();
