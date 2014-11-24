@@ -5,17 +5,18 @@
 
 <%@ include file="Header.jsp" %>
 
-<div class="row">
-  <div class="col-xs-12 col-lg-12">
-    <div class="thumbnail">
-      <div class="caption">
-        <h3>${ module.getModule_name() }</h3>
-        <hr/>
-		<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form">
+
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Module</h3>
+	  </div>
+	  <div class="panel-body">
+  
 		  <div class="form-group">
-		    <label for="inputName" class="col-sm-2 control-label">Name</label>
+		    <label for="inputTitle" class="col-sm-2 control-label">Name</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="inputName" placeholder="Name" value="${ module.getModule_name() }">
+		      <input type="text" class="form-control" id="inputTitle" placeholder="Title" value="${ module.getModule_name() }">
 		    </div>
 		  </div>
 		  <div class="form-group">
@@ -27,16 +28,16 @@
 		      </div>
 		    </div>
 		  </div>
-		  <div class="form-group">
-		    <div class="col-sm-offset-2 col-sm-10">
-		      <button type="submit" class="btn btn-primary">Save</button>
-		      <button type="submit" class="btn btn-default">Cancel</button>
-		    </div>
-		  </div>
-		</form>
-      </div>
+  
+	  </div> <!-- panel body -->
+	</div> <!-- panel -->
+  
+  <div class="form-group">
+    <div class="pull-right">
+      <button type="submit" class="btn btn-default margin-14">Cancel</button>
+      <button type="submit" class="btn btn-primary margin-14">Save</button>
     </div>
   </div>
-</div>
+</form>
 
 <%@ include file="Footer.jsp" %>

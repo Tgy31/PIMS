@@ -22,6 +22,7 @@ public class InspectorsServlet extends BootstrapServlet {
         super();
         this.relatedMenuClass = "inspectors";
         this.addJavascriptFile("inspectors.js");
+        this.layoutType = LayoutType.Grid;
     }
 
 	/**

@@ -29,3 +29,11 @@ body.login .navbar li.login {
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
 	border: #428bca 1px solid;
 }
+
+textarea {
+	max-width: 100%;
+}
+
+.pull-right .margin-14 {
+	margin-right: 14px;
+}

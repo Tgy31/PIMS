@@ -1,9 +1,17 @@
 <%@ page language="java"
 	contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>			
 
-	
-	</div>
+<c:choose>
+    <c:when test="${ layoutType eq 'Grid' }">
+	    		</div>
+			</div>
+		</div>
+	</c:when>
+	<c:otherwise>
+		</div>
+	</c:otherwise>
+</c:choose>
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="${ rootPath }Ressources/js/jquery-2.1.1.min.js"></script>

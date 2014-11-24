@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.entity.User;
+
 /**
  * Servlet implementation class LogoutServlet
  */
@@ -31,10 +33,14 @@ public class LogoutServlet extends BootstrapServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
         HttpSession session = request.getSession();
-		session.invalidate();
-		
-		this.alertType = AlertType.AlertTypeWarning;
-		this.alertMessage = "You have been logged out";
+        User user = (User) session.getAttribute("user");
+        
+        if (user != null) {
+    		session.invalidate();
+    		this.setAlertView(AlertType.AlertTypeWarning, "You have been logged out", request);
+        } else {
+    		this.setAlertView(AlertType.AlertTypeDanger, "You are not logged in", request);
+        }
 		this.proceedGet("/Logout.jsp", request, response);
 	}
 
@@ -44,5 +50,10 @@ public class LogoutServlet extends BootstrapServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
+    
+	@Override
+    public Boolean shouldDenyAcces(HttpServletRequest request) {
+		return false;
+    }
 
 }
