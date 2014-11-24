@@ -40,4 +40,54 @@
   </div>
 </form>
 
+<form class="form-horizontal" role="form" enctype="multipart/form-data" method="post">
+
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Import students</h3>
+	  </div>
+	  <div class="panel-body">
+  
+		  <div class="form-group">
+		    <label for="inputTitle" class="col-sm-2 control-label">File</label>
+		    <div class="col-sm-10">
+		      <input type="file" class="form-control" id="inputStudentFile" placeholder="students.csv" name="inputStudentFile">
+		    </div>
+		  </div>
+  
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		    	<button type="submit" class="btn btn-primary margin-14">Import</button>
+		    </div>
+		  </div>
+  
+	  </div> <!-- panel body -->
+	</div> <!-- panel -->
+</form>
+
+<form class="form-horizontal" role="form" enctype="multipart/form-data" method="post">
+
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Import inspectors</h3>
+	  </div>
+	  <div class="panel-body">
+  
+		  <div class="form-group">
+		    <label for="inputTitle" class="col-sm-2 control-label">File</label>
+		    <div class="col-sm-10">
+		      <input type="file" class="form-control" id="inputInspectorFile" placeholder="inspectors.csv" name="inputInspectorFile">
+		    </div>
+		  </div>
+  
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		    	<button type="submit" class="btn btn-primary margin-14">Import</button>
+		    </div>
+		  </div>
+  
+	  </div> <!-- panel body -->
+	</div> <!-- panel -->
+</form>
+
 <%@ include file="Footer.jsp" %>
