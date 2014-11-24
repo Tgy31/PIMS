@@ -5,7 +5,7 @@
 
 <%@ include file="Header.jsp" %>
 
-	<h2>Students from ${ moduleSlug }</h2>
+	<h2>Students from ${ selectedModule.getModule_name() }</h2>
 	
 	<table id="student-table" class="user-table row-border hover order-column">
         <thead>

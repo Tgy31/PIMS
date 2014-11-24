@@ -6,8 +6,6 @@
 <%@ include file="Header.jsp" %>
 
 	<h2>Inspectors</h2>
-        
-	${ message }
 	
 	<table id="inspector-table" class="user-table  row-border hover order-column">
         <thead>
