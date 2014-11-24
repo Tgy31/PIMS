@@ -15,6 +15,7 @@
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
     <url-pattern>/login</url-pattern>
+    <url-pattern>/login/</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>Logout</servlet-name>
@@ -23,6 +24,7 @@
   <servlet-mapping>
     <servlet-name>Logout</servlet-name>
     <url-pattern>/logout</url-pattern>
+    <url-pattern>/logout/</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>Projects</servlet-name>
@@ -66,6 +68,23 @@
   <servlet-mapping>
     <servlet-name>InspectorsJSON</servlet-name>
     <url-pattern>/inspectors.json</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Modules</servlet-name>
+    <servlet-class>controller.ModulesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Modules</servlet-name>
+    <url-pattern>/modules</url-pattern>
+    <url-pattern>/modules/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ModulesJSON</servlet-name>
+    <servlet-class>controller.ModulesJSONServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ModulesJSON</servlet-name>
+    <url-pattern>/modules.json</url-pattern>
   </servlet-mapping>
   <jsp-config>
     <jsp-property-group>

@@ -3,6 +3,8 @@
 body.projects .navbar li.projects,
 body.students .navbar li.students,
 body.inspectors .navbar li.inspectors,
+body.modules .navbar li.modules,
+body.module .navbar li.module,
 body.login .navbar li.login {
 	background-image: -webkit-linear-gradient(top,#dbdbdb 0,#e2e2e2 100%);
 	background-image: -o-linear-gradient(top,#dbdbdb 0,#e2e2e2 100%);
@@ -26,4 +28,12 @@ body.login .navbar li.login {
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
 	border: #428bca 1px solid;
+}
+
+textarea {
+	max-width: 100%;
+}
+
+.pull-right .margin-14 {
+	margin-right: 14px;
 }

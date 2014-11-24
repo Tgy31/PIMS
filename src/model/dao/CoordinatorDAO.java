@@ -1,21 +1,24 @@
 package model.dao;
-import static tools.Enter.ENTER;
+import static tools.Replace.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 
-import org.apache.catalina.filters.CorsFilter;
+import org.skife.csv.CSVReader;
+import org.skife.csv.SimpleReader;
 
-import model.entity.Coordinator;
-import model.entity.Course;
-import model.entity.Student;
+import tools.DateConvert;
 import model.db.Template;
+import model.entity.Coordinator;
+import model.entity.Slot;
 import model.mapping.CoordinatorMapping;
-import model.mapping.CourseMapping;
-import model.mapping.StudentMapping;
 
 public class CoordinatorDAO {
 	private Template template = new Template();
+	private CSVReader reader = new SimpleReader();
 	
 	public boolean save(Coordinator coordinator){
 		String sql = "INSERT INTO project_coordinator"+ENTER+
@@ -197,6 +200,37 @@ public class CoordinatorDAO {
 		System.out.println("Find by No operation is failed ");
 		}
 		return coordinators;
+	}
+	
+	public boolean importCSV(File file) {
+		List<String[]> recordList = null;
+		try {
+			recordList = reader.parse(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Coordinator coordinator = new Coordinator();
+		boolean hasHeaderRecords = true;
+		for (int r = 0; r < recordList.size(); r++) {
+			String[] records = recordList.get(r);
+			if (r == 0 && hasHeaderRecords) {
+				continue;
+			}
+			try {
+				coordinator.setUsername(records[0]);
+				coordinator.setPassword(records[1]);
+				if(records[2].matches(PATTERN)){
+					coordinator.setPc_id(Integer.valueOf(records[2]));
+				}
+				coordinator.setTitle(records[3]);
+				coordinator.setFirst_name(records[4]);
+				coordinator.setLast_name(records[5]);
+				coordinator.setEmail(records[6]);
+			}catch( NumberFormatException e){
+				e.printStackTrace();
+			}
+		}
+		return save(coordinator);
 	}
 	
 }

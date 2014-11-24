@@ -47,17 +47,40 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 
-					<c:if test="${ !empty sessionScope.user }">
+					<c:if test="${ !empty sessionScope.user.isCoordinator() }">
+					
+						<form class="navbar-form navbar-left" role="search">
+							<div class="form-group">
+								<select class="form-control" onchange="selectedModuleChanged()" id="inputSelectedModule">
+									<c:forEach items="${ modules }" var="module">		
+										<c:choose>
+											<c:when test="${ module eq selectedModule }">
+												<option value="${ module.getModule_id() }" selected>${ module.getModule_name() }</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${ module.getModule_id() }">${ module.getModule_name() }</option>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+								</select>
+							</div>
+						</form>
 
-						<li class="projects"><a href="${ rootPath }projects/">Projects</a></li>
-						<li class="students"><a href="${ rootPath }students/${ moduleSlug }/">Students</a></li>
-						<li class="inspectors"><a href="${ rootPath }inspectors/${ moduleSlug }/">Inspectors</a></li>
+						<li class="module">
+							<a href="${ rootPath }modules/${ selectedModule.getModule_id() }/">Module</a>
+						</li>
+
+					</c:if>
+
+					<c:if test="${ !empty sessionScope.user }">
+					
+						<li class="students"><a href="${ rootPath }students/${ selectedModule.getModule_id() }/">Students</a></li>
+						<li class="inspectors"><a href="${ rootPath }inspectors/${ selectedModule.getModule_id() }/">Inspectors</a></li>
 
 					</c:if>
 
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-
 
 					<c:choose>
 						<c:when test="${ empty sessionScope.user }">
@@ -66,18 +89,22 @@
 
 						</c:when>
 						<c:when test="${ !empty sessionScope.user }">
+						
+							<c:if test="${ !empty sessionScope.user.isCoordinator() }">
+								<li class="modules"><a href="${ rootPath }modules/">All modules</a></li>	
+							</c:if>
 
-							<li class="dropdown user"><a href="#"
-								class="dropdown-toggle" data-toggle="dropdown">${ sessionScope.user.getFirst_name() }
+							<li class="dropdown user">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">${ sessionScope.user.getFirst_name() }
 									<span class="caret"></span>
-							</a>
+								</a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="${ rootPath }logout/">Log out</a></li>
 									<li class="divider"></li>
 									<li class="dropdown-header">Profile</li>
 									<li><a href="${ userProfilePath }">Edit</a></li>
-								</ul></li>
-
+								</ul>
+							</li>
 						</c:when>
 					</c:choose>
 				</ul>
@@ -85,15 +112,52 @@
 			<!--/.nav-collapse -->
 		</div>
 	</nav>
+	
+<c:choose>
+    <c:when test="${ layoutType eq 'Grid' }">
+    
+		<div id="body-container" class="container">	
+			<%@ include file="AlertView.jsp" %>
+	
+			<div class="row">
+			
+				<div class="col-xs-12 col-lg-12">
+					<ol class="breadcrumb">
+					  <li><a href="#">Module name</a></li>
+					  <li><a href="#">Entity type</a></li>
+					  <li class="active">Entity name</li>
+					</ol>
+				</div>
+				
+				<div class="col-xs-3 col-lg-3">
+					<div class="list-group">
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">List group item heading</h4>
+							<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+						</a>
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">List group item heading</h4>
+							<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+						</a>
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">List group item heading</h4>
+							<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+						</a>
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">List group item heading</h4>
+							<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+						</a>
+					</div>
+				</div>
+				<div class="col-xs-9 col-lg-9">
+		
+	</c:when>
+	<c:otherwise>
+	
+		<div id="body-container" class="container">	
+			<%@ include file="AlertView.jsp" %>
+			
+	</c:otherwise>	
+</c:choose>
+			
 
-	<div id="body-container" class="container">
-
-
-		<c:if test="${ !empty alertType }">
-			<div class="alert ${ alertType } alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				${ alertMessage }
-			</div>
-		</c:if>

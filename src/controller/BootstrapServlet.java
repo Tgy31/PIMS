@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.ModuleDAO;
+import model.entity.Module;
 import model.entity.User;
 
 /**
@@ -20,11 +23,11 @@ public class BootstrapServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	public static String rootPath = "/PIMS/"; // Change for your installation, in production use "/"
-	public String relatedMenuClass;
 	private ArrayList<String> javascriptFileNames = new ArrayList<String>();
-
-	public AlertType alertType;
-	public String alertMessage;
+	
+	public String relatedMenuClass;
+	
+	public LayoutType layoutType;
 	
        
     /**
@@ -34,36 +37,29 @@ public class BootstrapServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
         this.relatedMenuClass = "BootstrapServlet";
-        this.alertType = AlertType.AlertTypeNone;
+        this.layoutType = LayoutType.Default;
     }
     
     public void proceedGet(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.setEnvironmentAttributes(request, response);
-		
-		String alertTypeName = this.alertTypeName();
-		if (this.alertType != AlertType.AlertTypeNone) {
-			request.setAttribute("alertType", alertTypeName);
-			request.setAttribute("alertMessage", this.alertMessage);
-		}
-		this.alertType = AlertType.AlertTypeNone;
-		this.alertMessage = null;
-
 		this.proceedRequest(jspFile, request, response);
     }
     
     public void proceedPost(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.setEnvironmentAttributes(request, response);
 		this.proceedRequest(jspFile, request, response);
     }
 
     public void proceedRequest(String jspFile, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.setEnvironmentAttributes(request, response);
 		
 		if (this.shouldDenyAcces(request)) {
+	    	// Set layout
+			request.setAttribute("layoutType", LayoutType.Default);
 	        this.getServletContext().getRequestDispatcher("/AccessDenied.jsp").forward(request, response);
 		} else {
 	        this.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
 		}
     	
+		this.clearAlertView(request);
     }
     
     public void setEnvironmentAttributes(HttpServletRequest request, HttpServletResponse response) {
@@ -72,6 +68,9 @@ public class BootstrapServlet extends HttpServlet {
 		
     	// Set related menu for the view
 		request.setAttribute("activeMenu", this.relatedMenuClass);
+		
+    	// Set layout
+		request.setAttribute("layoutType", this.layoutType);
 
 		// Add conditional ressources
 		request.setAttribute("javascriptFiles", this.javascriptFileNames);
@@ -82,15 +81,25 @@ public class BootstrapServlet extends HttpServlet {
 		request.setAttribute("userProfilePath", this.getProfilePathForUser(user));
 
 		// Set Module
-		String moduleSlug = this.getModuleSlug(request);
-		if (moduleSlug == null) {
-			moduleSlug = "default-module";
+		Module selectedModule = this.getSelectedModule(request);
+		request.setAttribute("selectedModule", selectedModule);
+		
+		// Set for coordinator
+		if (user != null && user.isCoordinator()) {
+			this.setEnvironmentAttributesForCoordinator(request, response);
 		}
-		request.setAttribute("moduleSlug", moduleSlug);
     }
     
-    private String alertTypeName() {
-    	switch (this.alertType) {
+    public void setEnvironmentAttributesForCoordinator(HttpServletRequest request, HttpServletResponse response) {
+    	
+    	// Set module list
+    	ModuleDAO moduleDAO = new ModuleDAO();
+    	List<Module> modules = moduleDAO.findAll();
+    	request.setAttribute("modules", modules);
+    }
+    
+    private String nameForAlertType(AlertType alertType) {
+    	switch (alertType) {
 	        case AlertTypeDefault:
 	            return "alert-default";
 	        case AlertTypeInfo:
@@ -181,6 +190,45 @@ public class BootstrapServlet extends HttpServlet {
 		return null;
     }
     
+    public Module getSelectedModule(HttpServletRequest request) {
+
+		String moduleSlug = this.getModuleSlug(request);
+
+		HttpSession session = request.getSession();
+		ModuleDAO moduleDAO = new ModuleDAO();
+		Module module = null;
+		
+		// Get from path
+		module = this.getModuleFromRequestPath(request);
+		
+		// If not selectedMenu from path try from session
+		if (module == null) {
+			module = (Module) session.getAttribute("lastSelectedModule");
+		}
+		
+		// If still no selectedMenu, get default
+		if (module == null) {
+			List<Module> modules = moduleDAO.findAll();
+			module = modules.get(0);
+		}
+
+		session.setAttribute("lastSelectedModule", module);
+		return module;
+    }
+    
+    public Module getModuleFromRequestPath(HttpServletRequest request) {
+		String moduleSlug = this.getModuleSlug(request);
+		ModuleDAO moduleDAO = new ModuleDAO();
+		Module module = null;
+		
+		// Get from path
+		if (moduleSlug != null && !moduleSlug.equals("")) {
+			int moduleID = Integer.parseInt(moduleSlug);
+			module = moduleDAO.findByModuleID(moduleID);
+		}
+    	return module;
+    }
+    
     public String getProfilePathForUser(User user) {
     	if (user == null) {
     		return null;
@@ -193,6 +241,21 @@ public class BootstrapServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
     	return (user == null); // deny any access if no user
+    }
+    
+    public void setAlertView(AlertType alertType, String alertMessage, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String alertTypeName = this.nameForAlertType(alertType);
+		if (alertType != null && alertType != AlertType.AlertTypeNone && alertMessage != null) {
+			session.setAttribute("alertType", alertTypeName);
+			session.setAttribute("alertMessage", alertMessage);
+		}
+    }
+    
+    public void clearAlertView(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		session.removeAttribute("alertType");
+		session.removeAttribute("alertMessage");
     }
 
 }

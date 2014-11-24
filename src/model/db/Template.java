@@ -12,11 +12,39 @@ import model.db.DBManager;
 
 
 /**
- * ”√¿¥÷¥––insert update delete”Ôæ‰
+ * for execute insert update delete statements
  *
  */
 public class Template {
-
+	
+	//unused
+	public int importCSV(List<String[]> recordList, String sql, Object... values) throws ClassNotFoundException, SQLException{
+		boolean hasHeaderRecords = false;
+		PreparedStatement psta = null;
+		System.out.println(sql);
+		int row = 0;
+		try{
+			Connection con = DBManager.getConnection();
+			psta = con.prepareStatement(sql);
+			for(int r = 0; r < recordList.size(); r++){
+				String[] records = recordList.get(r);
+				if (r == 0 && hasHeaderRecords){
+					continue;
+				}
+				for (int i = 0; i < values.length; i++) {
+					psta.setObject(i + 1, values[i]);
+				}
+				row = psta.executeUpdate();
+			}
+		}finally{
+			if (psta != null) {
+				psta.close();
+				psta = null;
+			}
+		}
+		return row;
+	}
+	
 	public int update(String sql, Object... values) throws ClassNotFoundException, SQLException {
 		PreparedStatement psta = null;
 		System.out.println(sql);

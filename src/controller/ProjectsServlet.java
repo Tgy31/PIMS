@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +22,7 @@ public class ProjectsServlet extends BootstrapServlet {
         super();
         // TODO Auto-generated constructor stub
         this.relatedMenuClass = "projects";
+        this.layoutType = LayoutType.Grid;
     }
 
 	/**

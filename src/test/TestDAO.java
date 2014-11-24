@@ -1,4 +1,5 @@
 package test;
+import java.io.File;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -6,6 +7,7 @@ import model.dao.CoordinatorDAO;
 import model.dao.CourseDAO;
 import model.dao.FirstInspectionDAO;
 import model.dao.InspectorDAO;
+import model.dao.SlotDAO;
 import model.dao.StudentDAO;
 import model.entity.Coordinator;
 import model.entity.Course;
@@ -16,14 +18,18 @@ import tools.DateConvert;
 
 public class TestDAO {
 
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) throws Exception {
 		TestDAO testDAO = new TestDAO();
-
+		
+		
+		
+		
 //*********Timetable***********		
 
 		
 //*********Slot***********
-		
+//		testDAO.testSlotImportCSV("F:/slot-c.csv");
+//		testDAO.testSlotFind();
 		
 //*********Module***********
 		
@@ -42,16 +48,32 @@ public class TestDAO {
 //		testDAO.testCourseDeleteByID();
 		
 //**********Student**********		
+		testDAO.testStudentImportCSV("F:/student-c.csv");
 //		testDAO.testStudentSave();
 //		testDAO.testStudentLogin();
 //		testDAO.testStudentFindByID();
 //		testDAO.testStudentDeleteByID();
 //		testDAO.testStudentDeleteByName();
+//		testDAO.testStudentFindByModuleName();
 		
 //*********Project-Coordinator******		
 //		testDAO.testCoordinatorSave();
 		
 	}
+	
+	//======Test Slot================
+	public void testSlotImportCSV(String path) throws Exception{
+		
+		SlotDAO slotDAO = new SlotDAO();
+		System.out.print(slotDAO.importCSV(new File(path)));
+		
+	}
+	
+	public void testSlotFind(){
+		SlotDAO slotDAO = new SlotDAO();
+		System.out.print(slotDAO.findByAll());
+	}
+	
 	
 	//======Test Inspector================
 	public void testInspectorFind(){
@@ -119,6 +141,12 @@ public class TestDAO {
 	
 	
 	//========Test Student=================
+	public void testStudentImportCSV(String path) throws Exception{
+		StudentDAO studentDAO = new StudentDAO();
+		System.out.println(studentDAO.importCSV(new File(path)));
+	}
+	
+	
 	public void testStudentSave(){
 		StudentDAO studentDAO = new StudentDAO();
 		Student student = new Student();
@@ -136,6 +164,12 @@ public class TestDAO {
 		StudentDAO studentDAO = new StudentDAO();
 		System.out.println(studentDAO.findByStudentID(10002).getFirst_name());
 	}
+	
+	public void testStudentFindByModuleName(){
+		StudentDAO studentDAO = new StudentDAO();
+		System.out.println(studentDAO.findByModuleName("BSc project", "2014/15"));
+	}
+	
 	
 	public void testStudentDeleteByID(){
 		StudentDAO studentDAO = new StudentDAO();

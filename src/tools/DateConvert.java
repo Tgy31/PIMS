@@ -44,6 +44,13 @@ public class DateConvert {
 		return date;
 	}
 	
+	public static Date ConverFromCSVToDate(String strDate) throws ParseException {
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		Date date = df.parse(strDate);
+		return date;
+	}
+	
+	
 	public static Timestamp StringConvertToTimestamp(String str) throws ParseException{
 		Date date = null;
 		date = dateFormatAll.parse(str);

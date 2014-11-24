@@ -27,6 +27,7 @@ public class StudentsServlet extends BootstrapServlet {
         // TODO Auto-generated constructor stub
         this.relatedMenuClass = "students";
         this.addJavascriptFile("students.js");
+        this.layoutType = LayoutType.Grid;
     }
     
     public Student getStudentBySlug(String studentSlug) {
@@ -46,8 +47,7 @@ public class StudentsServlet extends BootstrapServlet {
 		if (student != null) {
 			this.proceedSingleStudent(student, request, response);
 		} else if (studentSlug != null) {
-			this.alertType = AlertType.AlertTypeDanger;
-			this.alertMessage = "Student not found";
+    		this.setAlertView(AlertType.AlertTypeDanger, "Student not found", request);
 			this.proceedSingleStudentError(request, response);
 		} else {
 			this.proceedStudentList(request, response);

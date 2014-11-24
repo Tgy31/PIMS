@@ -1,5 +1,5 @@
 var showRender = function ( data, type, full, meta ) {
-    return '<a href="./'+data+'/">Show</a>';
+    return '<a href="./'+data+'/">Edit</a>';
 };
 
 $(document).ready( function () {
