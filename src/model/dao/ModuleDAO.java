@@ -1,19 +1,27 @@
 package model.dao;
-import static tools.Enter.ENTER;
+import static tools.Replace.ENTER;
+import static tools.Replace.PATTERN;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 import model.db.Template;
-import model.entity.Course;
 import model.entity.Module;
-import model.mapping.CourseMapping;
 import model.mapping.ModuleMapping;
+
+import org.skife.csv.CSVReader;
+import org.skife.csv.SimpleReader;
+
+import tools.DateConvert;
 
 
 public class ModuleDAO {
 	private Template template = new Template();
+	private CSVReader reader = new SimpleReader();
 	
 	public boolean save(Module module){
 		String sql = "INSERT INTO module"							+ENTER+
@@ -213,6 +221,50 @@ public class ModuleDAO {
 		System.out.println("Find by No operation is failed ");
 		}
 		return modules;
+	}
+	
+	public boolean importCSV(File file) {
+		List<String[]> recordList = null;
+		try {
+			recordList = reader.parse(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Module module = new Module();
+		boolean hasHeaderRecords = true;
+		for (int r = 0; r < recordList.size(); r++) {
+			String[] records = recordList.get(r);
+			if (r == 0 && hasHeaderRecords) {
+				continue;
+			}
+			try {
+				if(records[0].matches(PATTERN)){
+					module.setModule_id(Integer.valueOf(records[0]));
+				}
+				module.setModule_name(records[1]);
+				module.setYear(records[2]);
+				module.setStart_date(DateConvert.ConverFromCSVToDate(records[3]));
+				module.setEnd_date(DateConvert.ConverFromCSVToDate(records[4]));
+				module.setStudents_enrolled(Integer.valueOf(records[5]));
+				module.setInspector_available(Integer.valueOf(records[6]));
+				if(records[7].matches(PATTERN)){
+					module.setDefault_inspector_capacity(Integer.valueOf(records[7]));
+				}
+				module.setFirst_inspection_start_date(DateConvert.ConverFromCSVToDate(records[8]));
+				module.setFirst_inspection_end_date(DateConvert.ConverFromCSVToDate(records[9]));
+				module.setSecond_inspection_start_date(DateConvert.ConverFromCSVToDate(records[10]));
+				module.setSecond_inspection_end_date(DateConvert.ConverFromCSVToDate(records[11]));
+				module.setDisseration_deadline(DateConvert.ConverFromCSVToDate(records[12]));
+				if(records[13].matches(PATTERN)){
+					module.setPc_id(Integer.valueOf(records[13]));
+				}
+			}catch( NumberFormatException e){
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		return save(module);
 	}
 	
 }

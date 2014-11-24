@@ -1,9 +1,14 @@
 package model.dao;
 
-import static tools.Enter.ENTER;
+import static tools.Replace.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.skife.csv.CSVReader;
+import org.skife.csv.SimpleReader;
 
 import model.entity.Inspector;
 import model.db.Template;
@@ -11,6 +16,7 @@ import model.mapping.InspectorMapping;
 
 public class InspectorDAO {
 	private Template template = new Template();
+	private CSVReader reader = new SimpleReader();
 	
 	public boolean save(Inspector inspector){
 		String sql = "INSERT INTO inspector"+ENTER+
@@ -202,6 +208,44 @@ public class InspectorDAO {
 				e.printStackTrace();
 			}
 		return inspectors;
+	}
+	
+	public boolean importCSV(File file) {
+		List<String[]> recordList = null;
+		try {
+			recordList = reader.parse(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Inspector inspector = new Inspector();
+		boolean hasHeaderRecords = true;
+		for (int r = 0; r < recordList.size(); r++) {
+			String[] records = recordList.get(r);
+			if (r == 0 && hasHeaderRecords) {
+				continue;
+			}
+			try {
+				inspector.setUsername(records[0]);
+				inspector.setPassword(records[1]);
+				if(records[2].matches(PATTERN)){
+					inspector.setInspector_id(Integer.valueOf(records[2]));
+				}
+				if(records[7].matches(PATTERN)){
+					inspector.setCapacity(Integer.valueOf(records[7]));
+				}
+				if(records[8].matches(PATTERN)){
+					inspector.setTimetable_id(Integer.valueOf(records[8]));
+				}
+				inspector.setTitle(records[3]);
+				inspector.setFirst_name(records[4]);
+				inspector.setLast_name(records[5]);
+				inspector.setEmail(records[6]);
+				inspector.setKeywords(records[9]);
+			}catch( NumberFormatException e){
+				e.printStackTrace();
+			}
+		}
+		return save(inspector);
 	}
 	
 }

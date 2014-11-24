@@ -1,17 +1,24 @@
 package model.dao;
-import static tools.Enter.ENTER;
+import static tools.Replace.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 
 import model.db.Template;
-import model.entity.Course;
 import model.entity.Slot;
-import model.mapping.CourseMapping;
 import model.mapping.SlotMapping;
+
+import org.skife.csv.CSVReader;
+import org.skife.csv.SimpleReader;
+
+import tools.DateConvert;
 
 public class SlotDAO {
 	private Template template = new Template();
+	private CSVReader reader = new SimpleReader();
 	
 	public boolean save(Slot slot){
 		String sql = "INSERT INTO slot"					+ENTER+
@@ -106,4 +113,33 @@ public class SlotDAO {
 		return slots;
 	}
 	
+	public boolean importCSV(File file) {
+		List<String[]> recordList = null;
+		try {
+			recordList = reader.parse(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Slot slot = new Slot();
+		boolean hasHeaderRecords = true;
+		for (int r = 0; r < recordList.size(); r++) {
+			String[] records = recordList.get(r);
+			if (r == 0 && hasHeaderRecords) {
+				continue;
+			}
+			try {
+				if(records[0].matches(PATTERN)){
+					slot.setSlot_id(Integer.valueOf(records[0]));
+				}
+				slot.setStart_date(DateConvert.ConverFromCSVToDate(records[1]));
+				slot.setEnd_date(DateConvert.ConverFromCSVToDate(records[2]));
+				slot.setAvailbility(Boolean.valueOf(records[3]));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}catch( NumberFormatException e){
+				e.printStackTrace();
+			}
+		}
+		return save(slot);
+	}
 }

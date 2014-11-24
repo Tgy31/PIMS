@@ -1,17 +1,22 @@
 package model.dao;
-import static tools.Enter.ENTER;
+import static tools.Replace.ENTER;
+import static tools.Replace.PATTERN;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 import model.db.Template;
-import model.entity.Course;
 import model.entity.Timetable;
-import model.mapping.CourseMapping;
 import model.mapping.TimetableMapping;
+
+import org.skife.csv.CSVReader;
+import org.skife.csv.SimpleReader;
 
 public class TimetableDAO {
 	private Template template = new Template();
+	private CSVReader reader = new SimpleReader();
 	
 	public boolean save(Timetable timetable){
 		String sql = "INSERT INTO timetable"							+ENTER+
@@ -125,6 +130,34 @@ public class TimetableDAO {
 		System.out.println("Find by No operation is failed ");
 		}
 		return timetables.get(0);
+	}
+	
+	public boolean importCSV(File file) {
+		List<String[]> recordList = null;
+		try {
+			recordList = reader.parse(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Timetable timetable = new Timetable();
+		boolean hasHeaderRecords = true;
+		for (int r = 0; r < recordList.size(); r++) {
+			String[] records = recordList.get(r);
+			if (r == 0 && hasHeaderRecords) {
+				continue;
+			}
+			try {
+				if(records[0].matches(PATTERN)){
+					timetable.setTimetable_id(Integer.valueOf(records[0]));
+				}
+				if(records[1].matches(PATTERN)){
+					timetable.setSlot_id(Integer.valueOf(records[1]));
+				}
+			}catch( NumberFormatException e){
+				e.printStackTrace();
+			}
+		}
+		return save(timetable);
 	}
 	
 }

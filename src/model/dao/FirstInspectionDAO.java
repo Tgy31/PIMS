@@ -1,7 +1,11 @@
 package model.dao;
-import static tools.Enter.ENTER;
+import static tools.Replace.ENTER;
+import static tools.Replace.PATTERN;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -9,9 +13,15 @@ import model.db.Template;
 import model.entity.FirstInspection;
 import model.mapping.FirstInspectionMapping;
 
+import org.skife.csv.CSVReader;
+import org.skife.csv.SimpleReader;
+
+import tools.DateConvert;
+
 public class FirstInspectionDAO {
 	
 	private Template template = new Template();
+	private CSVReader reader = new SimpleReader();
 	
 	public boolean save(FirstInspection firstInspection){
 		String sql = "INSERT INTO first_inspection"							+ENTER+
@@ -187,6 +197,41 @@ public class FirstInspectionDAO {
 		System.out.println("Find by No operation is failed ");
 		}
 		return firstInspection;
+	}
+	
+	public boolean importCSV(File file) {
+		List<String[]> recordList = null;
+		try {
+			recordList = reader.parse(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		FirstInspection firstInspection = new FirstInspection();
+		boolean hasHeaderRecords = true;
+		for (int r = 0; r < recordList.size(); r++) {
+			String[] records = recordList.get(r);
+			if (r == 0 && hasHeaderRecords) {
+				continue;
+			}
+			try {
+				if(records[0].matches(PATTERN)){
+					firstInspection.setStudent_id(Integer.valueOf(records[0]));
+				}
+				if(records[1].matches(PATTERN)){
+					firstInspection.setInspector_id(Integer.valueOf(records[1]));
+				}
+				if(records[2].matches(PATTERN)){
+					firstInspection.setModule_id(Integer.valueOf(records[2]));
+				}
+				firstInspection.setDate(DateConvert.ConverFromCSVToDate(records[3]));
+				firstInspection.setFirst_inspectioncol(records[4]);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		return save(firstInspection);
 	}
 	
 }
