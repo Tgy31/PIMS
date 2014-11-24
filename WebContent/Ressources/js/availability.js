@@ -15,11 +15,11 @@ $(document).ready(function() {
 		slotDuration: '00:30:00',
 		snapDuration: '00:15:00',
 		minTime: '07:00:00',
-		maxTime: '21:00:00',
+		maxTime: '20:00:00',
 		allDaySlot: false,
 		weekends: false,
 		businessHours: {
-		    start: '9:00', // a start time (10am in this example)
+		    start: '9:00', // a start time (9am in this example)
 		    end: '18:00', // an end time (6pm in this example)
 
 		    dow: [ 1, 2, 3, 4, 5 ]
