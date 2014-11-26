@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +11,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import model.dao.InspectorDAO;
 import model.dao.KeywordDAO;
@@ -66,11 +72,29 @@ public class KeywordsServlet extends BootstrapServlet {
 		
 		String userType = request.getParameter("userType");
 		String userID = request.getParameter("userID");
-		String json = request.getParameter("keywords");
-		Map<String, String[]> data = request.getParameterMap();
+		String data = request.getParameter("keywords");
 
 		System.out.println(userType + " - " + userID);
-		System.out.println(json);
+		System.out.println(data);
+		
+		JSONArray json;
+		List<Integer> keywordIDs = new ArrayList<Integer>();
+		try {
+			json = new JSONArray(data);
+			for (int i = 0; i < json.length(); i++) {
+				JSONObject jsonKeyword = json.getJSONObject(i+4);
+				Integer keywordID = jsonKeyword.getInt("id");
+			    keywordIDs.add(keywordID);
+			}
+		} catch (JSONException e) {
+			response.setStatus(500); 
+		    PrintWriter out = response.getWriter();
+		    out.println("error");
+		    out.close();
+			e.printStackTrace();
+		}
+		
+		System.out.println(keywordIDs);
 	}
 	
 	private void doView(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {

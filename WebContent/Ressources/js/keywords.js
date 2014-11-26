@@ -11,6 +11,17 @@ function idOfSelectedKeyword() {
 	return keywordIndex;
 }
 
+function popSuccess(nbKeywords) {
+	var html = '<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>Save successful. You now have <b>' + nbKeywords + '</b> keywords</div>';
+	html = html + $("#alert-zone").html();
+	$("#alert-zone").html(html);
+}
+
+function popError(nbKeywords) {
+	var html = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>An error occurred, your keywords have not been saved !</div>';
+	$("#alert-zone").html(html);
+}
+
 // Overall viewmodel for this screen, along with initial state
 function KeywordViewModel() {
     var self = this;
@@ -91,12 +102,21 @@ function KeywordViewModel() {
     		keywords: JSON.stringify(self.selectedKeywords())
     	};
     	
-    	$.post(url, data, self.HandleSubmitKeywords);
+    	$.post(url, data, self.generateSubmitHandler());
     };
     
-    self.HandleSubmitKeywords = function(data, status) {
-    	console.log(data);
-    	console.log(status);
+    self.generateSubmitHandler = function() {
+    	var nbKeywords = self.selectedKeywords().length;
+    	var submitHandler = function(data, status) {
+        	console.log(data);
+        	console.log(status);
+        	if (status == "success") {
+            	popSuccess(nbKeywords);
+        	} else {
+        		popError(nbKeywords);
+        	}
+        };
+        return submitHandler;
     };
     
     self.fetchKeywords();
