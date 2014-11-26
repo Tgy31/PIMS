@@ -20,6 +20,13 @@
 				<button class="btn btn-default" type="button" data-bind="click: addKeyword, enable: availableKeywords().length > 0">Add keyword</button>
 			</span>
 		</div>
+		<br />
+		<p data-bind="visible: selectedKeywords().length > 0">
+		    You have selected <span data-bind="text: selectedKeywords().length"></span> keywords:
+		</p>
+		<p data-bind="visible: selectedKeywords().length == 0">
+		    <i>Select a keyword and click "Add keyword".</i>
+		</p>
 		
 	</div> <!-- end panel body -->
 	
@@ -27,6 +34,7 @@
 	    <li class="list-group-item">
 	    	<span data-bind="text: name">
 	    	</span>
+	    	<button type="button" class="close" data-bind="click: $root.removeKeyword"><span aria-hidden="true">&times;</span><span class="sr-only">Remove</span></button>
 	    </li>
 	</ul>
 </div>
