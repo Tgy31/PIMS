@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2014-11-26 13:32:59
+Date: 2014-11-26 15:40:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -98,11 +98,12 @@ CREATE TABLE `keyword` (
   `keyword_name` varchar(45) DEFAULT NULL,
   `module_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`keyword_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of keyword
 -- ----------------------------
+INSERT INTO `keyword` VALUES ('1', 'artificial', '26581');
 
 -- ----------------------------
 -- Table structure for module
@@ -211,15 +212,13 @@ CREATE TABLE `student` (
   KEY `module_id` (`module_id`),
   CONSTRAINT `student_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`),
   CONSTRAINT `student_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
 INSERT INTO `student` VALUES ('1', 'Christopher', 'Wright', 'cxw518@student.bham.ac.uk', 'mage Analysis for Angiogenesis', '', null, 'cxw518', '123456', '2', '14', '26587');
 INSERT INTO `student` VALUES ('2', 'Chenxin', 'Zhao', 'cxz413@student.bham.ac.uk', 'Analysing Algorithms', 'Data structure', null, 'cxz413', '123456', '1', '14', '26587');
-INSERT INTO `student` VALUES ('3', null, null, null, null, null, null, 'gd', null, null, null, null);
-INSERT INTO `student` VALUES ('4', null, null, null, null, null, null, 'fgd', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for student_keyword
