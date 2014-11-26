@@ -3,12 +3,12 @@
 
 {
 	"existingKeywords": [
-		<c:forEach items="${ existingKeywords }" var="keyword" varStatus="keywordStatus">
+		<c:forEach items="${ moduleKeywords }" var="keyword" varStatus="keywordStatus">
 			[
-				"${ module.getKeyword_id() }",
-				"${ module.getKeyword_name() }"
+				"${ keyword.getKeyword_id() }",
+				"${ keyword.getKeyword_name() }"
 			]
-			<c:if test="${ keywordStatus.index < existingKeywords.size() - 1 }">
+			<c:if test="${ keywordStatus.index < moduleKeywords.size() - 1 }">
 			,
 			</c:if>
 		</c:forEach>
@@ -16,8 +16,8 @@
 	"selectedKeywords": [
 		<c:forEach items="${ userKeywords }" var="keyword" varStatus="keywordStatus">
 			[
-				"${ module.getKeyword_id() }",
-				"${ module.getKeyword_name() }"
+				"${ keyword.getKeyword_id() }",
+				"${ keyword.getKeyword_name() }"
 			]
 			<c:if test="${ keywordStatus.index < userKeywords.size() - 1 }">
 			,

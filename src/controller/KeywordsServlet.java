@@ -82,12 +82,13 @@ public class KeywordsServlet extends BootstrapServlet {
 		String userType = request.getParameter("type");
 		String userID = request.getParameter("id");
 		
-		User user = this.getUserWithTypeAndID(userType, userID);
+		//User user = this.getUserWithTypeAndID(userType, userID);
 		
 		// existingKeywords && userKeywords
 		KeywordDAO keywordDAO = new KeywordDAO();
-		List<Keyword> moduleKeyword = keywordDAO.findAll();
-		request.setAttribute("moduleKeyword", moduleKeyword);
+		List<Keyword> moduleKeywords = keywordDAO.findAll();
+		request.setAttribute("moduleKeywords", moduleKeywords);
+		System.out.println(moduleKeywords);
 		
         this.layoutType = LayoutType.JSON;
 		this.proceedGet("/KeywordsJSON.jsp", request, response);

@@ -18,6 +18,7 @@ function indexOfSelectedKeyword() {
 function KeywordViewModel() {
     var self = this;
 
+    self.existingKeywords = [];
     // Non-editable catalog data - would come from the server
     self.selectedKeywords = ko.observableArray([]); 
     self.availableKeywords = ko.observableArray([]); 
@@ -55,20 +56,22 @@ function KeywordViewModel() {
 		});
     };
     
-    self.handleFetchKeywords = function(json) {
-
+    self.handleFetchKeywords = function(result) {
+    	var json = JSON.parse(result);
     	console.log(json);
     	
     	json.existingKeywords.forEach(function(keywordInfo) {
     	    console.log(keywordInfo);
-    	    this.existingKeywords.push(new Keyword(keywordInfo[0], keywordInfo[1]));
+    	    self.existingKeywords.push(new Keyword(keywordInfo[0], keywordInfo[1]));
     	});
+    	
+        ko.utils.arrayPushAll(self.availableKeywords, self.existingKeywords);
     	
     	json.selectedKeywords.forEach(function(keywordInfo) {
     	    console.log(keywordInfo);
-    	    var keyword = this.keywoardWithID(keywordInfo[0]);
+    	    var keyword = self.keywoardWithID(keywordInfo[0]);
     	    if (keyword) {
-        	    this.addKeyword(keyword);
+        	    self.addKeyword(keyword);
     	    }
     	});
     };
@@ -86,7 +89,6 @@ function KeywordViewModel() {
     };
     
     self.fetchKeywords();
-    self.loadKeywords();
 }
 
 ko.applyBindings(new KeywordViewModel());
