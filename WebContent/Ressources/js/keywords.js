@@ -1,14 +1,11 @@
 // Class to present and edit keywords
-var totalIndex = 0;
-
 function Keyword(id, name) {
     var self = this;
     self.name = name;
     self.id = id;
-    self.index = totalIndex++;
 }
 
-function indexOfSelectedKeyword() {
+function idOfSelectedKeyword() {
 	var input = document.getElementById("keywordSelect");
 	var keywordIndex = input.options[input.selectedIndex].value;
 	return keywordIndex;
@@ -26,8 +23,8 @@ function KeywordViewModel() {
     // Operations
     self.addKeyword = function() {
     	
-    	var index = indexOfSelectedKeyword();
-    	var keyword = self.existingKeywords[index];
+    	var id = idOfSelectedKeyword();
+    	var keyword = self.keywoardWithID(id);
     	
         self.selectedKeywords.push(keyword);
         self.availableKeywords.remove(keyword);
@@ -81,6 +78,25 @@ function KeywordViewModel() {
         	    self.addKeyword(keyword);
     	    }
     	});
+    };
+    
+    self.submitKeywords = function() {
+
+    	var userType = getParameterByName('type');
+    	var userID = getParameterByName('id');
+    	var url = '/PIMS/keywords/';
+    	var data = {
+    		userType: userType,
+    		userID: userID,
+    		keywords: JSON.stringify(self.selectedKeywords())
+    	};
+    	
+    	$.post(url, data, self.HandleSubmitKeywords);
+    };
+    
+    self.HandleSubmitKeywords = function(data, status) {
+    	console.log(data);
+    	console.log(status);
     };
     
     self.fetchKeywords();

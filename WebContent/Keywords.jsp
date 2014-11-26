@@ -18,7 +18,7 @@
 		<div class="input-group">	
 			<select id="keywordSelect" class="form-control" name="keyword" data-bind="options: availableKeywords,
 																		                        optionsText: 'name',
-																		                        optionsValue: 'index',
+																		                        optionsValue: 'id',
 																		                        enable: availableKeywords().length > 0">
 			</select>
 			<span class="input-group-btn">
@@ -42,6 +42,12 @@
 	    	<button type="button" class="close" data-bind="click: $root.removeKeyword"><span aria-hidden="true">&times;</span><span class="sr-only">Remove</span></button>
 	    </li>
 	</ul>
+</div>
+
+<div class="form-group">
+	<div class="pull-right">
+		<button class="btn btn-primary" data-bind="click: submitKeywords">Save</button>
+	</div>
 </div>
 
 <%@ include file="Footer.jsp" %>

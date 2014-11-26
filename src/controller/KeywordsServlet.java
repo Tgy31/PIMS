@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -62,7 +63,14 @@ public class KeywordsServlet extends BootstrapServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		String userType = request.getParameter("userType");
+		String userID = request.getParameter("userID");
+		String json = request.getParameter("keywords");
+		Map<String, String[]> data = request.getParameterMap();
+
+		System.out.println(userType + " - " + userID);
+		System.out.println(json);
 	}
 	
 	private void doView(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
@@ -103,6 +111,7 @@ public class KeywordsServlet extends BootstrapServlet {
 		
 	
         this.layoutType = LayoutType.JSON;
+        response.setContentType("application/json"); 
 		this.proceedGet("/KeywordsJSON.jsp", request, response);
 	}
 	
