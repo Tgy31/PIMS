@@ -47,7 +47,7 @@
 		    <label class="col-sm-2 control-label">Unavailability</label>
 		    <div class="col-sm-10">
 		      <p class="form-control-static">3 hours</p>
-		      <p><a href="${ rootPath }/availability?type=student&id=${ student.getStudent_id() }">Show</a> | <a href="${ rootPath }/availability?type=student&id=${ student.getStudent_id() }">Edit</a></p>
+		      <p><a href="${ rootPath }availability/?type=student&id=${ student.getStudent_id() }">Show</a> | <a href="${ rootPath }availability?type=student&id=${ student.getStudent_id() }">Edit</a></p>
 		    </div>
 		  </div>
   
