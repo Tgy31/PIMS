@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.dao.InspectorDAO;
 import model.dao.KeywordDAO;
 import model.dao.StudentDAO;
+import model.dao.StudentKeywordDAO;
 import model.entity.*;
 
 /**
@@ -82,13 +83,25 @@ public class KeywordsServlet extends BootstrapServlet {
 		String userType = request.getParameter("type");
 		String userID = request.getParameter("id");
 		
-		//User user = this.getUserWithTypeAndID(userType, userID);
+		User user = this.getUserWithTypeAndID(userType, userID);
 		
 		// existingKeywords && userKeywords
 		KeywordDAO keywordDAO = new KeywordDAO();
 		List<Keyword> moduleKeywords = keywordDAO.findAll();
 		request.setAttribute("moduleKeywords", moduleKeywords);
 		
+		System.out.println(userType);
+		switch (userType) {
+			case "student": {
+				Student student = (Student)user;
+				StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
+				List<Keyword> userKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
+				request.setAttribute("userKeywords", userKeywords);
+				break;
+			}
+		}
+		
+	
         this.layoutType = LayoutType.JSON;
 		this.proceedGet("/KeywordsJSON.jsp", request, response);
 	}

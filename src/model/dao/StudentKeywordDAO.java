@@ -6,8 +6,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 import model.db.Template;
+import model.entity.Keyword;
 import model.entity.StudentKeyword;
 import model.mapping.StudentKeywordMapping;
+import model.mapping.StudentMapping;
 
 public class StudentKeywordDAO {
 	private Template template = new Template();
@@ -84,13 +86,13 @@ public class StudentKeywordDAO {
 		return false;
 	}
 	
-	public StudentKeyword findByStudentID(int ID){
+	public List<Keyword> findByStudentID(int ID){
 		String sql = "SELECT  * " + 
-							"FROM student_keyword " + 
-							"WHERE student_id= " + "'" + ID + "'";
-		List<StudentKeyword> StudentKeywords = null;
+					"FROM student_keyword sk, keyword k" + 
+					"WHERE sk.keyword_id = k.keyword_id AND sk.student_id = " + ID;
+		List<Keyword> studentKeywords = null;
 		try {
-			StudentKeywords = template.query(sql, new StudentKeywordMapping());
+			studentKeywords = template.query(sql, new StudentMapping());
 		} catch (ClassNotFoundException e) {
 		e.printStackTrace();
 		System.out.println("Class not found !");
@@ -98,7 +100,7 @@ public class StudentKeywordDAO {
 		e.printStackTrace();
 		System.out.println("Find by No operation is failed ");
 		}
-		return StudentKeywords.get(0);
+		return studentKeywords;
 	}
 	
 	public StudentKeyword findByKeywordID(int ID){
