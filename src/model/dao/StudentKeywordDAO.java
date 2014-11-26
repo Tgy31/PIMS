@@ -3,6 +3,7 @@ package model.dao;
 import static tools.Replace.ENTER;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.db.Template;
@@ -154,5 +155,24 @@ public class StudentKeywordDAO {
 		return StudentKeywords;
 	}
 	
+	public boolean setKeywordsforStudents(ArrayList<Integer> keywordsID, int studentID){
+		boolean success = false; 
+		String sql = "INSERT INTO student_keyword"		+ENTER+
+				"			 (keyword_id, " 	+
+				"			 student_id)" 				+ENTER+
+				"values"							 	+ENTER+
+				"			(?,?)";
+		for (Integer keywordID : keywordsID) {
+			try {
+				template.update(sql, keywordID, studentID);
+				success=true;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return success;
+	}
 	
 }
