@@ -71,7 +71,7 @@ public class TestDAO {
 	
 	public void testSlotFind(){
 		SlotDAO slotDAO = new SlotDAO();
-		System.out.print(slotDAO.findByAll());
+		System.out.print(slotDAO.findAll());
 	}
 	
 	

@@ -6,23 +6,23 @@ import java.sql.SQLException;
 import java.util.List;
 
 import model.db.Template;
-import model.entity.Keyword;
-import model.mapping.KeywordMapping;
+import model.entity.StudentKeyword;
+import model.mapping.StudentKeywordMapping;
 
-public class KeywordDAO {	
+public class StudentKeywordDAO {
 	private Template template = new Template();
 	
-	public boolean save(Keyword keyword){
-		String sql = "INSERT INTO keyword"			+ENTER+
-							"			(keyword_id, " +
-							"			 keyword_name, " 	+
-							"			 module_id)" 				+ENTER+
+	public boolean save(StudentKeyword studentKeyword){
+		String sql = "INSERT INTO student_keyword"			+ENTER+
+							"			(student_keyword_id, " +
+							"			 keyword_id, " 	+
+							"			 student_id)" 				+ENTER+
 							"values"							 		+ENTER+
 							"			(?,?,?)";
 		try {
-			return (template.update(sql, keyword.getKeyword_id(),
-													 keyword.getKeyword_name(),
-													 keyword.getModule_id()) == 1);
+			return (template.update(sql, studentKeyword.getStudent_keyword_id(),
+													studentKeyword.getKeyword_id(),
+													studentKeyword.getStudent_id()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("Class not found !");
@@ -33,17 +33,17 @@ public class KeywordDAO {
 		return false;
 	}
 	
-	public boolean update(Keyword keyword){
-		String sql = "update keyword"								+ENTER+
+	public boolean update(StudentKeyword studentKeyword){
+		String sql = "update student_keyword"					+ENTER+
 							"set"												+ENTER+
-							"			 keyword_name= ?, "+
-							"			 module_id= ?"					+ENTER+
+							"			 keyword_id= ?, "+
+							"			 student_id= ?"					+ENTER+
 							"where"											+ENTER+
-							"			keyword_id = ?";
+							"			student_keyword_id = ?";
 		try {
-			return (template.update(sql, keyword.getKeyword_name(),
-				 									 keyword.getModule_id(),
-				 									 keyword.getKeyword_id()) == 1);
+			return (template.update(sql, studentKeyword.getKeyword_id(),
+													studentKeyword.getStudent_id(),
+													studentKeyword.getStudent_keyword_id()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("Class not found !");
@@ -54,8 +54,8 @@ public class KeywordDAO {
 		return false;
 	}
 	
-	public boolean deleteByKeywordD(int ID){
-		String sql = "delete from keyword where keyword_id = '"+ID+"'";
+	public boolean deleteByStudentKeywordD(int ID){
+		String sql = "delete from student_keyword where student_keyword_id = '"+ID+"'";
 		try {
 			return (template.update(sql) == 1);
 		} catch (ClassNotFoundException e) {
@@ -68,13 +68,13 @@ public class KeywordDAO {
 		return false;
 	}
 	
-	public Keyword findByKeywordID(int ID){
+	public StudentKeyword findByStudentKeywordID(int ID){
 		String sql = "SELECT  * " + 
-							"FROM keyword " + 
-							"WHERE keyword_id= " + "'" + ID + "'";
-		List<Keyword> keywords = null;
+							"FROM student_keyword " + 
+							"WHERE student_keyword_id= " + "'" + ID + "'";
+		List<StudentKeyword> StudentKeywords = null;
 		try {
-			keywords = template.query(sql, new KeywordMapping());
+			StudentKeywords = template.query(sql, new StudentKeywordMapping());
 		} catch (ClassNotFoundException e) {
 		e.printStackTrace();
 		System.out.println("Class not found !");
@@ -82,15 +82,15 @@ public class KeywordDAO {
 		e.printStackTrace();
 		System.out.println("Find by No operation is failed ");
 		}
-		return keywords.get(0);
+		return StudentKeywords.get(0);
 	}
 	
-	public List<Keyword> findAll(){
+	public List<StudentKeyword> findAll(){
 		String sql = "SELECT  * " + 
-							"FROM keyword ";
-		List<Keyword> keywords = null;
+							"FROM student_keyword ";
+		List<StudentKeyword> StudentKeywords = null;
 		try {
-			keywords = template.query(sql, new KeywordMapping());
+			StudentKeywords = template.query(sql, new StudentKeywordMapping());
 		} catch (ClassNotFoundException e) {
 		e.printStackTrace();
 		System.out.println("Class not found !");
@@ -98,9 +98,8 @@ public class KeywordDAO {
 		e.printStackTrace();
 		System.out.println("Find by No operation is failed ");
 		}
-		return keywords;
+		return StudentKeywords;
 	}
 	
-	//importCSV ?
 	
 }
