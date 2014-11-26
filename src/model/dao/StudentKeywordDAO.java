@@ -155,14 +155,20 @@ public class StudentKeywordDAO {
 		return StudentKeywords;
 	}
 	
-	public boolean setKeywordsforStudents(ArrayList<Integer> keywordsID, int studentID){
+	public boolean setKeywordsforStudent(List<Integer> keywordIDs, int studentID) {
+		boolean deleteStatus = this.deleteByStudentID(studentID);
+		boolean addStatus = this.addKeywordsforStudent(keywordIDs, studentID);	
+		return deleteStatus && addStatus;
+	}
+	
+	public boolean addKeywordsforStudent(List<Integer> keywordIDs, int studentID){
 		boolean success = false; 
 		String sql = "INSERT INTO student_keyword"		+ENTER+
 				"			 (keyword_id, " 	+
 				"			 student_id)" 				+ENTER+
 				"values"							 	+ENTER+
 				"			(?,?)";
-		for (Integer keywordID : keywordsID) {
+		for (Integer keywordID : keywordIDs) {
 			try {
 				template.update(sql, keywordID, studentID);
 				success=true;

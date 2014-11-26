@@ -71,7 +71,7 @@ public class KeywordsServlet extends BootstrapServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String userType = request.getParameter("userType");
-		String userID = request.getParameter("userID");
+		int userID = Integer.parseInt(request.getParameter("userID"));
 		String data = request.getParameter("keywords");
 
 		System.out.println(userType + " - " + userID);
@@ -82,7 +82,7 @@ public class KeywordsServlet extends BootstrapServlet {
 		try {
 			json = new JSONArray(data);
 			for (int i = 0; i < json.length(); i++) {
-				JSONObject jsonKeyword = json.getJSONObject(i+4);
+				JSONObject jsonKeyword = json.getJSONObject(i);
 				Integer keywordID = jsonKeyword.getInt("id");
 			    keywordIDs.add(keywordID);
 			}
@@ -95,6 +95,9 @@ public class KeywordsServlet extends BootstrapServlet {
 		}
 		
 		System.out.println(keywordIDs);
+		
+		StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
+		boolean status = studentKeywordDAO.setKeywordsforStudent(keywordIDs, userID);
 	}
 	
 	private void doView(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
