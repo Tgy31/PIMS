@@ -50,7 +50,7 @@ function KeywordViewModel() {
     self.fetchKeywords = function() {
 		$.ajax({
 			url: '/PIMS/keywords/?type=student&id=1488913&content=json',
-			success: this.loadKeywords,
+			success: this.handleFetchKeywords,
 			error: null
 		});
     };
