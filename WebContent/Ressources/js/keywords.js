@@ -58,15 +58,20 @@ function KeywordViewModel() {
     
     self.handleFetchKeywords = function(result) {
     	var json = JSON.parse(result);
-    	console.log(json);
     	
+    	
+    	// read exisiting keywords
     	json.existingKeywords.forEach(function(keywordInfo) {
     	    console.log(keywordInfo);
     	    self.existingKeywords.push(new Keyword(keywordInfo[0], keywordInfo[1]));
     	});
     	
+    	// Reset arrays
+    	self.availableKeywords.removeAll();
+    	self.selectedKeywords.removeAll();
         ko.utils.arrayPushAll(self.availableKeywords, self.existingKeywords);
     	
+        // find selected keywords
     	json.selectedKeywords.forEach(function(keywordInfo) {
     	    console.log(keywordInfo);
     	    var keyword = self.keywoardWithID(keywordInfo[0]);
@@ -74,18 +79,6 @@ function KeywordViewModel() {
         	    self.addKeyword(keyword);
     	    }
     	});
-    };
-
-    self.loadKeywords = function() {
-        if (typeof moduleKeywords != 'undefined') {
-        	self.existingKeywords = moduleKeywords;
-        } else {
-        	self.existingKeywords = [];
-        }
-        self.existingKeywords.push(new Keyword(456, "Mobile"));
-        self.existingKeywords.push(new Keyword(456, "Desktop"));
-        self.existingKeywords.push(new Keyword(456, "Web"));
-        ko.utils.arrayPushAll(self.availableKeywords, self.existingKeywords);
     };
     
     self.fetchKeywords();
