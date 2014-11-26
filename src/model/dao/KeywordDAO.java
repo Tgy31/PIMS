@@ -54,8 +54,22 @@ public class KeywordDAO {
 		return false;
 	}
 	
-	public boolean deleteByKeywordD(int ID){
+	public boolean deleteByKeywordID(int ID){
 		String sql = "delete from keyword where keyword_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean deleteByKeywordName(String name){
+		String sql = "delete from keyword where keyword_name = '"+name+"'";
 		try {
 			return (template.update(sql) == 1);
 		} catch (ClassNotFoundException e) {
@@ -71,7 +85,24 @@ public class KeywordDAO {
 	public Keyword findByKeywordID(int ID){
 		String sql = "SELECT  * " + 
 							"FROM keyword " + 
-							"WHERE keyword_id= " + "'" + ID + "'";
+							"WHERE keyword_name= " + "'" + ID + "'";
+		List<Keyword> keywords = null;
+		try {
+			keywords = template.query(sql, new KeywordMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return keywords.get(0);
+	}
+	
+	public Keyword findByKeywordName(String name){
+		String sql = "SELECT  * " + 
+							"FROM keyword " + 
+							"WHERE keyword_id= " + "'" + name + "'";
 		List<Keyword> keywords = null;
 		try {
 			keywords = template.query(sql, new KeywordMapping());

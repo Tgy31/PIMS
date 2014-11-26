@@ -54,7 +54,23 @@ public class StudentKeywordDAO {
 		return false;
 	}
 	
-	public boolean deleteByStudentKeywordD(int ID){
+
+	
+	public boolean deleteByStudentID(int ID){
+		String sql = "delete from student_keyword where student_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean deleteByStudentKeywordID(int ID){
 		String sql = "delete from student_keyword where student_keyword_id = '"+ID+"'";
 		try {
 			return (template.update(sql) == 1);
@@ -66,6 +82,40 @@ public class StudentKeywordDAO {
 			System.out.println("Delete opertaion failed !");
 		}
 		return false;
+	}
+	
+	public StudentKeyword findByStudentID(int ID){
+		String sql = "SELECT  * " + 
+							"FROM student_keyword " + 
+							"WHERE student_id= " + "'" + ID + "'";
+		List<StudentKeyword> StudentKeywords = null;
+		try {
+			StudentKeywords = template.query(sql, new StudentKeywordMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return StudentKeywords.get(0);
+	}
+	
+	public StudentKeyword findByKeywordID(int ID){
+		String sql = "SELECT  * " + 
+							"FROM student_keyword " + 
+							"WHERE keyword_id= " + "'" + ID + "'";
+		List<StudentKeyword> StudentKeywords = null;
+		try {
+			StudentKeywords = template.query(sql, new StudentKeywordMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return StudentKeywords.get(0);
 	}
 	
 	public StudentKeyword findByStudentKeywordID(int ID){
