@@ -97,7 +97,7 @@ public class SlotDAO {
 		return slots.get(0);
 	}
 	
-	public List<Slot> findByAll(){
+	public List<Slot> findAll(){
 		String sql = "SELECT  * " + 
 							"FROM slot ";
 		List<Slot> slots = null;
