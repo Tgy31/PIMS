@@ -5,6 +5,10 @@
 
 <%@ include file="Header.jsp" %>
 
+<script>
+	var moduleKeywords = [];
+</script>
+
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title">Keywords for ${ user.getFirst_name() }</h3>
@@ -14,7 +18,8 @@
 		<div class="input-group">	
 			<select id="keywordSelect" class="form-control" name="keyword" data-bind="options: availableKeywords,
 																		                        optionsText: 'name',
-																		                        optionsValue: 'index'">
+																		                        optionsValue: 'index',
+																		                        enable: availableKeywords().length > 0">
 			</select>
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="button" data-bind="click: addKeyword, enable: availableKeywords().length > 0">Add keyword</button>
