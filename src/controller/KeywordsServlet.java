@@ -24,7 +24,6 @@ public class KeywordsServlet extends BootstrapServlet {
      */
     public KeywordsServlet() {
         super();
-        this.layoutType = LayoutType.Grid;
         
         this.addJavascriptFile("knockout-3.2.0.js");
         this.addJavascriptFile("keywords.js");
@@ -35,13 +34,25 @@ public class KeywordsServlet extends BootstrapServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String userType = request.getParameter("type");
-		String userID = request.getParameter("id");
+		String contentType = request.getParameter("content");
+		if (contentType == null) {
+			contentType = "";
+		}
 		
-		User user = this.getUserWithTypeAndID(userType, userID);
-		request.setAttribute("user", user);
-
-		this.proceedGet("/Keywords.jsp", request, response);
+		switch (contentType) {
+			case "json": {
+				this.doJSON(request, response);
+				break;
+			}
+			case "view": {
+				this.doView(request, response);
+				break;
+			}
+			
+			default: {
+				this.doView(request, response);
+			}
+		}
 	}
 
 	/**
@@ -49,6 +60,32 @@ public class KeywordsServlet extends BootstrapServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+	}
+	
+	private void doView(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+		
+		String userType = request.getParameter("type");
+		String userID = request.getParameter("id");
+		
+		User user = this.getUserWithTypeAndID(userType, userID);
+		request.setAttribute("user", user);
+
+        this.layoutType = LayoutType.Grid;
+		this.proceedGet("/Keywords.jsp", request, response);
+		
+	}
+	
+	private void doJSON(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+
+		String userType = request.getParameter("type");
+		String userID = request.getParameter("id");
+		
+		User user = this.getUserWithTypeAndID(userType, userID);
+		
+		// existingKeywords && userKeywords
+
+        this.layoutType = LayoutType.JSON;
+		this.proceedGet("/KeywordsJSON.jsp", request, response);
 	}
 	
 	private User getUserWithTypeAndID(String userType, String userID) {
