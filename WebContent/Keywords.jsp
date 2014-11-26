@@ -11,8 +11,19 @@
 	</div>
 	<div class="panel-body">
 	
-	</div>
-	<ul class="list-group" data-bind="foreach: seats">
+		<div class="input-group">	
+			<select id="keywordSelect" class="form-control" name="keyword" data-bind="options: availableKeywords,
+																		                        optionsText: 'name',
+																		                        optionsValue: 'index'">
+			</select>
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" data-bind="click: addKeyword, enable: availableKeywords().length > 0">Add keyword</button>
+			</span>
+		</div>
+		
+	</div> <!-- end panel body -->
+	
+	<ul class="list-group" data-bind="foreach: selectedKeywords">
 	    <li class="list-group-item">
 	    	<span data-bind="text: name">
 	    	</span>
