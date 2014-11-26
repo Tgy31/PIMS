@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.dao.InspectorDAO;
+import model.dao.KeywordDAO;
 import model.dao.StudentDAO;
-import model.entity.User;
+import model.entity.*;
 
 /**
  * Servlet implementation class KeywordsServlet
@@ -83,7 +85,10 @@ public class KeywordsServlet extends BootstrapServlet {
 		User user = this.getUserWithTypeAndID(userType, userID);
 		
 		// existingKeywords && userKeywords
-
+		KeywordDAO keywordDAO = new KeywordDAO();
+		List<Keyword> moduleKeyword = keywordDAO.findAll();
+		request.setAttribute("moduleKeyword", moduleKeyword);
+		
         this.layoutType = LayoutType.JSON;
 		this.proceedGet("/KeywordsJSON.jsp", request, response);
 	}

@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 {
-	"existngKeywords": [
+	"existingKeywords": [
 		<c:forEach items="${ existingKeywords }" var="keyword" varStatus="keywordStatus">
 			[
 				"${ module.getKeyword_id() }",
