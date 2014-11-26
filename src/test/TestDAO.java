@@ -1,6 +1,7 @@
 package test;
 import java.io.File;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import model.dao.CoordinatorDAO;
@@ -9,6 +10,7 @@ import model.dao.FirstInspectionDAO;
 import model.dao.InspectorDAO;
 import model.dao.SlotDAO;
 import model.dao.StudentDAO;
+import model.dao.StudentKeywordDAO;
 import model.entity.Coordinator;
 import model.entity.Course;
 import model.entity.FirstInspection;
@@ -20,6 +22,7 @@ public class TestDAO {
 
 	public static void main(String[] args) throws Exception {
 		TestDAO testDAO = new TestDAO();
+		testDAO.testStudentKeywordSetKeywordforStudents();
 		
 		
 		
@@ -48,7 +51,7 @@ public class TestDAO {
 //		testDAO.testCourseDeleteByID();
 		
 //**********Student**********		
-		testDAO.testStudentImportCSV("F:/student-c.csv");
+//		testDAO.testStudentImportCSV("F:/student-c.csv");
 //		testDAO.testStudentSave();
 //		testDAO.testStudentLogin();
 //		testDAO.testStudentFindByID();
@@ -60,6 +63,19 @@ public class TestDAO {
 //		testDAO.testCoordinatorSave();
 		
 	}
+	
+	//======Test Student keyword=====
+	public void testStudentKeywordSetKeywordforStudents(){
+		StudentKeywordDAO studentKeywordDAO=new StudentKeywordDAO();
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		System.out.println(studentKeywordDAO.setKeywordsforStudents(list, 3));
+		
+	}
+	
+	
 	
 	//======Test Slot================
 	public void testSlotImportCSV(String path) throws Exception{
