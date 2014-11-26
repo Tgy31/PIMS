@@ -49,8 +49,11 @@ function KeywordViewModel() {
     };
     
     self.fetchKeywords = function() {
+    	var userType = getParameterByName('type');
+    	var userID = getParameterByName('id');
+    	var contentType = 'json';
 		$.ajax({
-			url: '/PIMS/keywords/?type=student&id=1488913&content=json',
+			url: '/PIMS/keywords/?type=' + userType + '&id=' + userID +'&content='+ contentType,
 			success: this.handleFetchKeywords,
 			error: null
 		});
@@ -73,7 +76,6 @@ function KeywordViewModel() {
     	
         // find selected keywords
     	json.selectedKeywords.forEach(function(keywordInfo) {
-    	    console.log(keywordInfo);
     	    var keyword = self.keywoardWithID(keywordInfo[0]);
     	    if (keyword) {
         	    self.addKeyword(keyword);

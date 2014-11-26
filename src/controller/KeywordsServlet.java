@@ -88,7 +88,6 @@ public class KeywordsServlet extends BootstrapServlet {
 		KeywordDAO keywordDAO = new KeywordDAO();
 		List<Keyword> moduleKeywords = keywordDAO.findAll();
 		request.setAttribute("moduleKeywords", moduleKeywords);
-		System.out.println(moduleKeywords);
 		
         this.layoutType = LayoutType.JSON;
 		this.proceedGet("/KeywordsJSON.jsp", request, response);
