@@ -23,6 +23,7 @@ public class StudentDAO {
 							"			 first_name, "+
 							"			 last_name, "+
 							"			 email, " 		+
+							"			 project_id, " +
 							"			 project_title, " +
 							"			 project_description, " +
 							"			 supervisor, "+
@@ -32,12 +33,13 @@ public class StudentDAO {
 							"			 course_id, "+	
 							"			 module_id)"		 +ENTER+
 							"values"							 +ENTER+
-							"			(?,?,?,?,?,?,?,?,?,?,?,?)";
+							"			(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		try {
 			return (template.update(sql, student.getStudent_id(), 
 													student.getFirst_name(),
 													student.getLast_name(),
 													student.getEmail(),
+													student.getProject_id(),
 													student.getProject_title(),
 													student.getProject_description(),
 													student.getSupervisor(),
@@ -63,6 +65,7 @@ public class StudentDAO {
 							"			 first_name= ?, "+
 							"			 last_name= ?, "+
 							"			 email= ?, " 		+
+							"			 project_id= ?, " +
 							"			 project_title= ?, " +
 							"			 project_description= ?, " +
 							"			 supervisor= ?, "+
@@ -77,6 +80,7 @@ public class StudentDAO {
 			return (template.update(sql, student.getFirst_name(),
 															student.getLast_name(),
 															student.getEmail(),
+															student.getProject_id(),
 															student.getProject_title(),
 															student.getProject_description(),
 															student.getSupervisor(),
@@ -163,6 +167,22 @@ public class StudentDAO {
 		return student;
 	}
 	
+	public Student findByProjectID(int ID){
+		String sql = "SELECT  * " + 
+							"FROM student " + 
+							"WHERE project_id= " + "'" + ID + "'";
+		List<Student> students = null;
+		try {
+			students = template.query(sql, new StudentMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return students.get(0);
+	}
 	
 	public Student findBySupervisor(String ID){
 		String sql = "SELECT  * " + 
@@ -278,6 +298,9 @@ public class StudentDAO {
 				student.setFirst_name(records[1]);
 				student.setLast_name(records[2]);
 				student.setEmail(records[3]);
+				if(records[4].matches(PATTERN)){
+					student.setProject_id(Integer.valueOf(records[4]));
+				}
 				student.setProject_title(records[5]);
 				student.setProject_description(records[6]);
 				student.setSupervisor(records[7]);

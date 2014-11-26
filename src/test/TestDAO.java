@@ -151,6 +151,7 @@ public class TestDAO {
 		StudentDAO studentDAO = new StudentDAO();
 		Student student = new Student();
 		student.setStudent_id(2014001);
+		student.setProject_id(2000001);
 		student.setUsername("jane2");
 		student.setPassword("jane");
 		student.setFirst_name("C");

@@ -13,6 +13,7 @@ public class StudentMapping implements IEntityMapping{
 		student.setFirst_name(rs.getString("first_name"));
 		student.setLast_name(rs.getString("last_name"));
 		student.setEmail(rs.getString("email"));
+		student.setProject_id(rs.getInt("project_id"));
 		student.setProject_title(rs.getString("project_title"));
 		student.setProject_description(rs.getString("project_description"));
 		student.setSupervisor(rs.getString("supervisor"));
