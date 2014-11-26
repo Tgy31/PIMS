@@ -31,24 +31,49 @@ function KeywordViewModel() {
         self.selectedKeywords.push(keyword);
         self.availableKeywords.remove(keyword);
     };
+    
     self.removeKeyword = function(keyword) { 
         self.availableKeywords.push(keyword);
         self.selectedKeywords.remove(keyword);
     };
     
+    self.keywoardWithID = function(keywordID) {
+    	var keyword = null;
+    	this.existingKeywords.forEach(function(keywordIte) {
+    	    if (keywordIte.id == keywordID) {
+    	    	keyword = keywordIte;
+    	    }
+    	});
+    	return keyword;
+    };
+    
     self.fetchKeywords = function() {
 		$.ajax({
-			url: '/PIMS/keywords/?type=student&id=1488913&content=json'
-		}).done(function() {
-			console.log( "success" );
-		}).fail(function() {
-		    alert( "error" );
+			url: '/PIMS/keywords/?type=student&id=1488913&content=json',
+			success: this.loadKeywords,
+			error: null
 		});
     };
     
+    self.handleFetchKeywords = function(json) {
+
+    	console.log(json);
+    	
+    	json.existingKeywords.forEach(function(keywordInfo) {
+    	    console.log(keywordInfo);
+    	    this.existingKeywords.push(new Keyword(keywordInfo[0], keywordInfo[1]));
+    	});
+    	
+    	json.selectedKeywords.forEach(function(keywordInfo) {
+    	    console.log(keywordInfo);
+    	    var keyword = this.keywoardWithID(keywordInfo[0]);
+    	    if (keyword) {
+        	    this.addKeyword(keyword);
+    	    }
+    	});
+    };
+
     self.loadKeywords = function() {
-
-
         if (typeof moduleKeywords != 'undefined') {
         	self.existingKeywords = moduleKeywords;
         } else {
