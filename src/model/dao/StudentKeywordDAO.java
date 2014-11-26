@@ -8,6 +8,7 @@ import java.util.List;
 import model.db.Template;
 import model.entity.Keyword;
 import model.entity.StudentKeyword;
+import model.mapping.KeywordMapping;
 import model.mapping.StudentKeywordMapping;
 import model.mapping.StudentMapping;
 
@@ -88,11 +89,11 @@ public class StudentKeywordDAO {
 	
 	public List<Keyword> findByStudentID(int ID){
 		String sql = "SELECT  * " + 
-					"FROM student_keyword sk, keyword k" + 
+					"FROM student_keyword sk, keyword k " + 
 					"WHERE sk.keyword_id = k.keyword_id AND sk.student_id = " + ID;
 		List<Keyword> studentKeywords = null;
 		try {
-			studentKeywords = template.query(sql, new StudentMapping());
+			studentKeywords = template.query(sql, new KeywordMapping());
 		} catch (ClassNotFoundException e) {
 		e.printStackTrace();
 		System.out.println("Class not found !");
