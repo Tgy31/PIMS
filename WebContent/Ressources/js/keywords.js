@@ -35,6 +35,17 @@ function KeywordViewModel() {
         self.availableKeywords.push(keyword);
         self.selectedKeywords.remove(keyword);
     };
+    
+    self.fetchKeywords = function() {
+		$.ajax({
+			url: '/PIMS/keywords/?type=student&id=1488913&content=json'
+		}).done(function() {
+			console.log( "success" );
+		}).fail(function() {
+		    alert( "error" );
+		});
+    };
+    
     self.loadKeywords = function() {
 
 
@@ -49,6 +60,7 @@ function KeywordViewModel() {
         ko.utils.arrayPushAll(self.availableKeywords, self.existingKeywords);
     };
     
+    self.fetchKeywords();
     self.loadKeywords();
 }
 
