@@ -1,19 +1,35 @@
 // Class to present and edit available slots
 var staticIndex = 1;
-function Slot(id, title, start, end) {
+function Slot(id, title, start, end, color, rendering, constraint, overlap) {
     var self = this;
     self.id = id;
     self.index = staticIndex++;
     self.start = moment(start);
     self.end = moment(end);
     self.title = title;
+    self.color = color;
+    self.rendering = rendering;
+    self.constraint = constraint;
+    self.overlap = overlap;
     
     self.formattedStart = function() {
-    	return self.start;
+    	return self.start.format('lll');
     };
     
     self.formattedEnd = function() {
-    	return self.end;
+    	return self.end.format('lll');
+    };
+    
+    self.toJSON = function() {
+    	return {
+    		start: self.start.format(),
+    		end: self.end.format(),
+    		title: self.title,
+    		color: self.color,
+    		rendering: self.rendering,
+    		constraint: self.constraint,
+    		overlap: self.overlap
+    	};
     };
 }
 
@@ -100,7 +116,7 @@ function AvailabilityViewModel() {
     self.addSlotsFromJSON = function(json) {
     	var tempSlots = [];
     	json.forEach(function(slotData) {
-    		var newSlot = new Slot(0, slotData.title, slotData.start, slotData.end);
+    		var newSlot = new Slot(0, slotData.title, slotData.start, slotData.end, slotData.color, slotData.rendering, slotData.constraint, slotData.overlap);
     		tempSlots.push(newSlot);
     	});
     	self.slots(tempSlots);
@@ -186,7 +202,14 @@ function AvailabilityViewModel() {
     // Link knockout and fullcalendar    
     self.getSlots = function(start, end, timezone, callback) {
     	console.log('slots requested');
-    	callback(self.slots());
+    	var slots = [];
+    	var i = 0;
+    	self.slots().forEach(function(slot) {
+    		slots[i++] = slot.toJSON();
+    	});
+
+    	console.log(slots);
+    	callback(slots);
     };
     
     self.setCalendarNeedUpdate = function() {

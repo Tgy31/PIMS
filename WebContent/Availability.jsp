@@ -16,17 +16,6 @@
 
 		<div id="calendar"></div>
 		<br />
-	
-		<div class="progress">
-			<div class="progress-bar progress-bar-warning" role="progressbar" style="width: 60%;">
-				60%
-			</div>
-		</div>
-		
-		<div class="form-group">
-				<button class="btn btn-primary" data-bind="click: addSlot">Add unavailable slot</button>
-				<button class="btn btn-danger" data-bind="click: removeAllSlots">Remove all</button>
-		</div>
 		
 		<br />
 		<p data-bind="visible: slots().length > 0">
@@ -35,6 +24,12 @@
 		<p data-bind="visible: slots().length == 0">
 		    <i>Select a keyword and click "Add keyword".</i>
 		</p>
+	
+		<div class="progress">
+			<div class="progress-bar progress-bar-warning" role="progressbar" style="width: 60%;">
+				60%
+			</div>
+		</div>
 		
 	</div> <!-- end panel body -->
 	
@@ -60,13 +55,14 @@
 	</table>
 </div>
 
+		
 <div class="form-group">
+		<button class="btn btn-success" data-bind="click: addSlot">Add unavailable slot</button>
+		<button class="btn btn-danger" data-bind="click: removeAllSlots">Remove all</button>
 	<div class="pull-right">
 		<button class="btn btn-primary" data-bind="click: submitSlots">Save</button>
 	</div>
 </div>
-<br />
-<br />
 <br />
 
 <%@ include file="Footer.jsp" %>

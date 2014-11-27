@@ -7,15 +7,16 @@ $(document).ready(function() {
 	$('#calendar').fullCalendar({
 		header: {
 			left: '',
-			center: 'title',
+			center: '',
 			right: ''
 		},
+		height: 542,
 		defaultView: 'agendaWeek',
 		defaultDate: '2014-11-12',
 		slotDuration: '00:30:00',
 		snapDuration: '00:15:00',
-		minTime: '07:00:00',
-		maxTime: '20:00:00',
+		minTime: '08:00:00',
+		maxTime: '19:00:00',
 		allDaySlot: false,
 		weekends: false,
 		businessHours: {
