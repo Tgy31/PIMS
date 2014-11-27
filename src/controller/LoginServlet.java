@@ -45,7 +45,7 @@ public class LoginServlet extends BootstrapServlet {
 		ModuleDAO moduleDAO = new ModuleDAO();
 		List<Module> modules = moduleDAO.findAll();
 		request.setAttribute("modules", modules);
-		
+		//System.out.println(modules.toString());
 		this.proceedGet("/Login.jsp", request, response);
 	}
 

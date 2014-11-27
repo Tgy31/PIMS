@@ -76,7 +76,7 @@
 		    <label class="col-sm-2 control-label">Keywords</label>
 		    <div class="col-sm-10">
 		      <p class="form-control-static">5 keywords</p>
-		      <p><a href="#">Show</a> | <a href="#">Edit</a></p>
+		      <p><a href="${ rootPath }keywords/?type=student&id=${ student.getStudent_id() }">Show</a> | <a href="${ rootPath }keywords/?type=student&id=${ student.getStudent_id() }">Edit</a></p>
 		    </div>
 		  </div>
 		  <div class="form-group">

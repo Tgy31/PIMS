@@ -95,6 +95,15 @@
     <url-pattern>/availability</url-pattern>
     <url-pattern>/availability/</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Keywords</servlet-name>
+    <servlet-class>controller.KeywordsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Keywords</servlet-name>
+    <url-pattern>/keywords</url-pattern>
+    <url-pattern>/keywords/</url-pattern>
+  </servlet-mapping>
   <jsp-config>
     <jsp-property-group>
       <url-pattern>*.jsp</url-pattern>
