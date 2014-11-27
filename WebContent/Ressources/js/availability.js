@@ -129,7 +129,7 @@ function AvailabilityViewModel() {
 
     	var event = slots[0];
     	var start = earliestDate;
-    	var end = event.start();	
+    	var end = event ? event.start() : latestDate;	
 
     	var expectedEnd = moment(start).add(deltaHours, 'hours');
     	var dayDiff = latestDate.diff(expectedEnd, 'days', true);
@@ -148,7 +148,7 @@ function AvailabilityViewModel() {
 
         	start = event.end();
     		event = slots[i+1];
-        	end = event.start();
+    		end = event ? event.start() : latestDate;
         	expectedEnd = moment(start).add(deltaHours, 'hours');
         	dayDiff = latestDate.diff(expectedEnd, 'days', true);
         	hourDiff = latestDate.diff(expectedEnd, 'hours', true);
