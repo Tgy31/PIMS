@@ -19,15 +19,14 @@
 		
 		<br />
 		<p data-bind="visible: slots().length > 0">
-		    You have selected <span data-bind="text: slots().length"></span> keywords:
+		    You are unavailable for <b data-bind="text: totalTime"></b> hours. The limit is <b data-bind="text: maxHours"></b> hours.
 		</p>
 		<p data-bind="visible: slots().length == 0">
-		    <i>Select a keyword and click "Add keyword".</i>
+		    <i>Click "Add unavailable slot" to set your unavailable times.</i>
 		</p>
 	
 		<div class="progress">
-			<div class="progress-bar progress-bar-warning" role="progressbar" style="width: 60%;">
-				60%
+			<div class="progress-bar" role="progressbar" data-bind="text: avaibilityQuota(), style: { width: avaibilityQuota()}, css: quotaClass">
 			</div>
 		</div>
 		
@@ -44,7 +43,7 @@
 		</thead>
 		<tbody data-bind="foreach: slots">
 			<tr>
-				<td data-bind="text: title"></td>
+				<td data-bind="text: title()"></td>
 				<td data-bind="text: formattedStart()"></td>
 				<td data-bind="text: formattedEnd()"></td>
 				<td>

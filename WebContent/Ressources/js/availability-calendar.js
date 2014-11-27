@@ -1,6 +1,6 @@
 var shouldOverlap = function(fixedEvent, movingEvent) {
-    return fixedEvent.title === 'Student not available';
-}
+    return fixedEvent.type === 'inspector-unavailability';
+};
 
 $(document).ready(function() {
 
@@ -28,7 +28,9 @@ $(document).ready(function() {
 		    // (Monday-Friday in this example)
 		},
 		editable: true,
-		events: availabilityKnockout.getSlots
+		events: availabilityKnockout.getSlots,
+		eventDrop: availabilityKnockout.slotChanged,
+		eventResize: availabilityKnockout.slotChanged
 	});
 
 });

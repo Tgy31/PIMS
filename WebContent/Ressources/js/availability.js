@@ -1,36 +1,51 @@
 // Class to present and edit available slots
 var staticIndex = 1;
-function Slot(id, title, start, end, color, rendering, constraint, overlap) {
+function Slot(json) {
     var self = this;
-    self.id = id;
     self.index = staticIndex++;
-    self.start = moment(start);
-    self.end = moment(end);
-    self.title = title;
-    self.color = color;
-    self.rendering = rendering;
-    self.constraint = constraint;
-    self.overlap = overlap;
+    self.end = ko.observable();
+    self.start = ko.observable();
     
-    self.formattedStart = function() {
-    	return self.start.format('lll');
+    self.formattedStart = ko.computed(function() {
+    	return self.start() ? self.start().format('lll') : "";
+    });
+    
+    self.formattedEnd = ko.computed(function() {
+    	return self.end() ? self.end().format('lll') : "";
+    });
+    
+    self.title = function() {
+    	return 'Unavailability '+ self.index;
     };
     
-    self.formattedEnd = function() {
-    	return self.end.format('lll');
+    self.totalTime = function() {
+    	return self.end().diff(self.start(), 'hours', true);
+    };
+    
+    self.fromJSON = function(json) {
+        self.id = json.id;
+        self.start(moment(json.start));
+        self.end(moment(json.end));
+        self.color = json.color;
+        self.rendering = json.rendering;
+        self.constraint = json.constraint;
+        self.overlap = json.overlap;
     };
     
     self.toJSON = function() {
     	return {
-    		start: self.start.format(),
-    		end: self.end.format(),
-    		title: self.title,
+    		id: self.id,
+    		start: self.start().format(),
+    		end: self.end().format(),
+    		title: self.title(),
     		color: self.color,
     		rendering: self.rendering,
     		constraint: self.constraint,
     		overlap: self.overlap
     	};
     };
+    
+    self.fromJSON(json);
 }
 
 function popSuccess(nbKeywords) {
@@ -49,50 +64,25 @@ function AvailabilityViewModel() {
     var self = this;
 
     // Non-editable catalog data - would come from the server
+    self.maxHours = 5;
     var data = [
-                         			{
-                        				title: 'Inspection 1',
-                        				start: '2014-11-13T11:00:00',
-                        				end: '2014-11-13T11:30:00',
-                        				constraint: 'businessHours',
-                        				color: '#257e4a',
-                        				overlap: shouldOverlap
-                        			},
-                        			{
-                        				title: 'Inspection 2',
-                        				start: '2014-11-13T15:00:00',
-                        				end: '2014-11-13T15:30:00',
-                        				constraint: 'businessHours',
-                        				color: '#257e4a',
-                        				overlap: shouldOverlap
-                        			},
-
-                        			// Inspector avaibility
-                        			{
-                        				title: 'Inspector not available',
-                        				start: '2014-11-12T10:00:00',
-                        				end: '2014-11-12T15:00:00',
-                        				color: 'red',
-                        				rendering: 'background',
-                        				overlap: false
-                        			},
-
-                        			// Student avaibility
-                        			{
-                        				title: 'Student not available',
-                        				start: '2014-11-11T11:00:00',
-                        				end: '2014-11-11T12:00:00',
-                        				color: 'orange',
-                        				rendering: 'background'
-                        			},
-                        			{
-                        				title: 'Student not available',
-                        				start: '2014-11-14T14:00:00',
-                        				end: '2014-11-14T16:00:00',
-                        				color: 'orange',
-                        				rendering: 'background'
-                        			},
-                        		];
+		 			{
+		 				id: 0,
+						start: '2014-11-13T11:00:00',
+						end: '2014-11-13T11:30:00',
+						constraint: 'businessHours',
+						color: '#F1A72F',
+						overlap: shouldOverlap
+					},
+					{
+						id: 1,
+						start: '2014-11-13T15:00:00',
+						end: '2014-11-13T15:30:00',
+						constraint: 'businessHours',
+						color: '#F1A72F',
+						overlap: shouldOverlap
+					}
+				];
     
     self.slots = ko.observableArray([]);
     
@@ -116,7 +106,7 @@ function AvailabilityViewModel() {
     self.addSlotsFromJSON = function(json) {
     	var tempSlots = [];
     	json.forEach(function(slotData) {
-    		var newSlot = new Slot(0, slotData.title, slotData.start, slotData.end, slotData.color, slotData.rendering, slotData.constraint, slotData.overlap);
+    		var newSlot = new Slot(slotData);
     		tempSlots.push(newSlot);
     	});
     	self.slots(tempSlots);
@@ -128,13 +118,41 @@ function AvailabilityViewModel() {
     
     self.slotWithID = function(slotID) {
     	var slot = null;
-    	this.slots.forEach(function(slotIte) {
+    	self.slots().forEach(function(slotIte) {
     	    if (slotIte.id == slotID) {
     	    	slot = slotIte;
     	    }
     	});
     	return slot;
     };
+    
+    self.totalTime = ko.computed(function() {
+    	var totalTime = 0;
+    	self.slots().forEach(function(slot) {
+    		totalTime += slot.totalTime();
+    	});
+    	return totalTime;
+    });
+    
+    self.quota = function() {
+    	return Math.round(self.totalTime() / self.maxHours * 100.0);
+    };
+    
+    self.avaibilityQuota = ko.computed(function() {
+    	return self.quota() + "%";
+    });
+    
+    self.quotaClass= ko.computed(function() {
+    	var quota = self.quota();
+    	console.log(quota);
+    	if (quota < 60) {
+    		return 'progress-bar-success';
+    	} else if (quota < 100) {
+    		return 'progress-bar-warning';
+    	} else {
+    		return 'progress-bar-danger';
+    	}
+    });
     
     self.fetchSlots = function() {
     	var userType = getParameterByName('type');
@@ -215,6 +233,11 @@ function AvailabilityViewModel() {
     self.setCalendarNeedUpdate = function() {
     	console.log('need update');
     	$('#calendar').fullCalendar( 'refetchEvents' );
+    };
+    
+    self.slotChanged = function(event, delta, revertFunc) {
+    	var slot = self.slotWithID(event.id);
+    	slot.fromJSON(event);
     };
     
 }
