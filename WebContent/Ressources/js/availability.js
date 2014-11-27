@@ -58,7 +58,7 @@ function AvailabilityViewModel() {
     self.maxHours = 5;
     var data = [
 		 			{
-		 				id: 0,
+		 				id: 1,
 						start: '2014-11-13T15:00:00',
 						end: '2014-11-13T15:30:00',
 						constraint: 'businessHours',
@@ -66,7 +66,7 @@ function AvailabilityViewModel() {
 						overlap: shouldOverlap
 					},
 					{
-						id: 1,
+						id: 2,
 						start: '2014-11-13T11:00:00',
 						end: '2014-11-13T11:30:00',
 						constraint: 'businessHours',
@@ -123,14 +123,8 @@ function AvailabilityViewModel() {
     self.firstAvailableSlot = function(earliestDate, latestDate, deltaHours) {
     	
     	var slots = self.slots().slice(0); // make a copy by value
-    	slots.sort(function(a,b) {
-    		var diff = a.start().diff(b.start());
-    		//console.log(diff);
-    		return diff;
-    	});
-    	
-    	slots.forEach(function(s) {
-    		//console.log(s.formattedStart());
+    	slots.sort(function(a,b) { // order by starting date --> No event can go above an other one !!!!
+    		return a.start().diff(b.start());
     	});
 
     	var event = slots[0];
@@ -140,14 +134,8 @@ function AvailabilityViewModel() {
     	var expectedEnd = moment(start).add(deltaHours, 'hours');
     	var dayDiff = latestDate.diff(expectedEnd, 'days', true);
     	var hourDiff = latestDate.diff(expectedEnd, 'hours', true);
-    	console.log(dayDiff);
-    	console.log(hourDiff);
     	for (var i = 0; i <= slots.length && (dayDiff >= 0 || hourDiff >= 0); i++) { // && not the same day or before end of day
-    		//console.log('start ' + start.format());
-    		//console.log('end ' + end.format());
-    		//console.log('delta '+ end.diff(start, 'hours', true));
     		if (end.diff(start, 'hours', true) >= deltaHours) {
-    			//console.log('suitable slot found', start.format(), start.add(deltaHours, 'hours').format());
     			return new Slot({
     				id: staticIndex,
     				start: start.format(),
@@ -164,8 +152,6 @@ function AvailabilityViewModel() {
         	expectedEnd = moment(start).add(deltaHours, 'hours');
         	dayDiff = latestDate.diff(expectedEnd, 'days', true);
         	hourDiff = latestDate.diff(expectedEnd, 'hours', true);
-        	console.log(dayDiff);
-        	console.log(hourDiff);
     	}
     	console.log('fuck');
     	return null;
@@ -277,17 +263,10 @@ function AvailabilityViewModel() {
     
     // Link knockout and fullcalendar    
     self.getSlots = function(start, end, timezone, callback) {
-
-    	self.slots().forEach(function(s) {
-    		//console.log(s.title());
-    		//console.log(s.formattedStart());
-    		//console.log(s.formattedEnd());
-    	});
     	var slots = [];
     	var i = 0;
     	self.slots().forEach(function(slot) {
     		slots[i++] = slot.toJSON();
-    		//console.log(slots[i-1]);
     	});
     	callback(slots);
     };
