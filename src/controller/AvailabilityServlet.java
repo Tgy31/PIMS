@@ -28,6 +28,8 @@ public class AvailabilityServlet extends BootstrapServlet {
         this.layoutType = LayoutType.Grid;
         this.addJavascriptFile("moment.min.js");
         this.addJavascriptFile("fullcalendar.min.js");
+        this.addJavascriptFile("knockout-3.2.0.js");
+        this.addJavascriptFile("availability-calendar.js");
         this.addJavascriptFile("availability.js");
     }
 
@@ -36,13 +38,25 @@ public class AvailabilityServlet extends BootstrapServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String userType = request.getParameter("type");
-		String userID = request.getParameter("id");
+		String contentType = request.getParameter("content");
+		if (contentType == null) {
+			contentType = "";
+		}
 		
-		User user = this.getUserWithTypeAndID(userType, userID);
-		request.setAttribute("user", user);
-		
-		this.proceedGet("/Availability.jsp", request, response);
+		switch (contentType) {
+			case "json": {
+				this.doJSON(request, response);
+				break;
+			}
+			case "view": {
+				this.doView(request, response);
+				break;
+			}
+			
+			default: {
+				this.doView(request, response);
+			}
+		}
 	}
 
 	/**
@@ -52,6 +66,22 @@ public class AvailabilityServlet extends BootstrapServlet {
 		// TODO Auto-generated method stub
 		this.proceedPost("/Availability.jsp", request, response);
 	}
+	
+	private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String userType = request.getParameter("type");
+		String userID = request.getParameter("id");
+		
+		User user = this.getUserWithTypeAndID(userType, userID);
+		request.setAttribute("user", user);
+		
+		this.proceedGet("/Availability.jsp", request, response);
+	}
+	
+	private void doJSON(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
+	
 	
 	private User getUserWithTypeAndID(String userType, String userID) {
 		

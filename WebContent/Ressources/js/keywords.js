@@ -73,7 +73,6 @@ function KeywordViewModel() {
     	
     	// read exisiting keywords
     	json.existingKeywords.forEach(function(keywordInfo) {
-    	    console.log(keywordInfo);
     	    self.existingKeywords.push(new Keyword(keywordInfo[0], keywordInfo[1]));
     	});
     	

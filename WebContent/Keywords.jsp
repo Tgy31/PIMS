@@ -5,10 +5,6 @@
 
 <%@ include file="Header.jsp" %>
 
-<script>
-	var moduleKeywords = [];
-</script>
-
 <div id="alert-zone">
 </div>
 
