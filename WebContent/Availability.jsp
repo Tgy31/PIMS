@@ -22,11 +22,11 @@
 		    You are unavailable for <b data-bind="text: totalTime"></b> hours. The limit is <b data-bind="text: maxHours"></b> hours.
 		</p>
 		<p data-bind="visible: slots().length == 0">
-		    <i>Click "Add unavailable slot" to set your unavailable times.</i>
+		    <i>Click "Add unavailability" to set your unavailable times.</i>
 		</p>
 	
 		<div class="progress">
-			<div class="progress-bar" role="progressbar" data-bind="text: avaibilityQuota(), style: { width: avaibilityQuota()}, css: quotaClass">
+			<div class="progress-bar" role="progressbar" data-bind="text: avaibilityQuota(), style: { width: avaibilityQuotaLimited()}, css: quotaClass">
 			</div>
 		</div>
 		
@@ -56,7 +56,7 @@
 
 		
 <div class="form-group">
-		<button class="btn btn-success" data-bind="click: addSlot">Add unavailable slot</button>
+		<button class="btn btn-success" data-bind="click: addSlot">Add unavailability</button>
 		<button class="btn btn-danger" data-bind="click: removeAllSlots">Remove all</button>
 	<div class="pull-right">
 		<button class="btn btn-primary" data-bind="click: submitSlots">Save</button>

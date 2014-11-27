@@ -2,7 +2,7 @@
 var staticIndex = 1;
 function Slot(json) {
     var self = this;
-    self.index = staticIndex++;
+    self.id = staticIndex++;
     self.end = ko.observable();
     self.start = ko.observable();
     
@@ -15,7 +15,7 @@ function Slot(json) {
     });
     
     self.title = function() {
-    	return 'Unavailability '+ self.index;
+    	return 'Unavailability '+ self.id;
     };
     
     self.totalTime = function() {
@@ -45,18 +45,9 @@ function Slot(json) {
     	};
     };
     
-    self.fromJSON(json);
-}
-
-function popSuccess(nbKeywords) {
-	var html = '<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>Save successful. You now have <b>' + nbKeywords + '</b> keywords</div>';
-	html = html + $("#alert-zone").html();
-	$("#alert-zone").html(html);
-}
-
-function popError(nbKeywords) {
-	var html = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>An error occurred, your keywords have not been saved !</div>';
-	$("#alert-zone").html(html);
+    if (json) {
+        self.fromJSON(json);
+    }
 }
 
 // Overall viewmodel for this screen, along with initial state
@@ -68,16 +59,16 @@ function AvailabilityViewModel() {
     var data = [
 		 			{
 		 				id: 0,
-						start: '2014-11-13T11:00:00',
-						end: '2014-11-13T11:30:00',
+						start: '2014-11-13T15:00:00',
+						end: '2014-11-13T15:30:00',
 						constraint: 'businessHours',
 						color: '#F1A72F',
 						overlap: shouldOverlap
 					},
 					{
 						id: 1,
-						start: '2014-11-13T15:00:00',
-						end: '2014-11-13T15:30:00',
+						start: '2014-11-13T11:00:00',
+						end: '2014-11-13T11:30:00',
 						constraint: 'businessHours',
 						color: '#F1A72F',
 						overlap: shouldOverlap
@@ -88,7 +79,10 @@ function AvailabilityViewModel() {
     
     // Operations
     self.addSlot = function() {
-    	var slot = new Slot(staticIndex++, "meeting");
+    	var earliestDate = moment('2014-11-10T09:00:00');
+    	var latestDate = moment('2014-11-10T18:00:00');
+    	var deltaHours = 0.5;
+    	var slot = self.firstAvailableSlot(earliestDate, latestDate, deltaHours);
         self.slots.push(slot);
         self.setCalendarNeedUpdate();
     };
@@ -126,6 +120,67 @@ function AvailabilityViewModel() {
     	return slot;
     };
     
+    self.firstAvailableSlot = function(earliestDate, latestDate, deltaHours) {
+    	
+    	var slots = self.slots().slice(0); // make a copy by value
+    	slots.sort(function(a,b) {
+    		var diff = a.start().diff(b.start());
+    		//console.log(diff);
+    		return diff;
+    	});
+    	
+    	slots.forEach(function(s) {
+    		//console.log(s.formattedStart());
+    	});
+
+    	var event = slots[0];
+    	var start = earliestDate;
+    	var end = event.start();	
+
+    	var expectedEnd = moment(start).add(deltaHours, 'hours');
+    	var dayDiff = latestDate.diff(expectedEnd, 'days', true);
+    	var hourDiff = latestDate.diff(expectedEnd, 'hours', true);
+    	console.log(dayDiff);
+    	console.log(hourDiff);
+    	for (var i = 0; i <= slots.length && (dayDiff >= 0 || hourDiff >= 0); i++) { // && not the same day or before end of day
+    		//console.log('start ' + start.format());
+    		//console.log('end ' + end.format());
+    		//console.log('delta '+ end.diff(start, 'hours', true));
+    		if (end.diff(start, 'hours', true) >= deltaHours) {
+    			//console.log('suitable slot found', start.format(), start.add(deltaHours, 'hours').format());
+    			return new Slot({
+    				id: staticIndex,
+    				start: start.format(),
+    				end: expectedEnd.format(),
+    				constraint: 'businessHours',
+    				color: '#F1A72F',
+    				overlap: shouldOverlap
+    			});
+        	}
+
+        	start = event.end();
+    		event = slots[i+1];
+        	end = event.start();
+        	expectedEnd = moment(start).add(deltaHours, 'hours');
+        	dayDiff = latestDate.diff(expectedEnd, 'days', true);
+        	hourDiff = latestDate.diff(expectedEnd, 'hours', true);
+        	console.log(dayDiff);
+        	console.log(hourDiff);
+    	}
+    	console.log('fuck');
+    	return null;
+    };
+    
+    self.findAvailableSlot = function(start, end, deltaHours) {
+    	
+    	if (end.diff(start, 'hours', true) >= deltaHours) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    	
+    };
+    
     self.totalTime = ko.computed(function() {
     	var totalTime = 0;
     	self.slots().forEach(function(slot) {
@@ -142,12 +197,15 @@ function AvailabilityViewModel() {
     	return self.quota() + "%";
     });
     
+    self.avaibilityQuotaLimited = ko.computed(function() {
+    	return Math.min(self.quota(), 100) + "%";
+    });
+    
     self.quotaClass= ko.computed(function() {
     	var quota = self.quota();
-    	console.log(quota);
     	if (quota < 60) {
     		return 'progress-bar-success';
-    	} else if (quota < 100) {
+    	} else if (quota <= 100) {
     		return 'progress-bar-warning';
     	} else {
     		return 'progress-bar-danger';
@@ -219,19 +277,22 @@ function AvailabilityViewModel() {
     
     // Link knockout and fullcalendar    
     self.getSlots = function(start, end, timezone, callback) {
-    	console.log('slots requested');
+
+    	self.slots().forEach(function(s) {
+    		//console.log(s.title());
+    		//console.log(s.formattedStart());
+    		//console.log(s.formattedEnd());
+    	});
     	var slots = [];
     	var i = 0;
     	self.slots().forEach(function(slot) {
     		slots[i++] = slot.toJSON();
+    		//console.log(slots[i-1]);
     	});
-
-    	console.log(slots);
     	callback(slots);
     };
     
     self.setCalendarNeedUpdate = function() {
-    	console.log('need update');
     	$('#calendar').fullCalendar( 'refetchEvents' );
     };
     
