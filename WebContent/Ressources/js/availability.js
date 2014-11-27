@@ -81,7 +81,7 @@ function AvailabilityViewModel() {
     self.addSlot = function() {
     	var earliestDate = moment('2014-11-10T09:00:00');
     	var latestDate = moment('2014-11-10T18:00:00');
-    	var deltaHours = 0.5;
+    	var deltaHours = 1.0;
     	var slot = self.firstAvailableSlot(earliestDate, latestDate, deltaHours);
         self.slots.push(slot);
         self.setCalendarNeedUpdate();
@@ -189,7 +189,7 @@ function AvailabilityViewModel() {
     
     self.quotaClass= ko.computed(function() {
     	var quota = self.quota();
-    	if (quota < 60) {
+    	if (quota <= 80) {
     		return 'progress-bar-success';
     	} else if (quota <= 100) {
     		return 'progress-bar-warning';

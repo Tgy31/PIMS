@@ -14,7 +14,7 @@ $(document).ready(function() {
 		defaultView: 'agendaWeek',
 		defaultDate: '2014-11-12',
 		slotDuration: '00:30:00',
-		snapDuration: '00:15:00',
+		snapDuration: '00:30:00',
 		minTime: '08:00:00',
 		maxTime: '19:00:00',
 		allDaySlot: false,
