@@ -117,7 +117,7 @@ public class KeywordDAO {
 		return keywords.get(0);
 	}
 	
-	public List<Keyword> findAll(Module module){
+	public List<Keyword> findKeywordsForModule(Module module){
 		String sql = "SELECT  * " + 
 							"FROM keyword " + 
 							"WHERE module_id= " + "'" + module.getModule_id() + "'";
