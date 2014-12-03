@@ -46,9 +46,9 @@ public class SlotDAO {
 		return false;
 	}
 	
-	public boolean addSlotsforStudent(List<TimeSlot> timeSlots, Student student){
+	public boolean addSlotsforStudent(List<Slot> slots, int studentID){
 		boolean success =false;
-		for (TimeSlot timeSlot : timeSlots) {
+		for (Slot slot : slots) {
 			String sql = "INSERT INTO slot"	+ENTER+
 					"			(start_date, " 	+
 					"			 end_date, " 	+
@@ -56,9 +56,9 @@ public class SlotDAO {
 					"values"							 	+ENTER+
 					"			(?,?,?)";
 			try {
-				success = template.update(sql,timeSlot.getStartDate(),
-														timeSlot.getEndDate(),
-														student.getStudent_id()) == 1;
+				success = template.update(sql,slot.getStart_date(),
+														slot.getEnd_date(),
+														studentID) == 1;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				System.out.println("Class not found !");
@@ -69,6 +69,12 @@ public class SlotDAO {
 			success = false;
 		}
 		return success;
+	}
+	
+	public boolean setSlotsForStudent(List<Slot> slots, int studentID) {
+		boolean deleteStatus = this.deleteByStudentID(studentID);
+		boolean addStatus = this.addSlotsforStudent(slots, studentID);	
+		return deleteStatus && addStatus;
 	}
 	
 	public boolean addSlotsforInspector(List<TimeSlot> timeSlots, Inspector inspector){

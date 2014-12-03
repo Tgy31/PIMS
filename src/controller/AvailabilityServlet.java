@@ -101,7 +101,12 @@ public class AvailabilityServlet extends BootstrapServlet {
 				System.out.println(sEnd);
 				System.out.println(start.toString());
 				System.out.println(end.toString());
+				
+				slots.add(new Slot(start, end));
 			}
+			
+			SlotDAO slotDAO = new SlotDAO();
+			slotDAO.setSlotsForStudent(slots, userID);
 		} catch (JSONException e) {
 			response.setStatus(500); 
 		    PrintWriter out = response.getWriter();

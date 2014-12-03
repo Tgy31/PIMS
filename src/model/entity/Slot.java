@@ -2,12 +2,11 @@ package model.entity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.sql.Timestamp;
 
 public class Slot {
 	private int slot_id;
-	private Timestamp start_date;
-	private Timestamp end_date;
+	private Date start_date;
+	private Date end_date;
 	private int student_id;
 	private int inspector_id;
 	
@@ -16,7 +15,7 @@ public class Slot {
 	}
 
 
-	public Slot(int slot_id, Timestamp start_date, Timestamp end_date,
+	public Slot(int slot_id, Date start_date, Date end_date,
 			int student_id, int inspector_id) {
 		super();
 		this.slot_id = slot_id;
@@ -24,6 +23,12 @@ public class Slot {
 		this.end_date = end_date;
 		this.student_id = student_id;
 		this.inspector_id = inspector_id;
+	}
+	
+	public Slot(Date startDate, Date endDate) {
+		super();
+		this.start_date = startDate;
+		this.end_date = endDate;
 	}
 
 
@@ -37,7 +42,7 @@ public class Slot {
 	}
 
 
-	public Timestamp getStart_date() {
+	public Date getStart_date() {
 		return start_date;
 	}
 	
@@ -52,17 +57,17 @@ public class Slot {
 	}
 
 
-	public void setStart_date(Timestamp start_date) {
+	public void setStart_date(Date start_date) {
 		this.start_date = start_date;
 	}
 
 
-	public Timestamp getEnd_date() {
+	public Date getEnd_date() {
 		return end_date;
 	}
 
 
-	public void setEnd_date(Timestamp end_date) {
+	public void setEnd_date(Date end_date) {
 		this.end_date = end_date;
 	}
 
