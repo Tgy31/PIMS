@@ -5,7 +5,6 @@ import static tools.Replace.PATTERN;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 
 import model.db.Template;
@@ -17,8 +16,6 @@ import model.mapping.SlotMapping;
 
 import org.skife.csv.CSVReader;
 import org.skife.csv.SimpleReader;
-
-import tools.DateConvert;
 
 public class SlotDAO {
 	private Template template = new Template();
@@ -284,11 +281,9 @@ public class SlotDAO {
 				if(records[0].matches(PATTERN)){
 					slot.setSlot_id(Integer.valueOf(records[0]));
 				}
-				slot.setStart_date(DateConvert.ConverFromCSVToDate(records[1]));
-				slot.setEnd_date(DateConvert.ConverFromCSVToDate(records[2]));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}catch( NumberFormatException e){
+				//slot.setStart_date(DateConvert.ConverFromCSVToDate(records[1]));
+				//slot.setEnd_date(DateConvert.ConverFromCSVToDate(records[2]));
+			} catch( NumberFormatException e){
 				e.printStackTrace();
 			}
 		}

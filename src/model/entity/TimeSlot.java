@@ -1,34 +1,40 @@
 package model.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class TimeSlot {
-	private Date startDate;
-	private Date endDate;
+	private Timestamp startDate;
+	private Timestamp endDate;
 	
-	
-	public TimeSlot(Date start, Date endDate) {
-		super();
-		this.startDate = start;
-		this.endDate = endDate;
-	}
 	public TimeSlot() {
 		super();
 	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(Date startDate) {
+	
+	public TimeSlot(Timestamp startDate, Timestamp endDate) {
+		super();
 		this.startDate = startDate;
-	}
-	public Date getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	
+
+	public Timestamp getStartDate() {
+		return startDate;
+	}
+
+
+	public void setStartDate(Timestamp startDate) {
+		this.startDate = startDate;
+	}
+
+
+	public Timestamp getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Timestamp endDate) {
+		this.endDate = endDate;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

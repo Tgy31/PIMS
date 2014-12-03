@@ -1,11 +1,11 @@
 package model.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Slot {
 	private int slot_id;
-	private Date start_date;
-	private Date end_date;
+	private Timestamp start_date;
+	private Timestamp end_date;
 	private int student_id;
 	private int inspector_id;
 	
@@ -13,8 +13,9 @@ public class Slot {
 		super();
 	}
 
-	public Slot(int slot_id, Date start_date, Date end_date, int student_id,
-			int inspector_id) {
+
+	public Slot(int slot_id, Timestamp start_date, Timestamp end_date,
+			int student_id, int inspector_id) {
 		super();
 		this.slot_id = slot_id;
 		this.start_date = start_date;
@@ -23,45 +24,56 @@ public class Slot {
 		this.inspector_id = inspector_id;
 	}
 
+
 	public int getSlot_id() {
 		return slot_id;
 	}
+
 
 	public void setSlot_id(int slot_id) {
 		this.slot_id = slot_id;
 	}
 
-	public Date getStart_date() {
+
+	public Timestamp getStart_date() {
 		return start_date;
 	}
 
-	public void setStart_date(Date start_date) {
+
+	public void setStart_date(Timestamp start_date) {
 		this.start_date = start_date;
 	}
 
-	public Date getEnd_date() {
+
+	public Timestamp getEnd_date() {
 		return end_date;
 	}
 
-	public void setEnd_date(Date end_date) {
+
+	public void setEnd_date(Timestamp end_date) {
 		this.end_date = end_date;
 	}
+
 
 	public int getStudent_id() {
 		return student_id;
 	}
 
+
 	public void setStudent_id(int student_id) {
 		this.student_id = student_id;
 	}
+
 
 	public int getInspector_id() {
 		return inspector_id;
 	}
 
+
 	public void setInspector_id(int inspector_id) {
 		this.inspector_id = inspector_id;
 	}
+
 
 	@Override
 	public int hashCode() {
