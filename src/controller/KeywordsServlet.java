@@ -122,7 +122,7 @@ public class KeywordsServlet extends BootstrapServlet {
 		
 		// existingKeywords && userKeywords
 		KeywordDAO keywordDAO = new KeywordDAO();
-		List<Keyword> moduleKeywords = keywordDAO.findKeywordsForModule(this.getSelectedModule(request));
+		List<Keyword> moduleKeywords = keywordDAO.findByModule(this.getSelectedModule(request));
 		request.setAttribute("moduleKeywords", moduleKeywords);
 		
 		System.out.println(userType);

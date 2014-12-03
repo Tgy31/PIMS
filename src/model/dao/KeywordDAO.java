@@ -151,24 +151,6 @@ public class KeywordDAO {
 		return keywords;
 	}
 	
-	
-	public List<Keyword> findKeywordsForModule(Module module){
-		String sql = "SELECT  * " + 
-							"FROM keyword " + 
-							"WHERE module_id= " + "'" + module.getModule_id() + "'";
-		List<Keyword> keywords = null;
-		try {
-			keywords = template.query(sql, new KeywordMapping());
-		} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-		System.out.println("Class not found !");
-		} catch (SQLException e) {
-		e.printStackTrace();
-		System.out.println("Find by No operation is failed ");
-		}
-		return keywords;
-	}
-	
 	public boolean  addKeywordsForModule(List<Keyword> keywords, Module module){
 		boolean success = true;
 		for (Keyword keyword : keywords) {
