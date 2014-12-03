@@ -55,25 +55,7 @@ function AvailabilityViewModel() {
     var self = this;
 
     // Non-editable catalog data - would come from the server
-    self.maxHours = 5;
-    var data = [
-		 			{
-		 				id: 1,
-						start: '2014-11-13T15:00:00',
-						end: '2014-11-13T15:30:00',
-						constraint: 'businessHours',
-						color: '#F1A72F',
-						overlap: shouldOverlap
-					},
-					{
-						id: 2,
-						start: '2014-11-13T11:00:00',
-						end: '2014-11-13T11:30:00',
-						constraint: 'businessHours',
-						color: '#F1A72F',
-						overlap: shouldOverlap
-					}
-				];
+    self.maxHours = ko.observable(5);
     
     self.slots = ko.observableArray([]);
     
@@ -105,7 +87,6 @@ function AvailabilityViewModel() {
     	});
     	self.slots(tempSlots);
     };
-    self.addSlotsFromJSON(data);
     
     
     // Getters
@@ -176,7 +157,7 @@ function AvailabilityViewModel() {
     });
     
     self.quota = function() {
-    	return Math.round(self.totalTime() / self.maxHours * 100.0);
+    	return Math.round(self.totalTime() / self.maxHours() * 100.0);
     };
     
     self.avaibilityQuota = ko.computed(function() {
@@ -203,34 +184,23 @@ function AvailabilityViewModel() {
     	var userID = getParameterByName('id');
     	var contentType = 'json';
 		$.ajax({
-			url: '/PIMS/keywords/?type=' + userType + '&id=' + userID +'&content='+ contentType,
-			success: this.handleFetchKeywords,
+			url: '/PIMS/Ressources/fake/avaibility.html', //'/PIMS/keywords/?type=' + userType + '&id=' + userID +'&content='+ contentType,
+			success: this.handleFetchSlots,
 			error: null
 		});
     };
     
-    self.handleFetchSlotss = function(result) {
+    self.handleFetchSlots = function(result) {
     	var json = JSON.parse(result);
+    	console.log(json);
     	
+    	var defaultDate = json.defaultDate;
+    	console.log(defaultDate);
     	
-    	// read exisiting keywords
-    	json.existingKeywords.forEach(function(keywordInfo) {
-    	    console.log(keywordInfo);
-    	    self.existingKeywords.push(new Keyword(keywordInfo[0], keywordInfo[1]));
-    	});
+    	createCalendar(defaultDate);
     	
-    	// Reset arrays
-    	self.availableKeywords.removeAll();
-    	self.selectedKeywords.removeAll();
-        ko.utils.arrayPushAll(self.availableKeywords, self.existingKeywords);
-    	
-        // find selected keywords
-    	json.selectedKeywords.forEach(function(keywordInfo) {
-    	    var keyword = self.keywoardWithID(keywordInfo[0]);
-    	    if (keyword) {
-        	    self.addKeyword(keyword);
-    	    }
-    	});
+    	self.maxHours(json.maxUnavailability);
+    	console.log(self.maxHours());
     };
     
     self.submitSlots = function() {
@@ -280,6 +250,7 @@ function AvailabilityViewModel() {
     	slot.fromJSON(event);
     };
     
+    self.fetchSlots();
 }
 
 var availabilityKnockout = new AvailabilityViewModel();

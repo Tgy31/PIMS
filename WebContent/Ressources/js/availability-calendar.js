@@ -2,7 +2,7 @@ var shouldOverlap = function(fixedEvent, movingEvent) {
     return fixedEvent.type === 'inspector-unavailability';
 };
 
-$(document).ready(function() {
+var createCalendar = function(defaultDate) {
 
 	$('#calendar').fullCalendar({
 		header: {
@@ -12,7 +12,7 @@ $(document).ready(function() {
 		},
 		height: 542,
 		defaultView: 'agendaWeek',
-		defaultDate: '2014-11-12',
+		defaultDate: defaultDate,
 		slotDuration: '00:30:00',
 		snapDuration: '00:30:00',
 		minTime: '08:00:00',
@@ -32,5 +32,9 @@ $(document).ready(function() {
 		eventDrop: availabilityKnockout.slotChanged,
 		eventResize: availabilityKnockout.slotChanged
 	});
+	
+};
+
+$(document).ready(function() {
 
 });
