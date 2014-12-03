@@ -285,12 +285,31 @@ public class StudentDAO {
 		}
 		Student student = new Student();
 		boolean hasHeaderRecords = true;
+<<<<<<< Updated upstream
+=======
+		
+		for (String title : recordList.get(0)) {
+			if (title.toLowerCase().contains("student") && title.toLowerCase().contains("id"))
+				titleName.put("studentID", count);
+			if (title.toLowerCase().contains("project") && title.toLowerCase().contains("title"))
+				titleName.put("projectTitle", count);
+			if (title.toLowerCase().contains("first") && title.toLowerCase().contains("name"))
+				titleName.put("firstName", count);
+			if (title.toLowerCase().contains("last") && title.toLowerCase().contains("name"))
+				titleName.put("lastName", count);
+			if (title.toLowerCase().contains("supervisor") && title.toLowerCase().contains("name"))
+				titleName.put("supervisorName", count);
+			count++;
+		}
+		
+>>>>>>> Stashed changes
 		for (int r = 0; r < recordList.size(); r++) {
 			String[] records = recordList.get(r);
 			if (r == 0 && hasHeaderRecords) {
 				continue;
 			}
 			try{
+<<<<<<< Updated upstream
 				
 				if(records[0].matches(PATTERN)){
 					student.setStudent_id(Integer.valueOf(records[0]));
@@ -318,6 +337,28 @@ public class StudentDAO {
 			} catch( NumberFormatException e){
 				e.printStackTrace();
 			}
+=======
+				student.setFirst_name(record[titleName.get("firstName")]);
+				student.setLast_name(record[titleName.get("lastName")]);
+				student.setProject_title(record[titleName.get("projectTitle")]);
+				student.setUsername(record[titleName.get("lastName")]);
+				student.setPassword(record[titleName.get("lastName")]);
+				student.setEmail(record[titleName.get("firstName")].substring(0,1)+"."+record[titleName.get("lastName")]+"@bham.ac.uk");
+				student.setSupervisor(record[titleName.get("supervisorName")]);
+				student.setModule_id(Integer.valueOf(module.getModule_id()));
+				
+/*				if(records[titleName.get("studentID")].matches(PATTERN)){
+					student.setStudent_id(Integer.valueOf(records[titleName.get("studentID")]));
+				}*/
+//				student.setProject_description(record[titleName.get("")]);
+//				if(record[titleName.get("")].matches(PATTERN)){
+//					student.setTimetable_id(Integer.valueOf(record[titleName.get("")]));
+//				}
+			} catch( NumberFormatException e){
+				e.printStackTrace();
+			}
+			save(student);
+>>>>>>> Stashed changes
 		}
 		return save(student);
 	}

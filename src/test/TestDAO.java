@@ -36,6 +36,7 @@ public class TestDAO {
 		
 //*********Inspector**********		
 //		testDAO.testInspectorFind();
+//		testDAO.testInspectorImportCSV("G:/TestData.csv");
 		
 //*********First_Inspection****
 //		testDAO.testFirstInspectionSave();
@@ -81,6 +82,11 @@ public class TestDAO {
 //		System.out.println(inspectorDAO.findAll());
 //		System.out.println(inspectorDAO.findByInspectorID(2));
 		System.out.println(inspectorDAO.findByInspectorName("Zhiwei", "Liu"));
+	}
+	
+	public void testInspectorImportCSV(String path){
+		InspectorDAO inspectorDAO = new InspectorDAO();
+		System.out.println(inspectorDAO.importCSV(new File(path)));
 	}
 	
 	
