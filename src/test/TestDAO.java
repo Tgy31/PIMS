@@ -51,7 +51,7 @@ public class TestDAO {
 //		testDAO.testCourseDeleteByID();
 		
 //**********Student**********		
-//		testDAO.testStudentImportCSV("F:/student-c.csv");
+		testDAO.testStudentImportCSV("G:/TestData1.csv");
 //		testDAO.testStudentSave();
 //		testDAO.testStudentLogin();
 //		testDAO.testStudentFindByID();
@@ -71,7 +71,7 @@ public class TestDAO {
 		list.add(1);
 		list.add(2);
 		list.add(3);
-		System.out.println(studentKeywordDAO.setKeywordsforStudents(list, 3));
+		System.out.println(studentKeywordDAO.setKeywordsforStudent(list, 3));
 		
 	}
 	
