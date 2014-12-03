@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import model.dao.InspectorDAO;
 import model.dao.ModuleDAO;
+import model.dao.StudentDAO;
 import model.entity.Module;
 
 /**
@@ -70,12 +72,18 @@ public class ModulesServlet extends BootstrapServlet {
 		if (studentFile != null) {
 			System.out.println("Student file uploaded");
 			System.out.println(studentFile);
+			
+			StudentDAO studentDAO = new StudentDAO();
+			studentDAO.importCSV(studentFile, this.getSelectedModule(request));
 			this.setAlertView(AlertType.AlertTypeSuccess, "Student file uploaded", request);
 		}
 		
 		if (inspectorFile != null) {
 			System.out.println("Inspector file uploaded");
 			System.out.println(inspectorFile);
+			
+			InspectorDAO inspectorDAO = new InspectorDAO();
+			inspectorDAO.importCSV(inspectorFile);
 			this.setAlertView(AlertType.AlertTypeSuccess, "Inspector file uploaded", request);
 		}
 		
