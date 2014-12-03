@@ -77,7 +77,7 @@ public class SlotDAO {
 			String sql = "INSERT INTO slot"	+ENTER+
 					"			(start_date, " 	+
 					"			 end_date, " 	+
-					"			 inspector_id)" 			+ENTER+
+					"			 inspector_id)" 		+ENTER+
 					"values"							 	+ENTER+
 					"			(?,?,?)";
 			try {

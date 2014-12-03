@@ -7,6 +7,7 @@ import java.util.List;
 
 import model.db.Template;
 import model.entity.Keyword;
+import model.entity.Module;
 import model.mapping.KeywordMapping;
 
 public class KeywordDAO {	
@@ -33,6 +34,29 @@ public class KeywordDAO {
 		return false;
 	}
 	
+	public boolean  addKeywordsForMoudle(List<String> keywords, Module module){
+		boolean success = false;
+		for (String keyword : keywords) {
+			String sql = "INSERT INTO keyword"	+ENTER+
+					"			(keyword_name, " 	+
+					"			 module_id)" 					+ENTER+
+					"values"							 			+ENTER+
+					"			(?,?)";
+			try {
+				success = template.update(sql, keyword, module.getModule_id()) == 1;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				System.out.println("Class not found !");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Save opertaion failed !");
+			}
+			success = false;
+		}
+		return success;
+	}
+	
+	
 	public boolean update(Keyword keyword){
 		String sql = "update keyword"								+ENTER+
 							"set"												+ENTER+
@@ -50,6 +74,20 @@ public class KeywordDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Update opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean delateKeywordsForMoudle(Module module){
+		String sql = "delete from keyword where keyword_id = '"+module.getModule_id()+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
 		}
 		return false;
 	}
