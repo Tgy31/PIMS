@@ -132,6 +132,7 @@ public class KeywordDAO {
 		}
 		return keywords;
 	}
+
 	
 	public List<Keyword> findByModule(Module module){
 		String sql = "SELECT  * " + 
@@ -149,7 +150,7 @@ public class KeywordDAO {
 		}
 		return keywords;
 	}
-
+	
 	
 	public List<Keyword> findKeywordsForModule(Module module){
 		String sql = "SELECT  * " + 
