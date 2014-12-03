@@ -26,6 +26,8 @@ public class ModulesServlet extends BootstrapServlet {
         this.relatedMenuClass = "modules";
         this.layoutType = LayoutType.Grid;
         this.addJavascriptFile("modules.js");
+        this.addJavascriptFile("knockout-3.2.0.js");
+        this.addJavascriptFile("module.js");
     }
 
 	/**
