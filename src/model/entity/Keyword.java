@@ -16,6 +16,12 @@ public class Keyword {
 		this.keyword_name = keyword_name;
 	}
 
+	public Keyword(int module_id, String keyword_name) {
+		super();
+		this.module_id = module_id;
+		this.keyword_name = keyword_name;
+	}
+
 	public int getKeyword_id() {
 		return keyword_id;
 	}

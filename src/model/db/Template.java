@@ -52,7 +52,7 @@ public class Template {
 		try {
 			Connection con = DBManager.getConnection();
 			psta = con.prepareStatement(sql);
-			//¸øÕ¼Î»·û ¸³Öµ
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			for (int i = 0; i < values.length; i++) {
 				psta.setObject(i + 1, values[i]);
 			}
@@ -67,9 +67,9 @@ public class Template {
 	}
 
 	/**
-	 *  ÓÃÀ´Ö´ÐÐselectÓï¾ä
+	 *  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½selectï¿½ï¿½ï¿½ï¿½
 	 * @param sql
-	 * @param mapping ×ª»»µÄÊµÌå¶ÔÏó
+	 * @param mapping ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param values
 	 * @return
 	 * @throws ClassNotFoundException

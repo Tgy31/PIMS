@@ -8,7 +8,10 @@
 <div id="json-variables">
 [
 <c:forEach items="${ keywords }" var="keyword" varStatus="keywordStatus">
-		"${ keyword.getKeyword_name() }"
+	{
+		"id": "${ keyword.getKeyword_id() }",
+		"name": "${ keyword.getKeyword_name() }"
+	}
 	<c:if test="${ keywordStatus.index < keywords.size() - 1 }">
 	,
 	</c:if>

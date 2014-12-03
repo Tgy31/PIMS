@@ -1,9 +1,8 @@
 // Class to present and edit keywords
-var totalIndex = 0;
-function Keyword(name) {
+function Keyword(id, name) {
     var self = this;
     self.name = name;
-    self.id = totalIndex++;
+    self.id = id;
 }
 
 // Overall viewmodel for this screen, along with initial state
@@ -12,13 +11,23 @@ function KeywordViewModel() {
 
     self.keywords = ko.observableArray([]); 
     
+    self.keywoardWithID = function(keywordID) {
+    	var keyword = null;
+    	this.keywords().forEach(function(keywordIte) {
+    	    if (keywordIte.id == keywordID) {
+    	    	keyword = keywordIte;
+    	    }
+    	});
+    	return keyword;
+    };
+    
     // Operations
     self.addKeyword = function() {
     	var nameInput = document.getElementById('inputKeywordName');
     	var name = nameInput.value;
     	
     	if (name && name.length > 0) {
-        	var keyword = new Keyword(name);
+        	var keyword = new Keyword(-1, name);
         	nameInput.value = "";
             self.keywords.push(keyword);
     	}
@@ -34,17 +43,13 @@ function KeywordViewModel() {
     	
     	// Reset arrays
     	self.keywords.removeAll();
-    	json.forEach(function(name) {
-    	    self.keywords.push(new Keyword(name));
+    	json.forEach(function(info) {
+    	    self.keywords.push(new Keyword(info.id, info.name));
     	});
     };
     
     self.getKeywords = function() {
-    	var keywords = [];
-    	self.keywords().forEach(function(keyword) {
-    		keywords.push(keyword.name);
-    	});
-    	return keywords;
+    	return JSON.stringify(keywordViewModel.keywords());
     };
     
     self.fetchKeywords();
@@ -55,6 +60,6 @@ ko.applyBindings(keywordViewModel);
 
 
 document.getElementById("submitButton").onclick = function() {
-	var keywordsString = keywordViewModel.getKeywords().toString();
+	var keywordsString = keywordViewModel.getKeywords();
     document.getElementById("inputKeywords").value = keywordsString;
 };

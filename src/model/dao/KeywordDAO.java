@@ -86,7 +86,7 @@ public class KeywordDAO {
 	public Keyword findByKeywordID(int ID){
 		String sql = "SELECT  * " + 
 							"FROM keyword " + 
-							"WHERE keyword_name= " + "'" + ID + "'";
+							"WHERE keyword_id= " + "'" + ID + "'";
 		List<Keyword> keywords = null;
 		try {
 			keywords = template.query(sql, new KeywordMapping());
@@ -97,7 +97,7 @@ public class KeywordDAO {
 		e.printStackTrace();
 		System.out.println("Find by No operation is failed ");
 		}
-		return keywords.get(0);
+		return (keywords.size() > 0) ? keywords.get(0) : null;
 	}
 	
 	public Keyword findByKeywordName(String name){
@@ -134,32 +134,53 @@ public class KeywordDAO {
 		return keywords;
 	}
 	
-	public boolean  addKeywordsForMoudle(List<String> keywords, Module module){
-		boolean success = false;
-		for (String keyword : keywords) {
-			String sql = "INSERT INTO keyword"	+ENTER+
-					"			(keyword_name, " 	+
-					"			 module_id)" 					+ENTER+
-					"values"							 			+ENTER+
-					"			(?,?)";
-			try {
-				success = template.update(sql, keyword, module.getModule_id()) == 1;
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				System.out.println("Class not found !");
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println("Save opertaion failed !");
-			}
-			success = false;
+	public boolean  addKeywordsForModule(List<Keyword> keywords, Module module){
+		boolean success = true;
+		for (Keyword keyword : keywords) {
+			boolean tempSuccess = this.addKeywordForModule(keyword, module);
+			success = success && tempSuccess;
 		}
 		return success;
 	}
 	
-	public boolean delateKeywordsForMoudle(Module module){
+	public boolean  addKeywordForModule(Keyword keyword, Module module){
+		boolean success = false;
+		String sql = null;
+		
+		try {
+			
+			if (keyword.getKeyword_id() > 0) {
+
+				sql = "INSERT INTO keyword"	+ENTER+
+						"			(keyword_id, "+
+						"            keyword_name, "+
+						"			 module_id)" 					+ENTER+
+						"values"							 			+ENTER+
+						"			(?,?,?)";
+				success = template.update(sql, keyword.getKeyword_id(), keyword.getKeyword_name(), module.getModule_id()) == 1;
+			} else {
+
+				sql = "INSERT INTO keyword"	+ENTER+
+						"			(keyword_name, " 	+
+						"			 module_id)" 					+ENTER+
+						"values"							 			+ENTER+
+						"			(?,?)";
+				success = template.update(sql, keyword.getKeyword_name(), module.getModule_id()) == 1;
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Save opertaion failed !");
+		}
+		return success;
+	}
+	
+	public boolean deleteKeywordsForModule(Module module){
 		String sql = "delete from keyword where module_id = '"+module.getModule_id()+"'";
 		try {
-			return (template.update(sql) == 1);
+			return (template.update(sql) > 0);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("Class not found !");
@@ -170,6 +191,12 @@ public class KeywordDAO {
 		return false;
 	}
 
+	
+	public boolean setKeywordsForModule(List<Keyword> keywords, Module module) {
+		boolean deleteStatus = this.deleteKeywordsForModule(module);
+		boolean addStatus = this.addKeywordsForModule(keywords, module);
+		return deleteStatus && addStatus;
+	}
 	
 	//importCSV ?
 	
