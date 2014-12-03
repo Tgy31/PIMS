@@ -275,8 +275,8 @@ public class StudentDAO {
 	}
 	
 	
-	public boolean importCSV(File file){
-		truncateTable();
+	public boolean importCSV(File file, Module module){
+		//truncateTable();
 		Map<String, Integer> titleName = new HashMap<String, Integer>();
 		List<String[]> recordList = null;
 		String[] record = null;

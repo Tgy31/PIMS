@@ -13,7 +13,8 @@ public class SlotMapping implements IEntityMapping{
 		slot.setSlot_id(rs.getInt("slot_id"));
 		slot.setStart_date(rs.getDate("start_date"));
 		slot.setEnd_date(rs.getDate("end_date"));
-		slot.setAvailbility(rs.getBoolean("avalibility"));
+		slot.setStudent_id(rs.getInt("student_id"));
+		slot.setInspector_id(rs.getInt("inspector_id"));
 		return slot;
 	}
 }

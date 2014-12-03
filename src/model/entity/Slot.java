@@ -6,18 +6,18 @@ public class Slot {
 	private int slot_id;
 	private Date start_date;
 	private Date end_date;
-	private Boolean availbility;
+	private int student_id;
+	private int inspector_id;
 	
 	public Slot() {
 		super();
 	}
 
-	public Slot(int slot_id, Date start_date, Date end_date, Boolean availbility) {
-		super();
-		this.slot_id = slot_id;
-		this.start_date = start_date;
-		this.end_date = end_date;
-		this.availbility = availbility;
+	@Override
+	public String toString() {
+		return "Slot [slot_id=" + slot_id + ", start_date=" + start_date
+				+ ", end_date=" + end_date + ", student_id=" + student_id
+				+ ", inspector_id=" + inspector_id + "]";
 	}
 
 	public int getSlot_id() {
@@ -44,12 +44,20 @@ public class Slot {
 		this.end_date = end_date;
 	}
 
-	public Boolean getAvailbility() {
-		return availbility;
+	public int getStudent_id() {
+		return student_id;
 	}
 
-	public void setAvailbility(Boolean availbility) {
-		this.availbility = availbility;
+	public void setStudent_id(int student_id) {
+		this.student_id = student_id;
+	}
+
+	public int getInspector_id() {
+		return inspector_id;
+	}
+
+	public void setInspector_id(int inspector_id) {
+		this.inspector_id = inspector_id;
 	}
 
 	@Override
@@ -57,12 +65,12 @@ public class Slot {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((availbility == null) ? 0 : availbility.hashCode());
-		result = prime * result
 				+ ((end_date == null) ? 0 : end_date.hashCode());
+		result = prime * result + inspector_id;
 		result = prime * result + slot_id;
 		result = prime * result
 				+ ((start_date == null) ? 0 : start_date.hashCode());
+		result = prime * result + student_id;
 		return result;
 	}
 
@@ -75,15 +83,12 @@ public class Slot {
 		if (getClass() != obj.getClass())
 			return false;
 		Slot other = (Slot) obj;
-		if (availbility == null) {
-			if (other.availbility != null)
-				return false;
-		} else if (!availbility.equals(other.availbility))
-			return false;
 		if (end_date == null) {
 			if (other.end_date != null)
 				return false;
 		} else if (!end_date.equals(other.end_date))
+			return false;
+		if (inspector_id != other.inspector_id)
 			return false;
 		if (slot_id != other.slot_id)
 			return false;
@@ -92,15 +97,10 @@ public class Slot {
 				return false;
 		} else if (!start_date.equals(other.start_date))
 			return false;
+		if (student_id != other.student_id)
+			return false;
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Slot [slot_id=" + slot_id + ", start_date=" + start_date
-				+ ", end_date=" + end_date + ", availbility=" + availbility
-				+ "]";
-	}
-	
-	
+
 }
