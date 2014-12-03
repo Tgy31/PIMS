@@ -137,7 +137,6 @@ function AvailabilityViewModel() {
         	dayDiff = latestDate.diff(expectedEnd, 'days', true);
         	hourDiff = latestDate.diff(expectedEnd, 'hours', true);
     	}
-    	console.log('fuck');
     	return null;
     };
     
@@ -195,21 +194,16 @@ function AvailabilityViewModel() {
     
     self.handleFetchSlots = function(result) {
     	var json = JSON.parse(result);
-    	console.log(json);
     	
     	var defaultDate = json.defaultDate;
-    	console.log(defaultDate);
-    	
     	createCalendar(defaultDate);
     	
     	self.maxHours(json.maxUnavailability);
-    	console.log(self.maxHours());
     	
     	self.addSlotsFromJSON(json.slots);
     };
     
     self.submitSlots = function() {
-    	console.log(self.quota());
     	if (self.quota() > 100) {
     		popError('Too much unavailability');
     	} else {
@@ -229,8 +223,6 @@ function AvailabilityViewModel() {
     self.generateSubmitHandler = function() {
     	var nbKeywords = self.slots().length;
     	var submitHandler = function(data, status) {
-        	console.log(data);
-        	console.log(status);
         	if (status == "success") {
             	popSuccess('Unavailability saved');
         	} else {

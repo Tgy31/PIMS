@@ -83,9 +83,6 @@ public class AvailabilityServlet extends BootstrapServlet {
 		String userType = request.getParameter("userType");
 		int userID = Integer.parseInt(request.getParameter("userID"));
 		String data = request.getParameter("slots");
-
-		System.out.println(userType + " - " + userID);
-		System.out.println(data);
 		
 		JSONArray json;
 		List<Slot> slots = new ArrayList<Slot>();
@@ -97,10 +94,6 @@ public class AvailabilityServlet extends BootstrapServlet {
 				String sEnd = jsonSlot.getString("end");
 				Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(sStart);
 				Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(sEnd);
-				System.out.println(sStart);
-				System.out.println(sEnd);
-				System.out.println(start.toString());
-				System.out.println(end.toString());
 				
 				slots.add(new Slot(start, end));
 			}
@@ -117,11 +110,6 @@ public class AvailabilityServlet extends BootstrapServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		System.out.println(slots);
-		
-		//StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
-		//boolean status = studentKeywordDAO.setKeywordsforStudent(keywordIDs, userID);
 	}
 	
 	private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -145,7 +133,6 @@ public class AvailabilityServlet extends BootstrapServlet {
 		SlotDAO slotDAO = new SlotDAO();
 		List<Slot> timeslots = null;
 		
-		System.out.println(userType);
 		switch (userType) {
 			case "student": {
 				Student student = (Student)user;
