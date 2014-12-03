@@ -41,7 +41,6 @@ public class AvailabilityServlet extends BootstrapServlet {
     public AvailabilityServlet() {
         super();
         // TODO Auto-generated constructor stub
-        this.layoutType = LayoutType.Grid;
         this.addJavascriptFile("moment.min.js");
         this.addJavascriptFile("fullcalendar.min.js");
         this.addJavascriptFile("knockout-3.2.0.js");
@@ -119,7 +118,8 @@ public class AvailabilityServlet extends BootstrapServlet {
 		
 		User user = this.getUserWithTypeAndID(userType, userID);
 		request.setAttribute("user", user);
-		
+
+        this.layoutType = LayoutType.Grid;
 		this.proceedGet("/Availability.jsp", request, response);
 	}
 	
