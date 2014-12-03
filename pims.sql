@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2014-12-03 16:22:40
+Date: 2014-12-03 21:25:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -66,7 +66,7 @@ CREATE TABLE `inspector` (
   `capacity` int(45) DEFAULT NULL,
   PRIMARY KEY (`inspector_id`),
   KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=383 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inspector
@@ -189,11 +189,12 @@ CREATE TABLE `slot` (
   KEY `inspector_id` (`inspector_id`),
   CONSTRAINT `slot_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
   CONSTRAINT `slot_ibfk_2` FOREIGN KEY (`inspector_id`) REFERENCES `inspector` (`inspector_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of slot
 -- ----------------------------
+INSERT INTO `slot` VALUES ('2', '2014-11-11 11:30:00.000000', '2014-11-11 14:00:00.000000', '1', null);
 
 -- ----------------------------
 -- Table structure for student
@@ -215,13 +216,12 @@ CREATE TABLE `student` (
   KEY `supervisor` (`supervisor`),
   CONSTRAINT `student_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`),
   CONSTRAINT `student_ibfk_3` FOREIGN KEY (`supervisor`) REFERENCES `inspector` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
 INSERT INTO `student` VALUES ('1', 'Chenxin', 'Zhao', 'cxz413@bham.ac.uk', null, 'Artificital', 'Zhiwei', 'cxz413', 'cxz413', '26581');
-INSERT INTO `student` VALUES ('2', 'Dengji', 'Zhang', 'dxz518@bham.ac.uk', null, null, 'Zhiwei', 'dxz518', 'dxz518', '26584');
 
 -- ----------------------------
 -- Table structure for student_keyword

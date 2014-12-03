@@ -234,22 +234,6 @@ public class StudentDAO {
 		return students;
 	}
 	
-	/**
-	 * refresh table increase id 
-	 */
-	public void truncateTable(){
-		String sql = "TRUNCATE TABLE student";
-		try {
-			template.update(sql);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			System.out.println("Class not found !");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
 	public boolean importCSV(File file, Module module){
 //		truncateTable();
 		Map<String, Integer> titleName = new HashMap<String, Integer>();
@@ -268,14 +252,12 @@ public class StudentDAO {
 		for (String title : recordList.get(0)) {
 			if (title.toLowerCase().contains("student") && title.toLowerCase().contains("id"))
 				titleName.put("studentID", count);
-			if (title.toLowerCase().contains("project") && title.toLowerCase().contains("id"))
-				titleName.put("projectID", count);
-//			if (title.toLowerCase().contains("module") && title.toLowerCase().contains("id"))
-//				titleName.put("moduleID", count);
 			if (title.toLowerCase().contains("project") && title.toLowerCase().contains("title"))
 				titleName.put("projectTitle", count);
 			if (title.toLowerCase().contains("first") && title.toLowerCase().contains("name"))
 				titleName.put("firstName", count);
+			if (title.toLowerCase().contains("supervisor") && title.toLowerCase().contains("name"))
+				titleName.put("supervisorName", count);
 			if (title.toLowerCase().contains("last") && title.toLowerCase().contains("name")) {
 				titleName.put("lastName", count);
 			}
@@ -294,23 +276,20 @@ public class StudentDAO {
 				student.setProject_title(record[titleName.get("projectTitle")]);
 				student.setUsername(record[titleName.get("lastName")]);
 				student.setPassword(record[titleName.get("lastName")]);
+				student.setEmail(record[titleName.get("firstName")].substring(0,1)+"."+record[titleName.get("lastName")]+"@bham.ac.uk");
+				student.setSupervisor(record[titleName.get("supervisorName")]);
+				student.setModule_id(Integer.valueOf(module.getModule_id()));
 				
 /*				if(records[titleName.get("studentID")].matches(PATTERN)){
 					student.setStudent_id(Integer.valueOf(records[titleName.get("studentID")]));
 				}*/
-				student.setEmail(record[titleName.get("firstName")].substring(0,1)+"."+record[titleName.get("lastName")]+"@bham.ac.uk");
 //				student.setProject_description(record[titleName.get("")]);
-//				student.setSupervisor(record[titleName.get("")]);
 //				if(record[titleName.get("")].matches(PATTERN)){
 //					student.setTimetable_id(Integer.valueOf(record[titleName.get("")]));
 //				}
-				if(record[titleName.get("moduleID")].matches(PATTERN)){
-					student.setModule_id(Integer.valueOf(module.getModule_id()));
-				}
 			} catch( NumberFormatException e){
 				e.printStackTrace();
 			}
-			
 			save(student);
 		}
 		return true;

@@ -37,6 +37,7 @@ public class TestDAO {
 		
 //*********Inspector**********		
 //		testDAO.testInspectorFind();
+//		testDAO.testInspectorImportCSV("G:/TestData.csv");
 		
 //*********First_Inspection****
 //		testDAO.testFirstInspectionSave();
@@ -50,6 +51,7 @@ public class TestDAO {
 		
 //**********Student**********		
 		testDAO.testStudentImportCSV("G:/TestData.csv");
+		//testDAO.testInspectorImportCSV("G:/TestData.csv");
 //		testDAO.testStudentSave();
 //		testDAO.testStudentLogin();
 //		testDAO.testStudentFindByID();
@@ -84,6 +86,10 @@ public class TestDAO {
 		System.out.println(inspectorDAO.findByInspectorName("Zhiwei", "Liu"));
 	}
 	
+	public void testInspectorImportCSV(String path){
+		InspectorDAO inspectorDAO = new InspectorDAO();
+		System.out.println(inspectorDAO.importCSV(new File(path)));
+	}
 	
 	//======Test First Inspection=============
 	public void testFirstInspectionSave() throws ParseException{
@@ -148,6 +154,8 @@ public class TestDAO {
 		module.setModule_id(26581); 
 		System.out.println(studentDAO.importCSV(new File(path), module));
 	}
+	
+	
 	
 	
 	public void testStudentSave(){
