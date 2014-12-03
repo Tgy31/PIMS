@@ -117,9 +117,10 @@ public class KeywordDAO {
 		return keywords.get(0);
 	}
 	
-	public List<Keyword> findAll(){
+	public List<Keyword> findAll(Module module){
 		String sql = "SELECT  * " + 
-							"FROM keyword ";
+							"FROM keyword " + 
+							"WHERE module_id= " + "'" + module.getModule_id() + "'";
 		List<Keyword> keywords = null;
 		try {
 			keywords = template.query(sql, new KeywordMapping());

@@ -145,6 +145,7 @@ public class TestDAO {
 	public void testStudentImportCSV(String path) throws Exception{
 		StudentDAO studentDAO = new StudentDAO();
 		Module module = new Module(); 
+		module.setModule_id(26581); 
 		System.out.println(studentDAO.importCSV(new File(path), module));
 	}
 	

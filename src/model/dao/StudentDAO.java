@@ -270,8 +270,8 @@ public class StudentDAO {
 				titleName.put("studentID", count);
 			if (title.toLowerCase().contains("project") && title.toLowerCase().contains("id"))
 				titleName.put("projectID", count);
-			if (title.toLowerCase().contains("module") && title.toLowerCase().contains("id"))
-				titleName.put("moduleID", count);
+//			if (title.toLowerCase().contains("module") && title.toLowerCase().contains("id"))
+//				titleName.put("moduleID", count);
 			if (title.toLowerCase().contains("project") && title.toLowerCase().contains("title"))
 				titleName.put("projectTitle", count);
 			if (title.toLowerCase().contains("first") && title.toLowerCase().contains("name"))
@@ -305,7 +305,7 @@ public class StudentDAO {
 //					student.setTimetable_id(Integer.valueOf(record[titleName.get("")]));
 //				}
 				if(record[titleName.get("moduleID")].matches(PATTERN)){
-					student.setModule_id(Integer.valueOf(record[titleName.get("moduleID")]));
+					student.setModule_id(Integer.valueOf(module.getModule_id()));
 				}
 			} catch( NumberFormatException e){
 				e.printStackTrace();
