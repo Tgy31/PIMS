@@ -1,5 +1,6 @@
 package model.dao;
-import static tools.Replace.*;
+import static tools.Replace.ENTER;
+import static tools.Replace.PATTERN;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +9,9 @@ import java.text.ParseException;
 import java.util.List;
 
 import model.db.Template;
+import model.entity.Inspector;
 import model.entity.Slot;
+import model.entity.Student;
 import model.mapping.SlotMapping;
 
 import org.skife.csv.CSVReader;
@@ -25,14 +28,16 @@ public class SlotDAO {
 							"			(slot_id, " +
 							"			 start_date, " 	+
 							"			 end_date, " 	+
-							"			 avalibility)" 				+ENTER+
+							"			 student_id, " 	+
+							"			 inspector_id)" 			+ENTER+
 							"values"							 		+ENTER+
-							"			(?,?,?,?)";
+							"			(?,?,?,?,?)";
 		try {
 			return (template.update(sql, slot.getSlot_id(),
 													  slot.getStart_date(),
 													  slot.getEnd_date(),
-													  slot.getAvailbility()) == 1);
+													  slot.getStudent_id(),
+													  slot.getInspector_id()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("Class not found !");
@@ -43,18 +48,74 @@ public class SlotDAO {
 		return false;
 	}
 	
+	public boolean addSlotsforStudent(List<Slot> slots, Student student){
+		boolean success =false;
+		for (Slot slot : slots) {
+			String sql = "INSERT INTO slot"	+ENTER+
+					"			(start_date, " 	+
+					"			 end_date, " 	+
+					"			 student_id)" 			+ENTER+
+					"values"							 	+ENTER+
+					"			(?,?,?)";
+			try {
+				success = template.update(sql,slot.getStart_date(),
+														slot.getEnd_date(),
+														student.getStudent_id()) == 1;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				System.out.println("Class not found !");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Save opertaion failed !");
+			}
+			success = false;
+		}
+		return success;
+	}
+	
+	
+	
+	
+	
+	public boolean addSlotsforInspector(List<Slot> slots, Inspector inspector){
+		boolean success = false;
+		for (Slot slot : slots) {
+			String sql = "INSERT INTO slot"	+ENTER+
+					"			(start_date, " 	+
+					"			 end_date, " 	+
+					"			 inspector_id)" 			+ENTER+
+					"values"							 	+ENTER+
+					"			(?,?,?)";
+			try {
+				success = template.update(sql,slot.getStart_date(),
+														slot.getEnd_date(),
+														inspector.getInspector_id()) == 1;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				System.out.println("Class not found !");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Save opertaion failed !");
+			}
+			success = false;
+		}
+		return success;
+	}
+	
 	public boolean update(Slot slot){
 		String sql = "update slot"								+ENTER+
-							"set"													+ENTER+
+							"set"											+ENTER+
 							"			 start_date= ?, "+
 							"			 end_date= ?, "+
-							"			 avalibility= ?"		+ENTER+
-							"where"											+ENTER+
+							"			 student_id= ?, "+
+							"			 inspector_id= ? "			+ENTER+
+							"where"										+ENTER+
 							"			slot_id = ?";
 		try {
 			return (template.update(sql, slot.getStart_date(),
 													  slot.getEnd_date(),
-													  slot.getAvailbility(),
+													  slot.getStudent_id(),
+													  slot.getInspector_id(),
 													  slot.getSlot_id()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -66,8 +127,36 @@ public class SlotDAO {
 		return false;
 	}
 	
-	public boolean deleteBySlotD(int ID){
+	public boolean deleteBySlotID(int ID){
 		String sql = "delete from slot where slot_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean deleteByStudentID(int ID){
+		String sql = "delete from slot where student_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean deleteByInspectorID(int ID){
+		String sql = "delete from slot where inspector_id = '"+ID+"'";
 		try {
 			return (template.update(sql) == 1);
 		} catch (ClassNotFoundException e) {
@@ -97,6 +186,40 @@ public class SlotDAO {
 		return slots.get(0);
 	}
 	
+	public List<Slot> findByStudentID(int ID){
+		String sql = "SELECT  * " + 
+							"FROM slot " + 
+							"WHERE student_id= " + "'" + ID + "'";
+		List<Slot> slots = null;
+		try {
+			slots = template.query(sql, new SlotMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return slots;
+	}
+	
+	public List<Slot> findByInspectorID(int ID){
+		String sql = "SELECT  * " + 
+							"FROM slot " + 
+							"WHERE inspector_id= " + "'" + ID + "'";
+		List<Slot> slots = null;
+		try {
+			slots = template.query(sql, new SlotMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return slots;
+	}
+	
 	public List<Slot> findAll(){
 		String sql = "SELECT  * " + 
 							"FROM slot ";
@@ -113,6 +236,11 @@ public class SlotDAO {
 		return slots;
 	}
 	
+	/**
+	 * abandoned
+	 * @param file
+	 * @return
+	 */
 	public boolean importCSV(File file) {
 		List<String[]> recordList = null;
 		try {
@@ -133,7 +261,6 @@ public class SlotDAO {
 				}
 				slot.setStart_date(DateConvert.ConverFromCSVToDate(records[1]));
 				slot.setEnd_date(DateConvert.ConverFromCSVToDate(records[2]));
-				slot.setAvailbility(Boolean.valueOf(records[3]));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}catch( NumberFormatException e){

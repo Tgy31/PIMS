@@ -1,12 +1,16 @@
 package model.dao;
-import static tools.Replace.*;
+import static tools.Replace.ENTER;
+import static tools.Replace.PATTERN;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.db.Template;
+import model.entity.Module;
 import model.entity.Student;
 import model.mapping.StudentMapping;
 
@@ -23,30 +27,24 @@ public class StudentDAO {
 							"			 first_name, "+
 							"			 last_name, "+
 							"			 email, " 		+
-							"			 project_id, " +
 							"			 project_title, " +
 							"			 project_description, " +
 							"			 supervisor, "+
 							"			 username, "+
 							"			 password, "+
-							"			 timetable_id, "+
-							"			 course_id, "+	
 							"			 module_id)"		 +ENTER+
 							"values"							 +ENTER+
-							"			(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+							"			(?,?,?,?,?,?,?,?,?,?)";
 		try {
 			return (template.update(sql, student.getStudent_id(), 
 													student.getFirst_name(),
 													student.getLast_name(),
 													student.getEmail(),
-													student.getProject_id(),
 													student.getProject_title(),
 													student.getProject_description(),
 													student.getSupervisor(),
 													student.getUsername(),
 													student.getPassword(),
-													student.getTimetable_id(),
-													student.getCourse_id(),
 													student.getModule_id()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -65,14 +63,11 @@ public class StudentDAO {
 							"			 first_name= ?, "+
 							"			 last_name= ?, "+
 							"			 email= ?, " 		+
-							"			 project_id= ?, " +
 							"			 project_title= ?, " +
 							"			 project_description= ?, " +
 							"			 supervisor= ?, "+
 							"			 username= ?, "+
 							"			 password= ?, "+
-							"			 timetable_id= ?, "+
-							"			 course_id= ?, "+
 							"			 module_id= ?"					+ENTER+
 							"where"											+ENTER+
 							"			student_id = ?";
@@ -80,14 +75,11 @@ public class StudentDAO {
 			return (template.update(sql, student.getFirst_name(),
 															student.getLast_name(),
 															student.getEmail(),
-															student.getProject_id(),
 															student.getProject_title(),
 															student.getProject_description(),
 															student.getSupervisor(),
 															student.getUsername(),
 															student.getPassword(),
-															student.getTimetable_id(),
-															student.getCourse_id(),
 															student.getModule_id(),
 															student.getStudent_id()) == 1);
 		} catch (ClassNotFoundException e) {
@@ -167,44 +159,10 @@ public class StudentDAO {
 		return student;
 	}
 	
-	public Student findByProjectID(int ID){
-		String sql = "SELECT  * " + 
-							"FROM student " + 
-							"WHERE project_id= " + "'" + ID + "'";
-		List<Student> students = null;
-		try {
-			students = template.query(sql, new StudentMapping());
-		} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-		System.out.println("Class not found !");
-		} catch (SQLException e) {
-		e.printStackTrace();
-		System.out.println("Find by No operation is failed ");
-		}
-		return students.get(0);
-	}
-	
 	public Student findBySupervisor(String ID){
 		String sql = "SELECT  * " + 
 							"FROM student " + 
 							"WHERE supervisor= " + "'" + ID + "'";
-		List<Student> students = null;
-		try {
-			students = template.query(sql, new StudentMapping());
-		} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-		System.out.println("Class not found !");
-		} catch (SQLException e) {
-		e.printStackTrace();
-		System.out.println("Find by No operation is failed ");
-		}
-		return students.get(0);
-	}
-	
-	public Student findByCourseID(int ID){
-		String sql = "SELECT  * " + 
-							"FROM student " + 
-							"WHERE course_id= " + "'" + ID + "'";
 		List<Student> students = null;
 		try {
 			students = template.query(sql, new StudentMapping());
@@ -276,49 +234,85 @@ public class StudentDAO {
 		return students;
 	}
 	
-	public boolean importCSV(File file){
+	/**
+	 * refresh table increase id 
+	 */
+	public void truncateTable(){
+		String sql = "TRUNCATE TABLE student";
+		try {
+			template.update(sql);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public boolean importCSV(File file, Module module){
+//		truncateTable();
+		Map<String, Integer> titleName = new HashMap<String, Integer>();
 		List<String[]> recordList = null;
+		String[] record = null;
+		int count=0;
+		
 		try {
 			recordList = reader.parse(file);
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		Student student = new Student();
 		boolean hasHeaderRecords = true;
+		
+		for (String title : recordList.get(0)) {
+			if (title.toLowerCase().contains("student") && title.toLowerCase().contains("id"))
+				titleName.put("studentID", count);
+			if (title.toLowerCase().contains("project") && title.toLowerCase().contains("id"))
+				titleName.put("projectID", count);
+			if (title.toLowerCase().contains("module") && title.toLowerCase().contains("id"))
+				titleName.put("moduleID", count);
+			if (title.toLowerCase().contains("project") && title.toLowerCase().contains("title"))
+				titleName.put("projectTitle", count);
+			if (title.toLowerCase().contains("first") && title.toLowerCase().contains("name"))
+				titleName.put("firstName", count);
+			if (title.toLowerCase().contains("last") && title.toLowerCase().contains("name")) {
+				titleName.put("lastName", count);
+			}
+			
+			count++;
+		}
+		
 		for (int r = 0; r < recordList.size(); r++) {
-			String[] records = recordList.get(r);
+			record = recordList.get(r);
 			if (r == 0 && hasHeaderRecords) {
 				continue;
 			}
 			try{
+				student.setFirst_name(record[titleName.get("firstName")]);
+				student.setLast_name(record[titleName.get("lastName")]);
+				student.setProject_title(record[titleName.get("projectTitle")]);
+				student.setUsername(record[titleName.get("lastName")]);
+				student.setPassword(record[titleName.get("lastName")]);
 				
-				if(records[0].matches(PATTERN)){
-					student.setStudent_id(Integer.valueOf(records[0]));
-				}
-				student.setFirst_name(records[1]);
-				student.setLast_name(records[2]);
-				student.setEmail(records[3]);
-				if(records[4].matches(PATTERN)){
-					student.setProject_id(Integer.valueOf(records[4]));
-				}
-				student.setProject_title(records[5]);
-				student.setProject_description(records[6]);
-				student.setSupervisor(records[7]);
-				student.setUsername(records[8]);
-				student.setPassword(records[9]);
-				if(records[10].matches(PATTERN)){
-					student.setTimetable_id(Integer.valueOf(records[10]));
-				}
-				if(records[11].matches(PATTERN)){
-					student.setCourse_id(Integer.valueOf(records[11]));
-				}
-				if(records[12].matches(PATTERN)){
-					student.setModule_id(Integer.valueOf(records[12]));
+/*				if(records[titleName.get("studentID")].matches(PATTERN)){
+					student.setStudent_id(Integer.valueOf(records[titleName.get("studentID")]));
+				}*/
+				student.setEmail(record[titleName.get("firstName")].substring(0,1)+"."+record[titleName.get("lastName")]+"@bham.ac.uk");
+//				student.setProject_description(record[titleName.get("")]);
+//				student.setSupervisor(record[titleName.get("")]);
+//				if(record[titleName.get("")].matches(PATTERN)){
+//					student.setTimetable_id(Integer.valueOf(record[titleName.get("")]));
+//				}
+				if(record[titleName.get("moduleID")].matches(PATTERN)){
+					student.setModule_id(Integer.valueOf(record[titleName.get("moduleID")]));
 				}
 			} catch( NumberFormatException e){
 				e.printStackTrace();
 			}
+			
+			save(student);
 		}
-		return save(student);
+		return true;
 	}
 }
