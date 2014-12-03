@@ -28,48 +28,33 @@ function KeywordViewModel() {
         self.keywords.remove(keyword);
     };
     
-    self.keywoardWithID = function(keywordID) {
-    	var keyword = null;
-    	this.keywords().forEach(function(keywordIte) {
-    	    if (keywordIte.id == keywordID) {
-    	    	keyword = keywordIte;
-    	    }
-    	});
-    	return keyword;
-    };
-    
     self.fetchKeywords = function() {
     	var jsonDiv = $('#json-variables');
-    	self.handleFetchKeywords(jsonDiv.text());
-    };
-    
-    self.handleFetchKeywords = function(result) {
-    	var json = JSON.parse(result);
+    	var json = JSON.parse(jsonDiv.text());
     	
     	// Reset arrays
     	self.keywords.removeAll();
-    	
-        // find selected keywords
     	json.forEach(function(name) {
     	    self.keywords.push(new Keyword(name));
     	});
     };
     
-    self.submitKeywords = function() {
-
-    	var userType = getParameterByName('type');
-    	var userID = getParameterByName('id');
-    	var url = '/PIMS/keywords/';
-    	var data = {
-    		userType: userType,
-    		userID: userID,
-    		keywords: JSON.stringify(self.selectedKeywords())
-    	};
-    	
-    	$.post(url, data, self.generateSubmitHandler());
+    self.getKeywords = function() {
+    	var keywords = [];
+    	self.keywords().forEach(function(keyword) {
+    		keywords.push(keyword.name);
+    	});
+    	return keywords;
     };
     
     self.fetchKeywords();
 }
 
-ko.applyBindings(new KeywordViewModel());
+var keywordViewModel = new KeywordViewModel();
+ko.applyBindings(keywordViewModel);
+
+
+document.getElementById("submitButton").onclick = function() {
+	var keywordsString = keywordViewModel.getKeywords().toString();
+    document.getElementById("inputKeywords").value = keywordsString;
+};

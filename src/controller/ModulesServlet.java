@@ -37,6 +37,26 @@ public class ModulesServlet extends BootstrapServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.doView(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String title = request.getParameter("inputTitle");
+		String sKeywordList = request.getParameter("inputKeywords");
+		String[] keywordList = sKeywordList.split(",");
+
+		System.out.println(title);
+		System.out.println(sKeywordList);
+		System.out.println(keywordList[0]);
+		
+		this.doView(request, response);
+	}
+	
+	private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String moduleSlug = this.getModuleSlug(request);
 		Module module = this.getModuleFromRequestPath(request);
@@ -49,13 +69,6 @@ public class ModulesServlet extends BootstrapServlet {
 		} else {
 			this.proceedModuleList(request, response);
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 	
 	protected void proceedModuleList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

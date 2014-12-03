@@ -17,7 +17,7 @@
 
 </div>
 
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form" method="post">
 
 	<div class="panel panel-default">
 	  <div class="panel-heading">
@@ -52,6 +52,7 @@
 		
 			<div class="input-group">	
 				<input type="text" id="inputKeywordName" class="form-control" placeholder="Web, mobile, network..."></input>
+				<input type="hidden" id="inputKeywords" name="inputKeywords"></input>
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button" data-bind="click: addKeyword">Add keyword</button>
 				</span>
@@ -77,7 +78,7 @@
   
   <div class="form-group">
     <div class="pull-right">
-      <button type="submit" class="btn btn-primary margin-14">Save</button>
+      <button type="submit" id="submitButton" class="btn btn-primary margin-14">Save</button>
     </div>
   </div>
 </form>
