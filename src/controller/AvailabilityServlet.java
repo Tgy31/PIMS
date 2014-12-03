@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.dao.InspectorDAO;
 import model.dao.KeywordDAO;
+import model.dao.SlotDAO;
 import model.dao.StudentDAO;
 import model.dao.StudentKeywordDAO;
 import model.entity.Keyword;
+import model.entity.Slot;
 import model.entity.Student;
 import model.entity.User;
 
@@ -90,22 +92,21 @@ public class AvailabilityServlet extends BootstrapServlet {
 		
 		User user = this.getUserWithTypeAndID(userType, userID);
 		
-		// existingKeywords && userKeywords
-		KeywordDAO keywordDAO = new KeywordDAO();
-		List<Keyword> moduleKeywords = keywordDAO.findAll();
-		request.setAttribute("moduleKeywords", moduleKeywords);
+		SlotDAO slotDAO = new SlotDAO();
+		List<Slot> timeslots = null;
 		
 		System.out.println(userType);
 		switch (userType) {
 			case "student": {
 				Student student = (Student)user;
-				StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
-				List<Keyword> userKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
-				request.setAttribute("userKeywords", userKeywords);
+				timeslots = slotDAO.findByStudentID(student.getStudent_id());
 				break;
 			}
 		}
+		request.setAttribute("timeslots", timeslots);
 		
+		request.setAttribute("maxUnavailableHours", 5);
+		request.setAttribute("inspectionDate", "2014-11-12");
 	
         this.layoutType = LayoutType.JSON;
         response.setContentType("application/json"); 

@@ -1,5 +1,6 @@
 package model.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Slot {
@@ -33,6 +34,16 @@ public class Slot {
 
 	public Date getStart_date() {
 		return start_date;
+	}
+	
+	public String getFormattedStartDate() {
+		String formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(this.start_date);
+		return formattedDate;
+	}
+	
+	public String getFormattedEndDate() {
+		String formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(this.end_date);
+		return formattedDate;
 	}
 
 	public void setStart_date(Date start_date) {

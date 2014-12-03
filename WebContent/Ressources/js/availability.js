@@ -82,10 +82,14 @@ function AvailabilityViewModel() {
     self.addSlotsFromJSON = function(json) {
     	var tempSlots = [];
     	json.forEach(function(slotData) {
+    		slotData.constraint = 'businessHours';
+    		slotData.color = "#F1A72F";
+    		slotData.overlap = shouldOverlap;
     		var newSlot = new Slot(slotData);
     		tempSlots.push(newSlot);
     	});
     	self.slots(tempSlots);
+    	self.setCalendarNeedUpdate();
     };
     
     
@@ -118,7 +122,6 @@ function AvailabilityViewModel() {
     	for (var i = 0; i <= slots.length && (dayDiff >= 0 || hourDiff >= 0); i++) { // && not the same day or before end of day
     		if (end.diff(start, 'hours', true) >= deltaHours) {
     			return new Slot({
-    				id: staticIndex,
     				start: start.format(),
     				end: expectedEnd.format(),
     				constraint: 'businessHours',
@@ -184,7 +187,7 @@ function AvailabilityViewModel() {
     	var userID = getParameterByName('id');
     	var contentType = 'json';
 		$.ajax({
-			url: '/PIMS/Ressources/fake/avaibility.html', //'/PIMS/keywords/?type=' + userType + '&id=' + userID +'&content='+ contentType,
+			url: '/PIMS/availability/?type=' + userType + '&id=' + userID +'&content='+ contentType,
 			success: this.handleFetchSlots,
 			error: null
 		});
@@ -201,6 +204,8 @@ function AvailabilityViewModel() {
     	
     	self.maxHours(json.maxUnavailability);
     	console.log(self.maxHours());
+    	
+    	self.addSlotsFromJSON(json.slots);
     };
     
     self.submitSlots = function() {

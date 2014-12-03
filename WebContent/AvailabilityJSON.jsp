@@ -7,8 +7,8 @@
 	"slots": [
 		<c:forEach items="${ timeslots }" var="timeslot" varStatus="timeslotStatus">
 			{
-				"start": "${ timeslot.getKeyword_id() }",
-				"end": "${ timeslot.getKeyword_name() }"
+				"start": "${ timeslot.getFormattedStartDate() }",
+				"end": "${ timeslot.getFormattedEndDate() }"
 			}
 			<c:if test="${ timeslotStatus.index < timeslots.size() - 1 }">
 			,
