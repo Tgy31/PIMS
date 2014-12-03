@@ -209,28 +209,32 @@ function AvailabilityViewModel() {
     };
     
     self.submitSlots = function() {
-
-    	var userType = getParameterByName('type');
-    	var userID = getParameterByName('id');
-    	var url = '/PIMS/keywords/';
-    	var data = {
-    		userType: userType,
-    		userID: userID,
-    		keywords: JSON.stringify(self.selectedKeywords())
-    	};
-    	
-    	$.post(url, data, self.generateSubmitHandler());
+    	console.log(self.quota());
+    	if (self.quota() > 100) {
+    		popError('Too much unavailability');
+    	} else {
+        	var userType = getParameterByName('type');
+        	var userID = getParameterByName('id');
+        	var url = '/PIMS/availability/';
+        	var data = {
+        		userType: userType,
+        		userID: userID,
+        		slots: JSON.stringify(self.slots())
+        	};
+        	
+        	$.post(url, data, self.generateSubmitHandler());
+    	}
     };
     
     self.generateSubmitHandler = function() {
-    	var nbKeywords = self.selectedKeywords().length;
+    	var nbKeywords = self.slots().length;
     	var submitHandler = function(data, status) {
         	console.log(data);
         	console.log(status);
         	if (status == "success") {
-            	popSuccess(nbKeywords);
+            	popSuccess('Unavailability saved');
         	} else {
-        		popError(nbKeywords);
+        		popError('Error');
         	}
         };
         return submitHandler;
@@ -260,3 +264,16 @@ function AvailabilityViewModel() {
 
 var availabilityKnockout = new AvailabilityViewModel();
 ko.applyBindings(availabilityKnockout);
+
+
+function popSuccess(message) {
+	var html = '<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+message+'</div>';
+	html = html + $("#alert-zone").html();
+	$("#alert-zone").html(html);
+}
+
+function popError(message) {
+	var html = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+message+'</div>';
+	html = html + $("#alert-zone").html();
+	$("#alert-zone").html(html);
+}

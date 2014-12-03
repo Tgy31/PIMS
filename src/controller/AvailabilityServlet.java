@@ -1,6 +1,11 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -8,6 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import model.dao.InspectorDAO;
 import model.dao.KeywordDAO;
@@ -70,8 +79,44 @@ public class AvailabilityServlet extends BootstrapServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		this.proceedPost("/Availability.jsp", request, response);
+		
+		String userType = request.getParameter("userType");
+		int userID = Integer.parseInt(request.getParameter("userID"));
+		String data = request.getParameter("slots");
+
+		System.out.println(userType + " - " + userID);
+		System.out.println(data);
+		
+		JSONArray json;
+		List<Slot> slots = new ArrayList<Slot>();
+		try {
+			json = new JSONArray(data);
+			for (int i = 0; i < json.length(); i++) {
+				JSONObject jsonSlot = json.getJSONObject(i);
+				String sStart = jsonSlot.getString("start");
+				String sEnd = jsonSlot.getString("end");
+				Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(sStart);
+				Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(sEnd);
+				System.out.println(sStart);
+				System.out.println(sEnd);
+				System.out.println(start.toString());
+				System.out.println(end.toString());
+			}
+		} catch (JSONException e) {
+			response.setStatus(500); 
+		    PrintWriter out = response.getWriter();
+		    out.println("error");
+		    out.close();
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(slots);
+		
+		//StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
+		//boolean status = studentKeywordDAO.setKeywordsforStudent(keywordIDs, userID);
 	}
 	
 	private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
