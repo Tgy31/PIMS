@@ -73,10 +73,6 @@ public class SlotDAO {
 		return success;
 	}
 	
-	
-	
-	
-	
 	public boolean addSlotsforInspector(List<Slot> slots, Inspector inspector){
 		boolean success = false;
 		for (Slot slot : slots) {
@@ -156,6 +152,34 @@ public class SlotDAO {
 	}
 	
 	public boolean deleteByInspectorID(int ID){
+		String sql = "delete from slot where inspector_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean  removeSlotsfromStudentID(int ID){
+		String sql = "delete from slot where student_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean  removeSlotsfromInspectorID(int ID){
 		String sql = "delete from slot where inspector_id = '"+ID+"'";
 		try {
 			return (template.update(sql) == 1);
