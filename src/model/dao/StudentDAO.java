@@ -4,9 +4,12 @@ import static tools.Replace.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.db.Template;
+import model.entity.Module;
 import model.entity.Student;
 import model.mapping.StudentMapping;
 
@@ -276,17 +279,20 @@ public class StudentDAO {
 		return students;
 	}
 	
-	public boolean importCSV(File file){
+	public boolean importCSV(File file, Module module){
+//		truncateTable();
+		Map<String, Integer> titleName = new HashMap<String, Integer>();
 		List<String[]> recordList = null;
+		String[] record = null;
+		int count=0;
+		
 		try {
 			recordList = reader.parse(file);
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		Student student = new Student();
 		boolean hasHeaderRecords = true;
-<<<<<<< Updated upstream
-=======
 		
 		for (String title : recordList.get(0)) {
 			if (title.toLowerCase().contains("student") && title.toLowerCase().contains("id"))
@@ -295,49 +301,21 @@ public class StudentDAO {
 				titleName.put("projectTitle", count);
 			if (title.toLowerCase().contains("first") && title.toLowerCase().contains("name"))
 				titleName.put("firstName", count);
-			if (title.toLowerCase().contains("last") && title.toLowerCase().contains("name"))
-				titleName.put("lastName", count);
 			if (title.toLowerCase().contains("supervisor") && title.toLowerCase().contains("name"))
 				titleName.put("supervisorName", count);
+			if (title.toLowerCase().contains("last") && title.toLowerCase().contains("name")) {
+				titleName.put("lastName", count);
+			}
+			
 			count++;
 		}
 		
->>>>>>> Stashed changes
 		for (int r = 0; r < recordList.size(); r++) {
-			String[] records = recordList.get(r);
+			record = recordList.get(r);
 			if (r == 0 && hasHeaderRecords) {
 				continue;
 			}
 			try{
-<<<<<<< Updated upstream
-				
-				if(records[0].matches(PATTERN)){
-					student.setStudent_id(Integer.valueOf(records[0]));
-				}
-				student.setFirst_name(records[1]);
-				student.setLast_name(records[2]);
-				student.setEmail(records[3]);
-				if(records[4].matches(PATTERN)){
-					student.setProject_id(Integer.valueOf(records[4]));
-				}
-				student.setProject_title(records[5]);
-				student.setProject_description(records[6]);
-				student.setSupervisor(records[7]);
-				student.setUsername(records[8]);
-				student.setPassword(records[9]);
-				if(records[10].matches(PATTERN)){
-					student.setTimetable_id(Integer.valueOf(records[10]));
-				}
-				if(records[11].matches(PATTERN)){
-					student.setCourse_id(Integer.valueOf(records[11]));
-				}
-				if(records[12].matches(PATTERN)){
-					student.setModule_id(Integer.valueOf(records[12]));
-				}
-			} catch( NumberFormatException e){
-				e.printStackTrace();
-			}
-=======
 				student.setFirst_name(record[titleName.get("firstName")]);
 				student.setLast_name(record[titleName.get("lastName")]);
 				student.setProject_title(record[titleName.get("projectTitle")]);
@@ -358,8 +336,7 @@ public class StudentDAO {
 				e.printStackTrace();
 			}
 			save(student);
->>>>>>> Stashed changes
 		}
-		return save(student);
+		return true;
 	}
 }
