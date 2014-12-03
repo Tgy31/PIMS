@@ -32,11 +32,9 @@ public class StudentDAO {
 							"			 supervisor, "+
 							"			 username, "+
 							"			 password, "+
-							"			 timetable_id, "+
-							"			 course_id, "+	
 							"			 module_id)"		 +ENTER+
 							"values"							 +ENTER+
-							"			(?,?,?,?,?,?,?,?,?,?,?,?)";
+							"			(?,?,?,?,?,?,?,?,?,?)";
 		try {
 			return (template.update(sql, student.getStudent_id(), 
 													student.getFirst_name(),
@@ -47,8 +45,6 @@ public class StudentDAO {
 													student.getSupervisor(),
 													student.getUsername(),
 													student.getPassword(),
-													student.getTimetable_id(),
-													student.getCourse_id(),
 													student.getModule_id()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -72,8 +68,6 @@ public class StudentDAO {
 							"			 supervisor= ?, "+
 							"			 username= ?, "+
 							"			 password= ?, "+
-							"			 timetable_id= ?, "+
-							"			 course_id= ?, "+
 							"			 module_id= ?"					+ENTER+
 							"where"											+ENTER+
 							"			student_id = ?";
@@ -86,8 +80,6 @@ public class StudentDAO {
 															student.getSupervisor(),
 															student.getUsername(),
 															student.getPassword(),
-															student.getTimetable_id(),
-															student.getCourse_id(),
 															student.getModule_id(),
 															student.getStudent_id()) == 1);
 		} catch (ClassNotFoundException e) {
@@ -184,23 +176,6 @@ public class StudentDAO {
 		return students.get(0);
 	}
 	
-	public Student findByCourseID(int ID){
-		String sql = "SELECT  * " + 
-							"FROM student " + 
-							"WHERE course_id= " + "'" + ID + "'";
-		List<Student> students = null;
-		try {
-			students = template.query(sql, new StudentMapping());
-		} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-		System.out.println("Class not found !");
-		} catch (SQLException e) {
-		e.printStackTrace();
-		System.out.println("Find by No operation is failed ");
-		}
-		return students.get(0);
-	}
-	
 	public List<Student> findByModuleID(int ID){
 		String sql = "SELECT  * " + 
 							"FROM student " + 
@@ -276,7 +251,7 @@ public class StudentDAO {
 	
 	
 	public boolean importCSV(File file, Module module){
-		//truncateTable();
+//		truncateTable();
 		Map<String, Integer> titleName = new HashMap<String, Integer>();
 		List<String[]> recordList = null;
 		String[] record = null;
@@ -295,8 +270,6 @@ public class StudentDAO {
 				titleName.put("studentID", count);
 			if (title.toLowerCase().contains("project") && title.toLowerCase().contains("id"))
 				titleName.put("projectID", count);
-			if (title.toLowerCase().contains("course") && title.toLowerCase().contains("id"))
-				titleName.put("courseID", count);
 			if (title.toLowerCase().contains("module") && title.toLowerCase().contains("id"))
 				titleName.put("moduleID", count);
 			if (title.toLowerCase().contains("project") && title.toLowerCase().contains("title"))
@@ -331,9 +304,6 @@ public class StudentDAO {
 //				if(record[titleName.get("")].matches(PATTERN)){
 //					student.setTimetable_id(Integer.valueOf(record[titleName.get("")]));
 //				}
-				if(record[titleName.get("courseID")].matches(PATTERN)){
-					student.setCourse_id(Integer.valueOf(record[titleName.get("courseID")]));
-				}
 				if(record[titleName.get("moduleID")].matches(PATTERN)){
 					student.setModule_id(Integer.valueOf(record[titleName.get("moduleID")]));
 				}

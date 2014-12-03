@@ -9,7 +9,9 @@ import java.text.ParseException;
 import java.util.List;
 
 import model.db.Template;
+import model.entity.Inspector;
 import model.entity.Slot;
+import model.entity.Student;
 import model.mapping.SlotMapping;
 
 import org.skife.csv.CSVReader;
@@ -44,6 +46,60 @@ public class SlotDAO {
 			System.out.println("Save opertaion failed !");
 		}
 		return false;
+	}
+	
+	public boolean addSlotsforStudent(List<Slot> slots, Student student){
+		boolean success =false;
+		for (Slot slot : slots) {
+			String sql = "INSERT INTO slot"	+ENTER+
+					"			(start_date, " 	+
+					"			 end_date, " 	+
+					"			 student_id)" 			+ENTER+
+					"values"							 	+ENTER+
+					"			(?,?,?)";
+			try {
+				success = template.update(sql,slot.getStart_date(),
+														slot.getEnd_date(),
+														student.getStudent_id()) == 1;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				System.out.println("Class not found !");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Save opertaion failed !");
+			}
+			success = false;
+		}
+		return success;
+	}
+	
+	
+	
+	
+	
+	public boolean addSlotsforInspector(List<Slot> slots, Inspector inspector){
+		boolean success = false;
+		for (Slot slot : slots) {
+			String sql = "INSERT INTO slot"	+ENTER+
+					"			(start_date, " 	+
+					"			 end_date, " 	+
+					"			 inspector_id)" 			+ENTER+
+					"values"							 	+ENTER+
+					"			(?,?,?)";
+			try {
+				success = template.update(sql,slot.getStart_date(),
+														slot.getEnd_date(),
+														inspector.getInspector_id()) == 1;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				System.out.println("Class not found !");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Save opertaion failed !");
+			}
+			success = false;
+		}
+		return success;
 	}
 	
 	public boolean update(Slot slot){
