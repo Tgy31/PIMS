@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2014-12-03 16:06:15
+Date: 2014-12-03 16:22:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -220,6 +220,8 @@ CREATE TABLE `student` (
 -- ----------------------------
 -- Records of student
 -- ----------------------------
+INSERT INTO `student` VALUES ('1', 'Chenxin', 'Zhao', 'cxz413@bham.ac.uk', null, 'Artificital', 'Zhiwei', 'cxz413', 'cxz413', '26581');
+INSERT INTO `student` VALUES ('2', 'Dengji', 'Zhang', 'dxz518@bham.ac.uk', null, null, 'Zhiwei', 'dxz518', 'dxz518', '26584');
 
 -- ----------------------------
 -- Table structure for student_keyword

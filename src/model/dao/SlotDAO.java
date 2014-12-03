@@ -5,19 +5,17 @@ import static tools.Replace.PATTERN;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 
 import model.db.Template;
 import model.entity.Inspector;
 import model.entity.Slot;
 import model.entity.Student;
+import model.entity.TimeSlot;
 import model.mapping.SlotMapping;
 
 import org.skife.csv.CSVReader;
 import org.skife.csv.SimpleReader;
-
-import tools.DateConvert;
 
 public class SlotDAO {
 	private Template template = new Template();
@@ -48,9 +46,9 @@ public class SlotDAO {
 		return false;
 	}
 	
-	public boolean addSlotsforStudent(List<Slot> slots, Student student){
+	public boolean addSlotsforStudent(List<TimeSlot> timeSlots, Student student){
 		boolean success =false;
-		for (Slot slot : slots) {
+		for (TimeSlot timeSlot : timeSlots) {
 			String sql = "INSERT INTO slot"	+ENTER+
 					"			(start_date, " 	+
 					"			 end_date, " 	+
@@ -58,8 +56,8 @@ public class SlotDAO {
 					"values"							 	+ENTER+
 					"			(?,?,?)";
 			try {
-				success = template.update(sql,slot.getStart_date(),
-														slot.getEnd_date(),
+				success = template.update(sql,timeSlot.getStartDate(),
+														timeSlot.getEndDate(),
 														student.getStudent_id()) == 1;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -73,13 +71,9 @@ public class SlotDAO {
 		return success;
 	}
 	
-	
-	
-	
-	
-	public boolean addSlotsforInspector(List<Slot> slots, Inspector inspector){
+	public boolean addSlotsforInspector(List<TimeSlot> timeSlots, Inspector inspector){
 		boolean success = false;
-		for (Slot slot : slots) {
+		for (TimeSlot timeSlot : timeSlots) {
 			String sql = "INSERT INTO slot"	+ENTER+
 					"			(start_date, " 	+
 					"			 end_date, " 	+
@@ -87,9 +81,9 @@ public class SlotDAO {
 					"values"							 	+ENTER+
 					"			(?,?,?)";
 			try {
-				success = template.update(sql,slot.getStart_date(),
-														slot.getEnd_date(),
-														inspector.getInspector_id()) == 1;
+				success = template.update(sql,timeSlot.getStartDate(),
+															timeSlot.getEndDate(),
+															inspector.getInspector_id()) == 1;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				System.out.println("Class not found !");
@@ -156,6 +150,34 @@ public class SlotDAO {
 	}
 	
 	public boolean deleteByInspectorID(int ID){
+		String sql = "delete from slot where inspector_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean  removeSlotsfromStudentID(int ID){
+		String sql = "delete from slot where student_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean  removeSlotsfromInspectorID(int ID){
 		String sql = "delete from slot where inspector_id = '"+ID+"'";
 		try {
 			return (template.update(sql) == 1);
@@ -259,11 +281,9 @@ public class SlotDAO {
 				if(records[0].matches(PATTERN)){
 					slot.setSlot_id(Integer.valueOf(records[0]));
 				}
-				slot.setStart_date(DateConvert.ConverFromCSVToDate(records[1]));
-				slot.setEnd_date(DateConvert.ConverFromCSVToDate(records[2]));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}catch( NumberFormatException e){
+				//slot.setStart_date(DateConvert.ConverFromCSVToDate(records[1]));
+				//slot.setEnd_date(DateConvert.ConverFromCSVToDate(records[2]));
+			} catch( NumberFormatException e){
 				e.printStackTrace();
 			}
 		}
