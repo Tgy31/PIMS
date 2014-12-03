@@ -41,3 +41,7 @@ textarea {
 .fc-toolbar {
 	display: none;
 }
+
+#json-variables {
+	display: none;
+}
