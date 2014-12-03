@@ -1,5 +1,6 @@
 package model.dao;
-import static tools.Replace.*;
+import static tools.Replace.ENTER;
+import static tools.Replace.PATTERN;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,14 +63,11 @@ public class StudentDAO {
 							"			 first_name= ?, "+
 							"			 last_name= ?, "+
 							"			 email= ?, " 		+
-							"			 project_id= ?, " +
 							"			 project_title= ?, " +
 							"			 project_description= ?, " +
 							"			 supervisor= ?, "+
 							"			 username= ?, "+
 							"			 password= ?, "+
-							"			 timetable_id= ?, "+
-							"			 course_id= ?, "+
 							"			 module_id= ?"					+ENTER+
 							"where"											+ENTER+
 							"			student_id = ?";
@@ -77,14 +75,11 @@ public class StudentDAO {
 			return (template.update(sql, student.getFirst_name(),
 															student.getLast_name(),
 															student.getEmail(),
-															student.getProject_id(),
 															student.getProject_title(),
 															student.getProject_description(),
 															student.getSupervisor(),
 															student.getUsername(),
 															student.getPassword(),
-															student.getTimetable_id(),
-															student.getCourse_id(),
 															student.getModule_id(),
 															student.getStudent_id()) == 1);
 		} catch (ClassNotFoundException e) {
@@ -164,44 +159,10 @@ public class StudentDAO {
 		return student;
 	}
 	
-	public Student findByProjectID(int ID){
-		String sql = "SELECT  * " + 
-							"FROM student " + 
-							"WHERE project_id= " + "'" + ID + "'";
-		List<Student> students = null;
-		try {
-			students = template.query(sql, new StudentMapping());
-		} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-		System.out.println("Class not found !");
-		} catch (SQLException e) {
-		e.printStackTrace();
-		System.out.println("Find by No operation is failed ");
-		}
-		return students.get(0);
-	}
-	
 	public Student findBySupervisor(String ID){
 		String sql = "SELECT  * " + 
 							"FROM student " + 
 							"WHERE supervisor= " + "'" + ID + "'";
-		List<Student> students = null;
-		try {
-			students = template.query(sql, new StudentMapping());
-		} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-		System.out.println("Class not found !");
-		} catch (SQLException e) {
-		e.printStackTrace();
-		System.out.println("Find by No operation is failed ");
-		}
-		return students.get(0);
-	}
-	
-	public Student findByCourseID(int ID){
-		String sql = "SELECT  * " + 
-							"FROM student " + 
-							"WHERE course_id= " + "'" + ID + "'";
 		List<Student> students = null;
 		try {
 			students = template.query(sql, new StudentMapping());

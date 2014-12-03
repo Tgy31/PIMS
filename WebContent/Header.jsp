@@ -22,6 +22,10 @@
 	href="${ rootPath }Ressources/css/bootstrap-theme.min.css">
 <link rel="stylesheet"
 	href="${ rootPath }Ressources/css/main.css">
+	
+<!-- Fullcalendar -->
+<link href='${ rootPath }Ressources/css/fullcalendar.min.css' rel='stylesheet' />
+<link href='${ rootPath }Ressources/css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
