@@ -7,9 +7,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.dao.StudentDAO;
 import model.entity.Student;
+import model.entity.User;
 
 /**
  * Servlet implementation class StudentsServlet
@@ -109,19 +111,45 @@ public class StudentsServlet extends BootstrapServlet {
 			String studentSlug = this.getObjectSlug(request);
 			Student student = this.getStudentBySlug(studentSlug);
 			
-			student.setFirst_name(firstName);
-			student.setLast_name(lastName);
-			student.setEmail(email);
-			student.setProject_title(projectTitle);
-			student.setProject_description(projectDescription);
-			student.setSupervisor(supervisorID);
+			HttpSession session = request.getSession();
+			User user = (User) session.getAttribute("user");
 			
-			boolean success = studentDAO.save(student);
+			boolean success = false;
 			
-			if (success) {
-				this.setAlertView(AlertType.AlertTypeSuccess, "Student saved successfuly", request);
+			if (user.isCoordinator()) {
+				
+				// PC can change everything
+				student.setFirst_name(firstName);
+				student.setLast_name(lastName);
+				student.setEmail(email);
+				student.setProject_title(projectTitle);
+				student.setProject_description(projectDescription);
+				student.setSupervisor(supervisorID);
+				
+				success = studentDAO.save(student);
+				if (success) {
+					this.setAlertView(AlertType.AlertTypeSuccess, "Student saved successfuly", request);
+				} else {
+					this.setAlertView(AlertType.AlertTypeDanger, "Student not saved, unexpected error occurred", request);
+				}
+				
+			} else if (user.isStudent() && user.getUsername().equals(student.getUsername())) {
+				
+				// Student can only change his own project and email
+				student.setEmail(email);
+				student.setProject_title(projectTitle);
+				student.setProject_description(projectDescription);
+				
+				success = studentDAO.save(student);
+				if (success) {
+					this.setAlertView(AlertType.AlertTypeSuccess, "Student saved successfuly", request);
+				} else {
+					this.setAlertView(AlertType.AlertTypeDanger, "Student not saved, unexpected error occurred", request);
+				}
+				
 			} else {
-				this.setAlertView(AlertType.AlertTypeDanger, "Student not saved, unexpected error occurred", request);
+				success = false;
+				this.setAlertView(AlertType.AlertTypeDanger, "Access denied", request);
 			}
 			
 		} else {
