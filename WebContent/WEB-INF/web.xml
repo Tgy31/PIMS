@@ -87,6 +87,15 @@
     <url-pattern>/modules.json</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>Availability</servlet-name>
+    <servlet-class>controller.AvailabilityServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Availability</servlet-name>
+    <url-pattern>/availability</url-pattern>
+    <url-pattern>/availability/</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>Keywords</servlet-name>
     <servlet-class>controller.KeywordsServlet</servlet-class>
   </servlet>

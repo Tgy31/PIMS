@@ -37,3 +37,7 @@ textarea {
 .pull-right .margin-14 {
 	margin-right: 14px;
 }
+
+.fc-toolbar {
+	display: none;
+}
