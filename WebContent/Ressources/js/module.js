@@ -15,9 +15,13 @@ function KeywordViewModel() {
     // Operations
     self.addKeyword = function() {
     	var nameInput = document.getElementById('inputKeywordName');
-    	var keyword = new Keyword(nameInput.value);
-    	nameInput.value = "";
-        self.keywords.push(keyword);
+    	var name = nameInput.value;
+    	
+    	if (name && name.length > 0) {
+        	var keyword = new Keyword(name);
+        	nameInput.value = "";
+            self.keywords.push(keyword);
+    	}
     };
     
     self.removeKeyword = function(keyword) { 

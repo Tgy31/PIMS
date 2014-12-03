@@ -46,7 +46,7 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h3 class="panel-title">Keywords for ${ user.getFirst_name() }</h3>
+			<h3 class="panel-title">Keywords for ${ module.getModule_name() }</h3>
 		</div>
 		<div class="panel-body">
 		
@@ -61,7 +61,7 @@
 			    You have registered <span data-bind="text: keywords().length"></span> keywords:
 			</p>
 			<p data-bind="visible: keywords().length == 0">
-			    <i>enter a keyword and click "Add keyword".</i>
+			    <i>Enter a keyword and click "Add keyword".</i>
 			</p>
 			
 		</div> <!-- end panel body -->
