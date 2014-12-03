@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2014-11-21 03:56:18
+Date: 2014-12-03 21:25:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,11 +20,11 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
-  `course_id` int(20) NOT NULL,
+  `course_id` int(20) NOT NULL AUTO_INCREMENT,
   `course_name` varchar(45) DEFAULT NULL,
   `course_description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6584 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of course
@@ -38,12 +38,13 @@ INSERT INTO `course` VALUES ('6583', 'Computer Security', null);
 -- ----------------------------
 DROP TABLE IF EXISTS `first_inspection`;
 CREATE TABLE `first_inspection` (
-  `student_id` int(20) NOT NULL,
+  `first_inspection_id` int(20) NOT NULL AUTO_INCREMENT,
+  `student_id` int(20) DEFAULT '0',
   `inspector_id` int(20) DEFAULT NULL,
   `module_id` int(20) DEFAULT NULL,
   `date` datetime(6) DEFAULT NULL,
   `first_inspectioncol` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`student_id`)
+  PRIMARY KEY (`first_inspection_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -55,32 +56,61 @@ CREATE TABLE `first_inspection` (
 -- ----------------------------
 DROP TABLE IF EXISTS `inspector`;
 CREATE TABLE `inspector` (
-  `username` char(20) NOT NULL,
+  `username` char(20) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
-  `inspector_id` int(45) DEFAULT NULL,
+  `inspector_id` int(45) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) DEFAULT NULL,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `capacity` int(45) DEFAULT NULL,
-  `timetable_id` int(45) DEFAULT NULL,
-  `keywords` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`username`),
-  KEY `timetable_id` (`timetable_id`),
-  CONSTRAINT `inspector_ibfk_1` FOREIGN KEY (`timetable_id`) REFERENCES `timetable` (`timetable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`inspector_id`),
+  KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=383 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inspector
 -- ----------------------------
-INSERT INTO `inspector` VALUES ('inspector', '123', null, 'Mr.', 'Zhiwei', 'Liu', null, null, null, null);
+INSERT INTO `inspector` VALUES ('Zhiwei', 'Zhiwei', '1', 'Mr.', 'Zhiwei', 'Liu', null, null);
+
+-- ----------------------------
+-- Table structure for inspector_keyword
+-- ----------------------------
+DROP TABLE IF EXISTS `inspector_keyword`;
+CREATE TABLE `inspector_keyword` (
+  `inspector_keyword_id` int(20) NOT NULL AUTO_INCREMENT,
+  `inspector_id` int(20) DEFAULT NULL,
+  `keyword_id` int(20) DEFAULT NULL,
+  PRIMARY KEY (`inspector_keyword_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspector_keyword
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for keyword
+-- ----------------------------
+DROP TABLE IF EXISTS `keyword`;
+CREATE TABLE `keyword` (
+  `keyword_id` int(20) NOT NULL AUTO_INCREMENT,
+  `keyword_name` varchar(45) DEFAULT NULL,
+  `module_id` int(20) DEFAULT NULL,
+  PRIMARY KEY (`keyword_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of keyword
+-- ----------------------------
+INSERT INTO `keyword` VALUES ('1', 'artificial', '26581');
+INSERT INTO `keyword` VALUES ('2', 'www', '26581');
 
 -- ----------------------------
 -- Table structure for module
 -- ----------------------------
 DROP TABLE IF EXISTS `module`;
 CREATE TABLE `module` (
-  `module_id` int(20) NOT NULL,
+  `module_id` int(20) NOT NULL AUTO_INCREMENT,
   `module_name` varchar(45) DEFAULT NULL,
   `year` varchar(255) DEFAULT NULL,
   `start_date` datetime(6) DEFAULT NULL,
@@ -95,7 +125,7 @@ CREATE TABLE `module` (
   `dissertation_deadline` datetime(6) DEFAULT NULL,
   `pc_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`module_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26588 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of module
@@ -109,15 +139,15 @@ INSERT INTO `module` VALUES ('26587', 'MSc project', '2014/15', null, null, null
 -- ----------------------------
 DROP TABLE IF EXISTS `project_coordinator`;
 CREATE TABLE `project_coordinator` (
-  `username` char(20) NOT NULL,
+  `username` char(20) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
-  `pc_id` int(20) NOT NULL,
+  `pc_id` int(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) DEFAULT NULL,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`pc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of project_coordinator
@@ -131,12 +161,13 @@ INSERT INTO `project_coordinator` VALUES ('Jane2', 'jane', '3', 'Mr.', 'Jane', n
 -- ----------------------------
 DROP TABLE IF EXISTS `second_inspection`;
 CREATE TABLE `second_inspection` (
-  `student_id` int(20) NOT NULL,
+  `second_inspection_id` int(20) NOT NULL AUTO_INCREMENT,
+  `student_id` int(20) DEFAULT NULL,
   `inspector_id` int(20) DEFAULT NULL,
   `modeule_id` int(20) DEFAULT NULL,
   `date` datetime(6) DEFAULT NULL,
   `second_inspectioncol` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`student_id`)
+  PRIMARY KEY (`second_inspection_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -148,58 +179,66 @@ CREATE TABLE `second_inspection` (
 -- ----------------------------
 DROP TABLE IF EXISTS `slot`;
 CREATE TABLE `slot` (
-  `slot_id` int(20) NOT NULL,
+  `slot_id` int(20) NOT NULL AUTO_INCREMENT,
   `start_date` datetime(6) DEFAULT NULL,
   `end_date` datetime(6) DEFAULT NULL,
-  `avalibility` bit(1) DEFAULT NULL,
-  PRIMARY KEY (`slot_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `student_id` int(20) DEFAULT NULL,
+  `inspector_id` int(20) DEFAULT NULL,
+  PRIMARY KEY (`slot_id`),
+  KEY `student_id` (`student_id`),
+  KEY `inspector_id` (`inspector_id`),
+  CONSTRAINT `slot_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
+  CONSTRAINT `slot_ibfk_2` FOREIGN KEY (`inspector_id`) REFERENCES `inspector` (`inspector_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of slot
 -- ----------------------------
+INSERT INTO `slot` VALUES ('2', '2014-11-11 11:30:00.000000', '2014-11-11 14:00:00.000000', '1', null);
 
 -- ----------------------------
 -- Table structure for student
 -- ----------------------------
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
-  `student_id` int(20) NOT NULL,
+  `student_id` int(20) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
-  `project_id` int(45) DEFAULT NULL,
-  `project_title` varchar(45) DEFAULT NULL,
+  `project_title` varchar(255) DEFAULT NULL,
   `project_description` varchar(255) DEFAULT NULL,
   `supervisor` varchar(45) DEFAULT NULL,
   `username` char(20) NOT NULL,
   `password` varchar(45) DEFAULT NULL,
-  `timetable_id` int(20) DEFAULT NULL,
-  `course_id` int(20) DEFAULT NULL,
   `module_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`student_id`),
-  KEY `course_id` (`course_id`),
   KEY `module_id` (`module_id`),
-  CONSTRAINT `student_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`),
-  CONSTRAINT `student_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `supervisor` (`supervisor`),
+  CONSTRAINT `student_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`),
+  CONSTRAINT `student_ibfk_3` FOREIGN KEY (`supervisor`) REFERENCES `inspector` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES ('123456', 'Christopher', 'Wright', 'cxw518@student.bham.ac.uk', null, 'mage Analysis for Angiogenesis', '', null, 'cxw518', '123456', '2', '14', '26587');
-INSERT INTO `student` VALUES ('1488913', 'Chenxin', 'Zhao', 'cxz413@student.bham.ac.uk', null, 'Analysing Algorithms', 'Data structure', null, 'cxz413', '123456', '1', '14', '26587');
+INSERT INTO `student` VALUES ('1', 'Chenxin', 'Zhao', 'cxz413@bham.ac.uk', null, 'Artificital', 'Zhiwei', 'cxz413', 'cxz413', '26581');
 
 -- ----------------------------
--- Table structure for timetable
+-- Table structure for student_keyword
 -- ----------------------------
-DROP TABLE IF EXISTS `timetable`;
-CREATE TABLE `timetable` (
-  `timetable_id` int(20) NOT NULL,
-  `slot_id` int(20) DEFAULT NULL,
-  PRIMARY KEY (`timetable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `student_keyword`;
+CREATE TABLE `student_keyword` (
+  `student_keyword_id` int(20) NOT NULL AUTO_INCREMENT,
+  `keyword_id` int(20) DEFAULT NULL,
+  `student_id` int(20) DEFAULT NULL,
+  PRIMARY KEY (`student_keyword_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of timetable
+-- Records of student_keyword
 -- ----------------------------
+INSERT INTO `student_keyword` VALUES ('10', '2', '1');
+INSERT INTO `student_keyword` VALUES ('13', '1', '2');
+INSERT INTO `student_keyword` VALUES ('14', '1', '3');
+INSERT INTO `student_keyword` VALUES ('15', '2', '3');
+INSERT INTO `student_keyword` VALUES ('16', '3', '3');
