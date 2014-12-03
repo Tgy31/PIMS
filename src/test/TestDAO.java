@@ -12,6 +12,7 @@ import model.dao.StudentDAO;
 import model.entity.Coordinator;
 import model.entity.Course;
 import model.entity.FirstInspection;
+import model.entity.Module;
 import model.entity.Student;
 import tools.DateConvert;
 
@@ -49,7 +50,8 @@ public class TestDAO {
 //		testDAO.testCourseDeleteByID();
 		
 //**********Student**********		
-		testDAO.testStudentImportCSV("F:/student-c.csv");
+		testDAO.testStudentImportCSV("G:/TestData.csv");
+		//testDAO.testInspectorImportCSV("G:/TestData.csv");
 //		testDAO.testStudentSave();
 //		testDAO.testStudentLogin();
 //		testDAO.testStudentFindByID();
@@ -88,7 +90,6 @@ public class TestDAO {
 		InspectorDAO inspectorDAO = new InspectorDAO();
 		System.out.println(inspectorDAO.importCSV(new File(path)));
 	}
-	
 	
 	//======Test First Inspection=============
 	public void testFirstInspectionSave() throws ParseException{
@@ -149,8 +150,12 @@ public class TestDAO {
 	//========Test Student=================
 	public void testStudentImportCSV(String path) throws Exception{
 		StudentDAO studentDAO = new StudentDAO();
-		System.out.println(studentDAO.importCSV(new File(path)));
+		Module module = new Module(); 
+		module.setModule_id(26581); 
+		System.out.println(studentDAO.importCSV(new File(path), module));
 	}
+	
+	
 	
 	
 	public void testStudentSave(){

@@ -26,30 +26,24 @@ public class StudentDAO {
 							"			 first_name, "+
 							"			 last_name, "+
 							"			 email, " 		+
-							"			 project_id, " +
 							"			 project_title, " +
 							"			 project_description, " +
 							"			 supervisor, "+
 							"			 username, "+
 							"			 password, "+
-							"			 timetable_id, "+
-							"			 course_id, "+	
 							"			 module_id)"		 +ENTER+
 							"values"							 +ENTER+
-							"			(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+							"			(?,?,?,?,?,?,?,?,?,?)";
 		try {
 			return (template.update(sql, student.getStudent_id(), 
 													student.getFirst_name(),
 													student.getLast_name(),
 													student.getEmail(),
-													student.getProject_id(),
 													student.getProject_title(),
 													student.getProject_description(),
 													student.getSupervisor(),
 													student.getUsername(),
 													student.getPassword(),
-													student.getTimetable_id(),
-													student.getCourse_id(),
 													student.getModule_id()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

@@ -219,7 +219,7 @@ public class InspectorDAO {
 	
 	
 	public boolean importCSV(File file) {
-		truncateTable();
+		//truncateTable();
 		Map<String, Integer> titleName = new HashMap<String, Integer>();
 		List<String[]> recordList = null;
 		String[] record = null;
