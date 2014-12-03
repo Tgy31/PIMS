@@ -13,11 +13,14 @@ public class Slot {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		return "Slot [slot_id=" + slot_id + ", start_date=" + start_date
-				+ ", end_date=" + end_date + ", student_id=" + student_id
-				+ ", inspector_id=" + inspector_id + "]";
+	public Slot(int slot_id, Date start_date, Date end_date, int student_id,
+			int inspector_id) {
+		super();
+		this.slot_id = slot_id;
+		this.start_date = start_date;
+		this.end_date = end_date;
+		this.student_id = student_id;
+		this.inspector_id = inspector_id;
 	}
 
 	public int getSlot_id() {
@@ -102,5 +105,14 @@ public class Slot {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Slot [slot_id=" + slot_id + ", start_date=" + start_date
+				+ ", end_date=" + end_date + ", student_id=" + student_id
+				+ ", inspector_id=" + inspector_id + "]";
+	}
 
+
+
+	
 }

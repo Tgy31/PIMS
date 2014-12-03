@@ -5,12 +5,12 @@ import static tools.Replace.PATTERN;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import model.db.Template;
+import model.entity.Module;
 import model.entity.Student;
 import model.mapping.StudentMapping;
 

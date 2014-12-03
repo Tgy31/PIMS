@@ -12,6 +12,7 @@ import model.dao.StudentDAO;
 import model.entity.Coordinator;
 import model.entity.Course;
 import model.entity.FirstInspection;
+import model.entity.Module;
 import model.entity.Student;
 import tools.DateConvert;
 
@@ -143,7 +144,8 @@ public class TestDAO {
 	//========Test Student=================
 	public void testStudentImportCSV(String path) throws Exception{
 		StudentDAO studentDAO = new StudentDAO();
-		System.out.println(studentDAO.importCSV(new File(path)));
+		Module module = new Module(); 
+		System.out.println(studentDAO.importCSV(new File(path), module));
 	}
 	
 	
