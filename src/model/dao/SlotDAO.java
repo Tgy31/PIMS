@@ -12,6 +12,7 @@ import model.db.Template;
 import model.entity.Inspector;
 import model.entity.Slot;
 import model.entity.Student;
+import model.entity.TimeSlot;
 import model.mapping.SlotMapping;
 
 import org.skife.csv.CSVReader;
@@ -48,9 +49,9 @@ public class SlotDAO {
 		return false;
 	}
 	
-	public boolean addSlotsforStudent(List<Slot> slots, Student student){
+	public boolean addSlotsforStudent(List<TimeSlot> timeSlots, Student student){
 		boolean success =false;
-		for (Slot slot : slots) {
+		for (TimeSlot timeSlot : timeSlots) {
 			String sql = "INSERT INTO slot"	+ENTER+
 					"			(start_date, " 	+
 					"			 end_date, " 	+
@@ -58,8 +59,8 @@ public class SlotDAO {
 					"values"							 	+ENTER+
 					"			(?,?,?)";
 			try {
-				success = template.update(sql,slot.getStart_date(),
-														slot.getEnd_date(),
+				success = template.update(sql,timeSlot.getStartDate(),
+														timeSlot.getEndDate(),
 														student.getStudent_id()) == 1;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -73,9 +74,9 @@ public class SlotDAO {
 		return success;
 	}
 	
-	public boolean addSlotsforInspector(List<Slot> slots, Inspector inspector){
+	public boolean addSlotsforInspector(List<TimeSlot> timeSlots, Inspector inspector){
 		boolean success = false;
-		for (Slot slot : slots) {
+		for (TimeSlot timeSlot : timeSlots) {
 			String sql = "INSERT INTO slot"	+ENTER+
 					"			(start_date, " 	+
 					"			 end_date, " 	+
@@ -83,9 +84,9 @@ public class SlotDAO {
 					"values"							 	+ENTER+
 					"			(?,?,?)";
 			try {
-				success = template.update(sql,slot.getStart_date(),
-														slot.getEnd_date(),
-														inspector.getInspector_id()) == 1;
+				success = template.update(sql,timeSlot.getStartDate(),
+															timeSlot.getEndDate(),
+															inspector.getInspector_id()) == 1;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				System.out.println("Class not found !");
