@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.dao.InspectorDAO;
+import model.dao.KeywordDAO;
 import model.dao.StudentDAO;
+import model.dao.StudentKeywordDAO;
+import model.entity.Keyword;
+import model.entity.Student;
 import model.entity.User;
 
 /**
@@ -79,6 +84,32 @@ public class AvailabilityServlet extends BootstrapServlet {
 	}
 	
 	private void doJSON(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String userType = request.getParameter("type");
+		String userID = request.getParameter("id");
+		
+		User user = this.getUserWithTypeAndID(userType, userID);
+		
+		// existingKeywords && userKeywords
+		KeywordDAO keywordDAO = new KeywordDAO();
+		List<Keyword> moduleKeywords = keywordDAO.findAll();
+		request.setAttribute("moduleKeywords", moduleKeywords);
+		
+		System.out.println(userType);
+		switch (userType) {
+			case "student": {
+				Student student = (Student)user;
+				StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
+				List<Keyword> userKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
+				request.setAttribute("userKeywords", userKeywords);
+				break;
+			}
+		}
+		
+	
+        this.layoutType = LayoutType.JSON;
+        response.setContentType("application/json"); 
+		this.proceedGet("/AvailabilityJSON.jsp", request, response);
 		
 	}
 	
