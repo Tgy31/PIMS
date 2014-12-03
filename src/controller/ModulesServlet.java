@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.dao.KeywordDAO;
 import model.dao.ModuleDAO;
+import model.entity.Keyword;
 import model.entity.Module;
 
 /**
@@ -63,6 +66,11 @@ public class ModulesServlet extends BootstrapServlet {
 	protected void proceedSingleModule(Module module, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.relatedMenuClass = "module"; // Menu for selected module
 		request.setAttribute("module", module);
+		
+		KeywordDAO keywordDAO = new KeywordDAO();
+		List<Keyword> keywords = keywordDAO.findAll();
+		request.setAttribute("keywords", keywords);
+		
 		this.proceedGet("/Module.jsp", request, response);
 	}
 	
