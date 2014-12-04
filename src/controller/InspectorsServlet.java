@@ -7,8 +7,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.entity.Module;
+import model.entity.User;
 
 /**
  * Servlet implementation class InspectorsServlet
@@ -45,5 +47,23 @@ public class InspectorsServlet extends BootstrapServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
+	
+	@Override
+    public Boolean shouldDenyAcces(HttpServletRequest request) {
+		
+		if (super.shouldDenyAcces(request)) {
+			return true;
+		}
+		
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		
+		if (user.isCoordinator()) {
+			return false; // coordinator can edit students
+		} else {
+			String userSlug = this.getObjectSlug(request);
+			return !user.getUsername().equals(userSlug); // students can edit their own
+		}
+    }
 
 }

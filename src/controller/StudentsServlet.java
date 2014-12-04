@@ -174,8 +174,8 @@ public class StudentsServlet extends BootstrapServlet {
 		if (user.isCoordinator()) {
 			return false; // coordinator can edit students
 		} else {
-			String studentSlug = this.getObjectSlug(request);
-			return !user.getUsername().equals(studentSlug); // students can edit their own
+			String userSlug = this.getObjectSlug(request);
+			return !user.getUsername().equals(userSlug); // students can edit their own
 		}
     }
 

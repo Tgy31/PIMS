@@ -12,11 +12,13 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import model.dao.InspectorDAO;
 import model.dao.ModuleDAO;
 import model.dao.StudentDAO;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ import model.dao.KeywordDAO;
 import model.dao.ModuleDAO;
 import model.entity.Keyword;
 import model.entity.Module;
+import model.entity.User;
 
 /**
  * Servlet implementation class ModulesServlet
@@ -249,6 +252,19 @@ public class ModulesServlet extends BootstrapServlet {
             }
         }
         return "";
+    }
+	
+	@Override
+    public Boolean shouldDenyAcces(HttpServletRequest request) {
+		
+		if (super.shouldDenyAcces(request)) {
+			return true;
+		}
+		
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		
+		return !user.isCoordinator();
     }
 
 }
