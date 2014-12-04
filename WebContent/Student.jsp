@@ -44,6 +44,12 @@
 		    </div>
 		  </div>
 		  <div class="form-group">
+		    <label for="inputEmail" class="col-sm-2 control-label">Password</label>
+		    <div class="col-sm-10">
+		      <input type="password" class="form-control" id="inputEmail" name="inputPassword" placeholder="password" value="${ student.getPassword() }">
+		    </div>
+		  </div>
+		  <div class="form-group">
 		    <label class="col-sm-2 control-label">Unavailability</label>
 		    <div class="col-sm-10">
 		      <p class="form-control-static">

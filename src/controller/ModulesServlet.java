@@ -68,7 +68,6 @@ public class ModulesServlet extends BootstrapServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String title = request.getParameter("inputTitle");
-		
 		if (title != null) {
 			this.doKeywords(request, response);
 		} else {
@@ -78,12 +77,18 @@ public class ModulesServlet extends BootstrapServlet {
 	}
 	protected void doKeywords(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		KeywordDAO keywordDAO = new KeywordDAO();
+		ModuleDAO moduleDAO = new ModuleDAO();
+		Module module = this.getSelectedModule(request);
+
+		String title = request.getParameter("inputTitle");
+		module.setModule_name(title);
+		boolean moduleSaved = title.length() > 0 ? moduleDAO.update(module) : false;
+		
 		String sJson = request.getParameter("inputKeywords");
 
-		KeywordDAO keywordDAO = new KeywordDAO();
-		Module module = this.getSelectedModule(request);
 		
-		String error = null;
+		String error = moduleSaved ? null : "Invalid module title";
 		
 		JSONArray json;
 		ArrayList<Keyword> keywords = new ArrayList<Keyword>();

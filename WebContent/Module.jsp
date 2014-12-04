@@ -31,42 +31,28 @@
 		  <div class="form-group">
 		    <label for="inputTitle" class="col-sm-2 control-label">Name</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="inputTitle" placeholder="Title" value="${ module.getModule_name() }">
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <div class="col-sm-offset-2 col-sm-10">
-		      <div class="checkbox">
-		        <label>
-		          <input type="checkbox"> active
-		        </label>
-		      </div>
+		      <input type="text" class="form-control" id="inputTitle" name="inputTitle" placeholder="Title" value="${ module.getModule_name() }">
 		    </div>
 		  </div>
   
-	  </div> <!-- panel body -->
-	</div> <!-- panel -->
-
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h3 class="panel-title">Keywords for ${ module.getModule_name() }</h3>
-		</div>
-		<div class="panel-body">
-		
-			<div class="input-group">	
-				<input type="text" id="inputKeywordName" class="form-control" placeholder="Web, mobile, network..."></input>
-				<input type="hidden" id="inputKeywords" name="inputKeywords"></input>
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" data-bind="click: addKeyword">Add keyword</button>
-				</span>
-			</div>
-			<br />
-			<p data-bind="visible: keywords().length > 0">
-			    You have registered <span data-bind="text: keywords().length"></span> keywords:
-			</p>
-			<p data-bind="visible: keywords().length == 0">
-			    <i>Enter a keyword and click "Add keyword".</i>
-			</p>
+		  <div class="form-group">
+		    <label for="inputTitle" class="col-sm-2 control-label">Keywords</label>
+		    <div class="col-sm-10">
+				<p data-bind="visible: keywords().length > 0">
+				    You have registered <b data-bind="text: keywords().length"></b> keywords.
+				</p>
+				<p data-bind="visible: keywords().length == 0">
+				    <i>Enter a keyword and click "Add keyword".</i>
+				</p>
+				<div class="input-group">	
+					<input type="text" id="inputKeywordName" class="form-control" placeholder="Web, mobile, network..."></input>
+					<input type="hidden" id="inputKeywords" name="inputKeywords"></input>
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" data-bind="click: addKeyword">Add keyword</button>
+					</span>
+				</div>
+		    </div>
+		  </div>
 			
 		</div> <!-- end panel body -->
 		
