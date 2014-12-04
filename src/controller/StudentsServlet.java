@@ -124,9 +124,8 @@ public class StudentsServlet extends BootstrapServlet {
 				student.setEmail(email);
 				student.setProject_title(projectTitle);
 				student.setProject_description(projectDescription);
-				student.setSupervisor(supervisorID);
 				
-				success = studentDAO.save(student);
+				success = studentDAO.update(student);
 				if (success) {
 					this.setAlertView(AlertType.AlertTypeSuccess, "Student saved successfuly", request);
 				} else {
@@ -140,7 +139,7 @@ public class StudentsServlet extends BootstrapServlet {
 				student.setProject_title(projectTitle);
 				student.setProject_description(projectDescription);
 				
-				success = studentDAO.save(student);
+				success = studentDAO.update(student);
 				if (success) {
 					this.setAlertView(AlertType.AlertTypeSuccess, "Student saved successfuly", request);
 				} else {

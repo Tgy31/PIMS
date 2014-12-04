@@ -46,8 +46,9 @@
 		  <div class="form-group">
 		    <label class="col-sm-2 control-label">Unavailability</label>
 		    <div class="col-sm-10">
-		      <p class="form-control-static">3 hours</p>
-		      <p><a href="${ rootPath }availability/?type=student&id=${ student.getStudent_id() }">Show</a> | <a href="${ rootPath }availability?type=student&id=${ student.getStudent_id() }">Edit</a></p>
+		      <p class="form-control-static">
+		      	<a href="${ rootPath }availability/?type=student&id=${ student.getStudent_id() }">Show</a>
+		      </p>
 		    </div>
 		  </div>
   
@@ -75,8 +76,9 @@
 		  <div class="form-group">
 		    <label class="col-sm-2 control-label">Keywords</label>
 		    <div class="col-sm-10">
-		      <p class="form-control-static">5 keywords</p>
-		      <p><a href="${ rootPath }keywords/?type=student&id=${ student.getStudent_id() }">Show</a> | <a href="${ rootPath }keywords/?type=student&id=${ student.getStudent_id() }">Edit</a></p>
+		      <p class="form-control-static">
+		      	<a href="${ rootPath }keywords/?type=student&id=${ student.getStudent_id() }">Show</a>
+		      </p>
 		    </div>
 		  </div>
 		  <div class="form-group">
