@@ -23,7 +23,6 @@ function Slot(json) {
     };
     
     self.fromJSON = function(json) {
-        self.id = json.id;
         self.start(moment(json.start));
         self.end(moment(json.end));
         self.color = json.color;
