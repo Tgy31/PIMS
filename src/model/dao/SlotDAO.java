@@ -46,6 +46,18 @@ public class SlotDAO {
 		return false;
 	}
 	
+	public boolean setSlotsForStudent(List<Slot> slots, int studentID) {
+		boolean deleteStatus = this.deleteByStudentID(studentID);
+		boolean addStatus = this.addSlotsforStudent(slots, studentID);	
+		return deleteStatus && addStatus;
+	}
+	
+	public boolean setSlotsForInspector(List<Slot> slots, int inspectorID) {
+		boolean deleteStatus = this.deleteByInspectorID(inspectorID);
+		boolean addStatus = this.addSlotsforInspector(slots, inspectorID);	
+		return deleteStatus && addStatus;
+	}
+	
 	public boolean addSlotsforStudent(List<Slot> slots, int studentID){
 		boolean success =false;
 		for (Slot slot : slots) {
@@ -71,15 +83,9 @@ public class SlotDAO {
 		return success;
 	}
 	
-	public boolean setSlotsForStudent(List<Slot> slots, int studentID) {
-		boolean deleteStatus = this.deleteByStudentID(studentID);
-		boolean addStatus = this.addSlotsforStudent(slots, studentID);	
-		return deleteStatus && addStatus;
-	}
-	
-	public boolean addSlotsforInspector(List<TimeSlot> timeSlots, Inspector inspector){
+	public boolean addSlotsforInspector(List<Slot> slots, int inspectorID){
 		boolean success = false;
-		for (TimeSlot timeSlot : timeSlots) {
+		for (Slot slot : slots) {
 			String sql = "INSERT INTO slot"	+ENTER+
 					"			(start_date, " 	+
 					"			 end_date, " 	+
@@ -87,9 +93,9 @@ public class SlotDAO {
 					"values"							 	+ENTER+
 					"			(?,?,?)";
 			try {
-				success = template.update(sql,timeSlot.getStartDate(),
-															timeSlot.getEndDate(),
-															inspector.getInspector_id()) == 1;
+				success = template.update(sql,slot.getStart_date(),
+															slot.getEnd_date(),
+															inspectorID) == 1;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				System.out.println("Class not found !");

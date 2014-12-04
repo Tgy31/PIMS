@@ -8,7 +8,8 @@
 			"${ inspector.getFirst_name() }",
 			"${ inspector.getLast_name() }",
 			"${ inspector.getTitle() }",
-			"${ inspector.getEmail() }"
+			"${ inspector.getEmail() }",
+			"${ inspector.getUsername() }"
 		]
 		<c:if test="${ inspectorStatus.index < inspectors.size() - 1 }">
 		,

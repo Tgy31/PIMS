@@ -105,7 +105,7 @@ public class StudentsServlet extends BootstrapServlet {
 		} else if (projectTitle != null && !projectTitle.equals("")) {
 			error = "Invalid project title";
 		} else if (projectDescription != null && !projectDescription.equals("")) {
-			error = "Invalid project descriptino";
+			error = "Invalid project description";
 		} else if (supervisorID != null && !supervisorID.equals("")) {
 			error = "Invalid supervisor";
 		}

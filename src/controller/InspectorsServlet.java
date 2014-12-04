@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.dao.InspectorDAO;
+import model.dao.StudentDAO;
 import model.entity.Module;
 import model.entity.Inspector;
+import model.entity.Student;
 import model.entity.User;
 
 /**
@@ -86,7 +88,68 @@ public class InspectorsServlet extends BootstrapServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		String firstName = request.getParameter("inputFirstName");
+		String lastName = request.getParameter("inputLastName");
+		String email = request.getParameter("inputEmail");
+		
+		String error = null;
+		
+		if (firstName != null && !firstName.equals("")) {
+			error = "Invalid first name";
+		} else if (lastName != null && !lastName.equals("")) {
+			error = "Invalid last name";
+		} else if (email != null && !email.equals("")) {
+			error = "Invalid email";
+		}
+		
+		if (error != null) {
+			InspectorDAO inspectorDAO = new InspectorDAO();
+			String inspectorSlug = this.getObjectSlug(request);
+			Inspector inspector = inspectorDAO.findByUsername(inspectorSlug);
+			
+			HttpSession session = request.getSession();
+			User user = (User) session.getAttribute("user");
+			
+			boolean success = false;
+			
+			if (user.isCoordinator()) {
+				
+				// PC can change everything
+				inspector.setFirst_name(firstName);
+				inspector.setLast_name(lastName);
+				inspector.setEmail(email);
+				
+				success = inspectorDAO.update(inspector);
+				if (success) {
+					this.setAlertView(AlertType.AlertTypeSuccess, "Inspector saved successfuly", request);
+				} else {
+					this.setAlertView(AlertType.AlertTypeDanger, "Inspector not saved, unexpected error occurred", request);
+				}
+				
+			} else if (user.isInspector() && user.getUsername().equals(inspector.getUsername())) {
+				
+				// Inspector can change everything
+				inspector.setFirst_name(firstName);
+				inspector.setLast_name(lastName);
+				inspector.setEmail(email);
+
+				success = inspectorDAO.update(inspector);
+				if (success) {
+					this.setAlertView(AlertType.AlertTypeSuccess, "Inspector saved successfuly", request);
+				} else {
+					this.setAlertView(AlertType.AlertTypeDanger, "Inspector not saved, unexpected error occurred", request);
+				}
+				
+			} else {
+				success = false;
+				this.setAlertView(AlertType.AlertTypeDanger, "Access denied", request);
+			}
+			
+		} else {
+			this.setAlertView(AlertType.AlertTypeDanger, error, request);
+		}
+		this.doView(request, response);
 	}
 	
 	@Override

@@ -24,6 +24,7 @@ import model.dao.KeywordDAO;
 import model.dao.SlotDAO;
 import model.dao.StudentDAO;
 import model.dao.StudentKeywordDAO;
+import model.entity.Inspector;
 import model.entity.Keyword;
 import model.entity.Module;
 import model.entity.Slot;
@@ -98,8 +99,18 @@ public class AvailabilityServlet extends BootstrapServlet {
 				slots.add(new Slot(start, end));
 			}
 			
-			SlotDAO slotDAO = new SlotDAO();
-			slotDAO.setSlotsForStudent(slots, userID);
+			switch (userType) {
+				case "student": {
+					SlotDAO slotDAO = new SlotDAO();
+					slotDAO.setSlotsForStudent(slots, userID);
+					break;
+				}
+				case "inspector": {
+					SlotDAO slotDAO = new SlotDAO();
+					slotDAO.setSlotsForInspector(slots, userID);
+					break;
+				}
+			}
 		} catch (JSONException e) {
 			response.setStatus(500); 
 		    PrintWriter out = response.getWriter();
@@ -145,6 +156,11 @@ public class AvailabilityServlet extends BootstrapServlet {
 			case "student": {
 				Student student = (Student)user;
 				timeslots = slotDAO.findByStudentID(student.getStudent_id());
+				break;
+			}
+			case "inspector": {
+				Inspector inspector = (Inspector)user;
+				timeslots = slotDAO.findByInspectorID(inspector.getInspector_id());
 				break;
 			}
 		}
