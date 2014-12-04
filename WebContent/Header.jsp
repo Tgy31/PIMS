@@ -86,6 +86,14 @@
 						<li class="availability"><a href="/PIMS/availability/?type=student&id=${ sessionScope.user.getUserID() }">Availability</a></li>
 
 					</c:if>
+						
+					<c:if test="${ sessionScope.user.isInspector() }">
+					
+						<li class="student-profile"><a href="${ userProfilePath }/">Profile</a></li>
+						<li class="keywords"><a href="/PIMS/keywords/?type=inspector&id=${ sessionScope.user.getUserID() }">Keywords</a></li>
+						<li class="availability"><a href="/PIMS/availability/?type=inspector&id=${ sessionScope.user.getUserID() }">Availability</a></li>
+
+					</c:if>
 
 				</ul>
 				<ul class="nav navbar-nav navbar-right">

@@ -233,8 +233,12 @@ public class BootstrapServlet extends HttpServlet {
     public String getProfilePathForUser(User user, Module module) {
     	if (user == null) {
     		return null;
-    	} else {
+    	} else if (user.isStudent()) {
         	return BootstrapServlet.rootPath + "students/" + module.getModule_id() + "/" + user.getUsername();
+    	} else if (user.isInspector()) {
+        	return BootstrapServlet.rootPath + "inspectors/" + module.getModule_id() + "/" + user.getUsername();
+    	} else {
+        	return BootstrapServlet.rootPath + "modules/";
     	}
     }
     
