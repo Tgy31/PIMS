@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -75,14 +76,14 @@ public class BootstrapServlet extends HttpServlet {
 		// Add conditional ressources
 		request.setAttribute("javascriptFiles", this.javascriptFileNames);
 
-		// Add user profile path
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
-		request.setAttribute("userProfilePath", this.getProfilePathForUser(user));
-
 		// Set Module
 		Module selectedModule = this.getSelectedModule(request);
 		request.setAttribute("selectedModule", selectedModule);
+
+		// Add user profile path
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		request.setAttribute("userProfilePath", this.getProfilePathForUser(user, selectedModule));
 		
 		// Set for coordinator
 		if (user != null && user.isCoordinator()) {
@@ -229,11 +230,11 @@ public class BootstrapServlet extends HttpServlet {
     	return module;
     }
     
-    public String getProfilePathForUser(User user) {
+    public String getProfilePathForUser(User user, Module module) {
     	if (user == null) {
     		return null;
     	} else {
-        	return BootstrapServlet.rootPath + "students/default-module" + "/" + user.getUsername();
+        	return BootstrapServlet.rootPath + "students/" + module.getModule_id() + "/" + user.getUsername();
     	}
     }
     
@@ -256,6 +257,16 @@ public class BootstrapServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.removeAttribute("alertType");
 		session.removeAttribute("alertMessage");
+    }
+    
+    public void setBreadcrumbTitles(String titles, HttpServletRequest request) {
+    	String[] aTitles = titles.split("%");
+    	System.out.println(aTitles.length);
+    	request.setAttribute("breadcrumbTitles", new ArrayList<String>(Arrays.asList(aTitles)));
+    }
+    
+    public void setBreadcrumbLinks(String links, HttpServletRequest request) {
+    	request.setAttribute("breadcrumbLinks", links.split("%"));
     }
 
 }

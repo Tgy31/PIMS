@@ -24,6 +24,7 @@ import model.dao.SlotDAO;
 import model.dao.StudentDAO;
 import model.dao.StudentKeywordDAO;
 import model.entity.Keyword;
+import model.entity.Module;
 import model.entity.Slot;
 import model.entity.Student;
 import model.entity.User;
@@ -40,7 +41,6 @@ public class AvailabilityServlet extends BootstrapServlet {
      */
     public AvailabilityServlet() {
         super();
-        // TODO Auto-generated constructor stub
         this.addJavascriptFile("moment.min.js");
         this.addJavascriptFile("fullcalendar.min.js");
         this.addJavascriptFile("knockout-3.2.0.js");
@@ -118,6 +118,13 @@ public class AvailabilityServlet extends BootstrapServlet {
 		
 		User user = this.getUserWithTypeAndID(userType, userID);
 		request.setAttribute("user", user);
+		
+		Module module = this.getSelectedModule(request);
+		String entityName = Character.toUpperCase(userType.charAt(0)) + userType.substring(1) + "s"; // capitalizes userType
+		String entityLink = "/PIMS/"+ userType +"s/"+ module.getModule_id() +"/";
+		String userLink = entityLink + user.getUsername() + "/";
+		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%" + entityName +"%"+ user.getUsername() +"%Availability", request);
+		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%"+ entityLink +"%"+ userLink, request);
 
         this.layoutType = LayoutType.Grid;
 		this.proceedGet("/Availability.jsp", request, response);
@@ -161,13 +168,13 @@ public class AvailabilityServlet extends BootstrapServlet {
 			case "student": {
 				StudentDAO studentDAO = new StudentDAO();
 				user = studentDAO.findByStudentID(id);
-		        this.relatedMenuClass = "students";
+		        this.relatedMenuClass = "students availability";
 		        break;
 			}
 			case "inspector": {
 				InspectorDAO inspectorDAO = new InspectorDAO();
 				user = inspectorDAO.findByInspectorID(id);
-		        this.relatedMenuClass = "inspectors";
+		        this.relatedMenuClass = "inspectors availability";
 		        break;
 			}
 		}

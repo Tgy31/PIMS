@@ -51,7 +51,7 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 
-					<c:if test="${ !empty sessionScope.user.isCoordinator() }">
+					<c:if test="${ sessionScope.user.isCoordinator() }">
 					
 						<form class="navbar-form navbar-left" role="search">
 							<div class="form-group">
@@ -73,13 +73,17 @@
 						<li class="module">
 							<a href="${ rootPath }modules/${ selectedModule.getModule_id() }/">Module</a>
 						</li>
-
-					</c:if>
-
-					<c:if test="${ !empty sessionScope.user }">
 					
 						<li class="students"><a href="${ rootPath }students/${ selectedModule.getModule_id() }/">Students</a></li>
 						<li class="inspectors"><a href="${ rootPath }inspectors/${ selectedModule.getModule_id() }/">Inspectors</a></li>
+						
+					</c:if>
+						
+					<c:if test="${ sessionScope.user.isStudent() }">
+					
+						<li class="student-profile"><a href="${ userProfilePath }/">Profile</a></li>
+						<li class="keywords"><a href="/PIMS/keywords/?type=student&id=${ sessionScope.user.getUserID() }">Keywords</a></li>
+						<li class="availability"><a href="/PIMS/availability/?type=student&id=${ sessionScope.user.getUserID() }">Availability</a></li>
 
 					</c:if>
 
@@ -94,7 +98,7 @@
 						</c:when>
 						<c:when test="${ !empty sessionScope.user }">
 						
-							<c:if test="${ !empty sessionScope.user.isCoordinator() }">
+							<c:if test="${ sessionScope.user.isCoordinator() }">
 								<li class="modules"><a href="${ rootPath }modules/">All modules</a></li>	
 							</c:if>
 
@@ -127,9 +131,16 @@
 			
 				<div class="col-xs-12 col-lg-12">
 					<ol class="breadcrumb">
-					  <li><a href="#">Module name</a></li>
-					  <li><a href="#">Entity type</a></li>
-					  <li class="active">Entity name</li>
+						<c:forEach items="${ breadcrumbTitles }" var="breadcrumbTitle" varStatus="breadcrumbTitleStatus">
+							<c:choose>
+								<c:when test="${ breadcrumbTitleStatus.index < breadcrumbTitles.size() - 1 }">
+									<li><a href="${ breadcrumbLinks[breadcrumbTitleStatus.index] }">${ breadcrumbTitle }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="active">${ breadcrumbTitle }</li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
 					</ol>
 				</div>
 				

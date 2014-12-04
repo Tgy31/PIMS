@@ -25,7 +25,15 @@ public class User {
 		this.email = email;
 	}
 
-
+	public int getUserID() {
+		if (this instanceof Student) {
+			return ((Student)this).getStudent_id();
+		} else if (this instanceof Inspector) {
+			return ((Inspector)this).getInspector_id();
+		} else {
+			return -1;
+		}
+	}
 
 	public String getUsername() {
 		return username;

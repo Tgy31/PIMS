@@ -169,6 +169,10 @@ public class ModulesServlet extends BootstrapServlet {
 	}
 	
 	protected void proceedModuleList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		this.setBreadcrumbTitles("Modules", request);
+		this.setBreadcrumbLinks("/PIMS/modules/", request);
+		
         this.relatedMenuClass = "modules"; // Menu for module list
 		this.proceedGet("/Modules.jsp", request, response);
 	}
@@ -179,8 +183,10 @@ public class ModulesServlet extends BootstrapServlet {
 		
 		KeywordDAO keywordDAO = new KeywordDAO();
 		List<Keyword> keywords = keywordDAO.findByModule(this.getSelectedModule(request));
-		System.out.println(keywords);
 		request.setAttribute("keywords", keywords);
+		
+		this.setBreadcrumbTitles("Modules%"+ module.getModule_name(), request);
+		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id(), request);
 		
 		this.proceedGet("/Module.jsp", request, response);
 	}

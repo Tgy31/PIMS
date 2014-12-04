@@ -107,6 +107,13 @@ public class KeywordsServlet extends BootstrapServlet {
 		
 		User user = this.getUserWithTypeAndID(userType, userID);
 		request.setAttribute("user", user);
+		
+		Module module = this.getSelectedModule(request);
+		String entityName = Character.toUpperCase(userType.charAt(0)) + userType.substring(1) + "s"; // capitalizes userType
+		String entityLink = "/PIMS/"+ userType +"s/"+ module.getModule_id() +"/";
+		String userLink = entityLink + user.getUsername() + "/";
+		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%" + entityName +"%"+ user.getUsername() +"%Keywords", request);
+		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%"+ entityLink +"%"+ userLink, request);
 
         this.layoutType = LayoutType.Grid;
 		this.proceedGet("/Keywords.jsp", request, response);
@@ -151,13 +158,13 @@ public class KeywordsServlet extends BootstrapServlet {
 			case "student": {
 				StudentDAO studentDAO = new StudentDAO();
 				user = studentDAO.findByStudentID(id);
-		        this.relatedMenuClass = "students";
+		        this.relatedMenuClass = "students keywords";
 		        break;
 			}
 			case "inspector": {
 				InspectorDAO inspectorDAO = new InspectorDAO();
 				user = inspectorDAO.findByInspectorID(id);
-		        this.relatedMenuClass = "inspectors";
+		        this.relatedMenuClass = "inspectors keywords";
 		        break;
 			}
 		}

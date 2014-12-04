@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.dao.StudentDAO;
+import model.entity.Module;
 import model.entity.Student;
 import model.entity.User;
 
@@ -25,8 +26,6 @@ public class StudentsServlet extends BootstrapServlet {
      */
     public StudentsServlet() {
         super();
-        // TODO Auto-generated constructor stub
-        this.relatedMenuClass = "students";
         this.addJavascriptFile("students.js");
         this.layoutType = LayoutType.Grid;
     }
@@ -59,11 +58,23 @@ public class StudentsServlet extends BootstrapServlet {
 	}
 	
 	protected void proceedStudentList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Module module = this.getSelectedModule(request);
+		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Students", request);
+		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/", request);
+		
+        this.relatedMenuClass = "students";
 		this.proceedGet("/Students.jsp", request, response);
 	}
 	
 	protected void proceedSingleStudent(Student student, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.relatedMenuClass = "students student-profile";
 		request.setAttribute("student", student);
+		
+		Module module = this.getSelectedModule(request);
+		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Students%"+ student.getUsername(), request);
+		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/students/"+ module.getModule_id() +"/", request);
+		
 		this.proceedGet("/Student.jsp", request, response);
 	}
 	
@@ -82,13 +93,6 @@ public class StudentsServlet extends BootstrapServlet {
 		String projectTitle = request.getParameter("inputTitle");
 		String projectDescription = request.getParameter("inputDescription");
 		String supervisorID = request.getParameter("inputSupervisor");
-
-		System.out.println(firstName);
-		System.out.println(lastName);
-		System.out.println(email);
-		System.out.println(projectTitle);
-		System.out.println(projectDescription);
-		System.out.println(supervisorID);
 		
 		String error = null;
 		
@@ -156,5 +160,23 @@ public class StudentsServlet extends BootstrapServlet {
 		}
 		this.doView(request, response);
 	}
+	
+	@Override
+    public Boolean shouldDenyAcces(HttpServletRequest request) {
+		
+		if (super.shouldDenyAcces(request)) {
+			return true;
+		}
+		
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		
+		if (user.isCoordinator()) {
+			return false; // coordinator can edit students
+		} else {
+			String studentSlug = this.getObjectSlug(request);
+			return !user.getUsername().equals(studentSlug); // students can edit their own
+		}
+    }
 
 }
