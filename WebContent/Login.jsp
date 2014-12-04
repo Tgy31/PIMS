@@ -16,7 +16,7 @@
 					placeholder="Password" name="password">
 			</div>
 		</div>
-		<div class="form-group">
+		<div class="form-group hidden">
 			<label for="inputPassword3" class="col-sm-2 control-label">Module</label>
 			<div class="col-sm-10">
 				<select class="form-control" name="module">
