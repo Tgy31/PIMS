@@ -75,7 +75,7 @@ public class InspectionweekDAO {
 		return false;
 	}
 	
-	public Inspectionweek findByModuleID(int ID){
+	public List<Inspectionweek> findByModuleID(int ID){
 		String sql = "SELECT  * " + 
 							"FROM inspectionweek " + 
 							"WHERE module_id= " + "'" + ID + "'";
@@ -89,7 +89,7 @@ public class InspectionweekDAO {
 		e.printStackTrace();
 		System.out.println("Find by No operation is failed ");
 		}
-		return (inspectionweeks.size() > 0) ? inspectionweeks.get(0) : null;
+		return inspectionweeks;
 	}
 	
 }

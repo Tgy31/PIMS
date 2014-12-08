@@ -22,7 +22,6 @@
 	            <tr>
 	                <th>Title</th>
 	                <th>Start</th>
-	                <th>End</th>
 	                <th>Action</th>
 	            </tr>
 	        </thead>

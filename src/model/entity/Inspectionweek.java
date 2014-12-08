@@ -1,5 +1,6 @@
 package model.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Inspectionweek {
@@ -59,6 +60,16 @@ public class Inspectionweek {
 		} else if (!start_date.equals(other.start_date))
 			return false;
 		return true;
+	}
+	
+	public String getFormattedStartDate() {
+		String formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(this.start_date);
+		return formattedDate;
+	}
+	
+	public String getDisplayableStartDate() {
+		String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(this.start_date);
+		return formattedDate;
 	}
 
 	public int getInspectionweek_id() {

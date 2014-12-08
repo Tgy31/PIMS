@@ -10,9 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.dao.KeywordDAO;
+import model.dao.InspectionweekDAO;
 import model.dao.StudentDAO;
 import model.dao.StudentKeywordDAO;
+import model.entity.Inspectionweek;
 import model.entity.Keyword;
 import model.entity.Module;
 import model.entity.Student;
@@ -88,9 +89,9 @@ public class InspectionWeeksServlet extends BootstrapServlet {
 	
 	private void doJSON(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		
-		// existingKeywords && userKeywords
-		KeywordDAO inspectionWeekDAO = new KeywordDAO();
-		List<Keyword> inspectionWeeks = inspectionWeekDAO.findByModule(this.getSelectedModule(request));
+		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
+		Module module = this.getSelectedModule(request);
+		List<Inspectionweek> inspectionWeeks = inspectionWeekDAO.findByModuleID(module.getModule_id());
 		request.setAttribute("inspectionWeeks", inspectionWeeks);		
 	
         this.layoutType = LayoutType.JSON;

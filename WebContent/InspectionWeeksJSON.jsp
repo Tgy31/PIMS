@@ -5,10 +5,9 @@
   "data": [
 	<c:forEach items="${ inspectionWeeks }" var="inspectionWeek" varStatus="inspectionWeekStatus">
 		[
-			"Title",
-			"Start",
-			"End",
-			2456
+			"${ inspectionWeek.getInspection_title() }",
+			"${ inspectionWeek.getDisplayableStartDate() }",
+			"${ inspectionWeek.getInspectionweek_id() }"
 		]
 		<c:if test="${ inspectionWeekStatus.index < inspectionWeeks.size() - 1 }">
 		,
