@@ -27,7 +27,6 @@ public class InspectionDAO {
 							"			 inspector_id, " 	+
 							"			 start_date, " 	+
 							"			 end_date, " 	    +
-							"			 inspector_id)" 	+	
 							"values"							+ENTER+
 							"			(?,?,?,?,?,?)";
 		try {
@@ -47,6 +46,33 @@ public class InspectionDAO {
 		return false;
 	}
 	
+	
+	public boolean update(Inspection inspection){
+		String sql = "update inspection"								+ENTER+
+							"set"										+ENTER+
+						    "			 inspection_id= ?, "+
+						    "			 inspectionweek_id= ?, "+
+							"			 inspector_id= ?, "+
+							"			 start_date= ?, "+
+							"			 end_date= ?"					+ENTER+
+							"where"										+ENTER+
+							"			student_id = ?";
+		try {
+			return (template.update(sql, inspection.getInspection_id(),
+                    inspection.getInspectionweek_id(),
+                    inspection.getInspector_id(),
+                    inspection.getStart_date(),
+                    inspection.getEnd_date(),
+                    inspection.getStudent_id())== 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Update opertaion failed !");
+		}
+		return false;
+	}
 	
 	public List<Inspectionweek> findByStudentID(int ID){
 		String sql = "SELECT  * " + 

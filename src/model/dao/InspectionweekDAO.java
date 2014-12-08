@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import model.db.Template;
+import model.entity.Inspection;
 import model.entity.Inspectionweek;
 import model.mapping.InspectionweekMapping;
 
@@ -33,6 +34,29 @@ public class InspectionweekDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Save opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean update(Inspectionweek inspectionweek){
+		String sql = "update inspection"								+ENTER+
+							"set"										+ENTER+
+						    "			 inspectionweek_id= ?, "+
+							"			 inspection_title= ?, "+
+							"			 start_date= ?"					+ENTER+
+							"where"										+ENTER+
+							"			module_id = ?";
+		try {
+			return (template.update(sql, inspectionweek.getInspectionweek_id(),
+                    inspectionweek.getInspection_title(),
+                    inspectionweek.getStart_date(),
+                    inspectionweek.getModule_id())== 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Update opertaion failed !");
 		}
 		return false;
 	}
