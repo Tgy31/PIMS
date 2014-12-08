@@ -176,6 +176,15 @@ public class InspectionsServlet extends BootstrapServlet {
 			return "false";
 		}
 	}
+	
+	public String inspectionIdForStudent(Student student, Inspectionweek inspectionWeek) {
+		Inspection inspection = this.inspectionForStudent(student, inspectionWeek);
+		if(inspection != null) {
+			return ""+inspection.getInspection_id();
+		} else {
+			return "0";
+		}
+	}
 
 	
 	@Override

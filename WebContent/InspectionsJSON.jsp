@@ -9,7 +9,7 @@
 			"${ student.getLast_name() }",
 			"${ student.getUsername() }",
 			${ servlet.studentHasInspection(student, inspectionWeek) },
-			4567890
+			${ servlet.inspectionIdForStudent(student, inspectionWeek) }
 		]
 		<c:if test="${ studentStatus.index < students.size() - 1 }">
 		,

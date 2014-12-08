@@ -3,7 +3,11 @@ $(document).ready( function () {
 	var json = JSON.parse(jsonDiv.text());
 	
 	var actionRender = function ( data, type, full, meta ) {
-	    return '<a href="/PIMS/inspections/' + json.moduleID + '/' + data + '/">Edit</a>';
+	    if (data > 0) {
+		    return '<a href="/PIMS/inspections/' + json.moduleID + '/' + data + '/">Edit</a>';
+	    } else {
+		    return '<a href="/PIMS/inspections/' + json.moduleID + '/' + data + '/">Create</a>';
+	    }
 	};
 	
 	var inspectionRender = function ( data, type, full, meta ) {
