@@ -52,7 +52,7 @@ public class InspectorsServlet extends BootstrapServlet {
 		if (inspector != null) {
 			this.proceedSingleInspector(inspector, request, response);
 		} else if (inspectorSlug != null) {
-    		this.setAlertView(AlertType.AlertTypeDanger, "Student not found", request);
+    		this.setAlertView(AlertType.AlertTypeDanger, "Inspector not found", request);
 			this.proceedSingleInspectorError(request, response);
 		} else {
 			this.proceedInspectorList(request, response);
@@ -81,6 +81,9 @@ public class InspectorsServlet extends BootstrapServlet {
 	}
 	
 	protected void proceedSingleInspectorError(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Module module = this.getSelectedModule(request);
+		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Inspectors%Error", request);
+		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/inspectors/"+ module.getModule_id() +"/", request);
 		this.proceedGet("/Inspector.jsp", request, response);
 	}
 
