@@ -126,7 +126,7 @@ public class InspectionWeeksServlet extends BootstrapServlet {
 		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Inspection Weeks%Error", request);
 		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/inspectionweeks/"+ module.getModule_id() +"/", request);
         this.layoutType = LayoutType.Grid;
-		this.proceedGet("/InspectionWeeks.jsp", request, response);
+		this.proceedGet("/InspectionWeek.jsp", request, response);
 	}
 
 	
