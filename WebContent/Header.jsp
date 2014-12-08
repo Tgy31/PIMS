@@ -102,7 +102,7 @@
 					<c:choose>
 						<c:when test="${ empty sessionScope.user }">
 
-							<li class="${ rootPath }login/"><a href="${ rootPath }login">Log in</a></li>
+							<li class="${ rootPath }login/"><a href="${ rootPath }login/">Log in</a></li>
 
 						</c:when>
 						<c:when test="${ !empty sessionScope.user }">
@@ -133,8 +133,7 @@
 <c:choose>
     <c:when test="${ layoutType eq 'Grid' }">
     
-		<div id="body-container" class="container">	
-			<%@ include file="AlertView.jsp" %>
+		<div id="body-container" class="container">
 	
 			<div class="row">
 			
@@ -173,7 +172,8 @@
 						</a>
 					</div>
 				</div>
-				<div class="col-xs-9 col-lg-9">
+				<div class="col-xs-9 col-lg-9">	
+					<%@ include file="AlertView.jsp" %>
 		
 	</c:when>
 	<c:otherwise>
