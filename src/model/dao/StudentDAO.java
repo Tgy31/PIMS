@@ -121,6 +121,20 @@ public class StudentDAO {
 		return false;
 	}
 	
+	public boolean deleteALLByModuleId(int ID){
+		String sql = "delete from student where module_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
 	public Student findByStudentID(int ID){
 		String sql = "SELECT  * " + 
 							"FROM student " + 

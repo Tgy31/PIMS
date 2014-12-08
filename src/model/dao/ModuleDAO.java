@@ -30,32 +30,16 @@ public class ModuleDAO {
 							"			 year, " 	+
 							"			 start_date, " 	+
 							"			 end_date, " 	+
-							"			 students_enrolled, " 	+
-							"			 inspector_available, " 	+
 							"			 default_inspector_capacity, " 	+
-							"			 first_inspection_start_date, " 	+
-							"			 first_inspection_end_date, " 	+
-							"			 second_inspection_start_date, " 	+
-							"			 second_inspection_end_date, " 	+
-							"			 dissertation_deadline, " 	+
-							"			 pc_id)" 				 +ENTER+
 							"values"							 					+ENTER+
-							"			(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+							"			(?,?,?,?,?,?)";
 		try {
 			return (template.update(sql, module.getModule_id(),
 													  module.getModule_name(),
 													  module.getYear(),
 													  module.getStart_date(),
 													  module.getEnd_date(),
-													  module.getStudents_enrolled(),
-													  module.getInspector_available(),
-													  module.getDefault_inspector_capacity(),
-													  module.getFirst_inspection_start_date(),
-													  module.getFirst_inspection_end_date(),
-													  module.getSecond_inspection_start_date(),
-													  module.getSecond_inspection_end_date(),
-													  module.getDisseration_deadline(),
-													  module.getPc_id()) == 1);
+													  module.getDefault_inspector_capacity()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("Class not found !");
@@ -73,15 +57,7 @@ public class ModuleDAO {
 							"			 year= ?, "+
 							"			 start_date= ?, "+
 							"			 end_date= ?, "+
-							"			 students_enrolled= ?, "+
-							"			 inspector_available= ?, "+
-							"			 default_inspector_capacity= ?, "+
-							"			 first_inspection_start_date= ?, "+
-							"			 first_inspection_end_date= ?, "+
-							"			 second_inspection_start_date= ?, "+
-							"			 second_inspection_end_date= ?, "+
-							"			 dissertation_deadline= ?, "+
-							"			 pc_id= ?"		+ENTER+
+							"			 default_inspector_capacity= ?, "   +ENTER+
 							"where"											+ENTER+
 							"			module_id = ?";
 		try {
@@ -89,15 +65,7 @@ public class ModuleDAO {
 													  module.getYear(),
 													  module.getStart_date(),
 													  module.getEnd_date(),
-													  module.getStudents_enrolled(),
-													  module.getInspector_available(),
 													  module.getDefault_inspector_capacity(),
-													  module.getFirst_inspection_start_date(),
-													  module.getFirst_inspection_end_date(),
-													  module.getSecond_inspection_start_date(),
-													  module.getSecond_inspection_end_date(),
-													  module.getDisseration_deadline(),
-													  module.getPc_id(),
 													  module.getModule_id()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -223,7 +191,7 @@ public class ModuleDAO {
 		return modules;
 	}
 	
-	public boolean importCSV(File file) {
+	/*public boolean importCSV(File file) {
 		List<String[]> recordList = null;
 		try {
 			recordList = reader.parse(file);
@@ -266,5 +234,5 @@ public class ModuleDAO {
 		}
 		return save(module);
 	}
-	
+	*/
 }

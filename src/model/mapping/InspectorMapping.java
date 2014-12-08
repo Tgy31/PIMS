@@ -12,7 +12,6 @@ public class InspectorMapping implements IEntityMapping{
 		inspector.setUsername(rs.getString("username"));
 		inspector.setPassword(rs.getString("password"));
 		inspector.setInspector_id(rs.getInt("inspector_id"));
-		inspector.setTitle(rs.getString("title"));
 		inspector.setFirst_name(rs.getString("first_name"));
 		inspector.setLast_name(rs.getString("last_name"));
 		inspector.setEmail(rs.getString("email"));
