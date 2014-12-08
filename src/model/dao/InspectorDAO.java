@@ -27,18 +27,16 @@ public class InspectorDAO {
 							"			 capacity, "+
 							"			 username, "+
 							"			 password, "+
-							"			 title, "   +
 							"			 first_name, "+
 							"			 last_name, "+
 							"			 email)" 				 +ENTER+
 							"values"							 +ENTER+
-							"			(?,?,?,?,?,?,?,?)";
+							"			(?,?,?,?,?,?,?)";
 		try {
 			return (template.update(sql, inspector.getInspector_id(), 
 													  inspector.getCapacity(), 
 													  inspector.getUsername(), 
 													  inspector.getPassword(), 
-													  inspector.getTitle(), 
 													  inspector.getFirst_name(), 
 													  inspector.getLast_name(), 
 													  inspector.getEmail()) == 1);
@@ -52,13 +50,12 @@ public class InspectorDAO {
 		return false;
 	}
 	
-	public boolean update(Inspector inspector){ //µ½µ×Ö÷¼üÊÇË­£¿£¿
+	public boolean update(Inspector inspector){
 		String sql = "update inspector"				+ENTER+
 				"set"												+ENTER+
 				"			 capacity= ?, "+
 				"			 username= ?, "+
 				"			 password= ?, "+
-				"			 title= ?, "+
 				"			 first_name= ?, "+
 				"			 last_name= ?, "+
 				"			 email= ?"							+ENTER+
@@ -68,7 +65,6 @@ public class InspectorDAO {
 			return (template.update(sql, inspector.getCapacity(), 
 													  inspector.getUsername(), 
 													  inspector.getPassword(), 
-													  inspector.getTitle(), 
 													  inspector.getFirst_name(), 
 													  inspector.getLast_name(), 
 													  inspector.getEmail(),
@@ -219,7 +215,7 @@ public class InspectorDAO {
 	
 	
 	public boolean importCSV(File file) {
-		//truncateTable();
+		truncateTable();
 		Map<String, Integer> titleName = new HashMap<String, Integer>();
 		List<String[]> recordList = null;
 		String[] record = null;
@@ -249,7 +245,6 @@ public class InspectorDAO {
 				inspector.setLast_name(record[titleName.get("username")]);
 				inspector.setUsername(record[titleName.get("username")]);
 				inspector.setPassword(record[titleName.get("username")]);
-				inspector.setTitle("Mr.");
 				inspector.setEmail(record[titleName.get("username")].substring(0,1)+"."+record[titleName.get("username")]+"@bham.ac.uk");
 			} catch( NumberFormatException e){
 				e.printStackTrace();

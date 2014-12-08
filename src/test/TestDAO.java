@@ -4,14 +4,10 @@ import java.text.ParseException;
 import java.util.Date;
 
 import model.dao.CoordinatorDAO;
-import model.dao.CourseDAO;
-import model.dao.FirstInspectionDAO;
 import model.dao.InspectorDAO;
 import model.dao.SlotDAO;
 import model.dao.StudentDAO;
 import model.entity.Coordinator;
-import model.entity.Course;
-import model.entity.FirstInspection;
 import model.entity.Module;
 import model.entity.Student;
 import tools.DateConvert;
@@ -90,61 +86,8 @@ public class TestDAO {
 		InspectorDAO inspectorDAO = new InspectorDAO();
 		System.out.println(inspectorDAO.importCSV(new File(path)));
 	}
-	
-	//======Test First Inspection=============
-	public void testFirstInspectionSave() throws ParseException{
-		Date date1=null;
-		date1 = DateConvert.StringConvertToTimestamp("2014-11-21 14:32:2");
 		
-		FirstInspectionDAO firstInspectionDAO = new FirstInspectionDAO();
-		FirstInspection firstInspection = new FirstInspection();
-		firstInspection.setStudent_id(10002);
-		firstInspection.setInspector_id(12);
-		firstInspection.setModule_id(2);
-		firstInspection.setDate(date1);
-		System.out.println(firstInspectionDAO.save(firstInspection));
-	}
-	
-	public void testFirstInspectionFind(){
-		FirstInspectionDAO firstInspectionDAO = new FirstInspectionDAO();
-		System.out.println(firstInspectionDAO.findAll());
-		System.out.println(firstInspectionDAO.findByStudentID(10003));
-		System.out.println(firstInspectionDAO.findByModuleID(2));
-		
-	}
-	
-	
-	
-	//=======Test Course==================
-	public void testCourseSave(){
-		CourseDAO courseDAO = new CourseDAO();
-		Course course = new Course();
-		course.setCourse_id(3);
-		course.setCourse_name("Robotics");
-		course.setCoures_description("Robotics");
-		System.out.println(courseDAO.save(course));
-	}
-	
-	public void testCourseUpdate(){
-		CourseDAO courseDAO = new CourseDAO();
-		Course course = new Course();
-		course.setCourse_id(3);
-		course.setCourse_name("Robotics");
-		course.setCoures_description("no description at the moment");
-		System.out.println(courseDAO.update(course));
-	}
-	
-	public void testCourseFind(){
-		CourseDAO courseDAO = new CourseDAO();
-		System.out.println(courseDAO.findAll());
-		System.out.println(courseDAO.findByCourseID(5));
-		System.out.println(courseDAO.findByCourseName("Advanced Computer Science"));
-	}
-	
-	public void testCourseDeleteByID(){
-		CourseDAO courseDAO = new CourseDAO();
-		System.out.println(courseDAO.deleteByCourseID(3));
-	}
+
 	
 	
 	//========Test Student=================
@@ -162,7 +105,6 @@ public class TestDAO {
 		StudentDAO studentDAO = new StudentDAO();
 		Student student = new Student();
 		student.setStudent_id(2014001);
-		student.setProject_id(2000001);
 		student.setUsername("jane2");
 		student.setPassword("jane");
 		student.setFirst_name("C");
