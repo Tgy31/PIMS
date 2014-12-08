@@ -11,9 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.InspectionDAO;
+import model.dao.InspectionweekDAO;
 import model.dao.InspectorDAO;
 import model.dao.KeywordDAO;
+import model.dao.ModuleDAO;
 import model.dao.StudentDAO;
+import model.entity.Inspection;
+import model.entity.Inspectionweek;
 import model.entity.Inspector;
 import model.entity.Keyword;
 import model.entity.Module;
@@ -91,10 +96,25 @@ public class InspectionsServlet extends BootstrapServlet {
 	
 	private void doJSON(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		
-		// existingKeywords && userKeywords
-		KeywordDAO inspectionDAO = new KeywordDAO();
-		List<Keyword> inspections = inspectionDAO.findByModule(this.getSelectedModule(request));
-		request.setAttribute("inspections", inspections);		
+		//InspectionDAO inspectionDAO = new InspectionDAO();
+		//List<Inspection> inspections = inspectionDAO.findByStudentID(ID);
+		//request.setAttribute("inspections", inspections);	
+		
+		String inspectionWeekSlug = this.getModuleSlug(request);
+		int inspectionWeekID = Integer.parseInt(inspectionWeekSlug);
+		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
+		Inspectionweek inspectionWeek = inspectionWeekDAO.findByID(inspectionWeekID);
+		
+		request.setAttribute("inspectionWeek", inspectionWeek);
+		
+		ModuleDAO moduleDAO = new ModuleDAO();
+		Module module = moduleDAO.findByModuleID(inspectionWeek.getModule_id());
+		
+		StudentDAO studentDAO = new StudentDAO();
+		List<Student> students = studentDAO.findByModuleID(module.getModule_id());
+		request.setAttribute("students", students);
+		
+		request.setAttribute("servlet", this);
 	
         this.layoutType = LayoutType.JSON;
         response.setContentType("application/json"); 
@@ -141,6 +161,20 @@ public class InspectionsServlet extends BootstrapServlet {
 		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/inspections/"+ module.getModule_id() +"/", request);
         this.layoutType = LayoutType.Grid;
 		this.proceedGet("/Inspection.jsp", request, response);
+	}
+	
+	public Inspection inspectionForStudent(Student student, Inspectionweek inspectionWeek) {
+		InspectionDAO inspectionDAO = new InspectionDAO();
+		Inspection inspection = inspectionDAO.findByStudentAndInspectionWeek(student.getStudent_id(), inspectionWeek.getInspectionweek_id());
+		return inspection;
+	}
+	
+	public String studentHasInspection(Student student, Inspectionweek inspectionWeek) {
+		if(this.inspectionForStudent(student, inspectionWeek) != null) {
+			return "true";
+		} else {
+			return "false";
+		}
 	}
 
 	

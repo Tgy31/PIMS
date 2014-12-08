@@ -74,13 +74,14 @@ public class InspectionDAO {
 		return false;
 	}
 	
-	public List<Inspectionweek> findByStudentID(int ID){
+	public Inspection findByStudentAndInspectionWeek(int studentID, int inspectionWeekID){
 		String sql = "SELECT  * " + 
 							"FROM inspection " + 
-							"WHERE student_id= " + "'" + ID + "'";
-		List<Inspectionweek> inspectionweeks= null;
+							"WHERE student_id= " + "'" + studentID + "'" +
+							"AND inspectionweek_id = '" + inspectionWeekID +"'";
+		List<Inspection> inspections= null;
 		try {
-			inspectionweeks = template.query(sql, new InspectionMapping());
+			inspections = template.query(sql, new InspectionMapping());
 		} catch (ClassNotFoundException e) {
 		e.printStackTrace();
 		System.out.println("Class not found !");
@@ -88,7 +89,7 @@ public class InspectionDAO {
 		e.printStackTrace();
 		System.out.println("Find by No operation is failed ");
 		}
-		return inspectionweeks;
+		return inspections.size() > 0 ? inspections.get(0) : null;
 	}
 	
 	public boolean deleteByStudentID(int ID){

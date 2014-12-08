@@ -10,7 +10,7 @@
 <div id="json-variables">
 	{
 		"moduleID": ${ selectedModule.getModule_id() },
-		"inspectionWeekID": 1
+		"inspectionWeekID": ${ inspectionWeek.getInspectionweek_id() }
 	}
 </div>
 
@@ -60,9 +60,10 @@
 		<table id="inspection-table" class="user-table row-border hover order-column">
 	        <thead>
 	            <tr>
-	                <th>Title</th>
-	                <th>Start</th>
-	                <th>End</th>
+	                <th>First name</th>
+	                <th>Last name</th>
+	                <th>Username</th>
+	                <th>Inspection set</th>
 	                <th>Action</th>
 	            </tr>
 	        </thead>
