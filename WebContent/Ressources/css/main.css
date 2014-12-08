@@ -49,3 +49,12 @@ textarea {
 #json-variables {
 	display: none;
 }
+
+th.radio-cell,
+td.radio-cell {
+	text-align: center;
+}
+
+.radio-cell.last input {
+	margin-top: 10px;
+}

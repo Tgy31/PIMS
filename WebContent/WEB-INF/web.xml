@@ -45,6 +45,15 @@
     <url-pattern>/inspectionweeks/*</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>Inspections</servlet-name>
+    <servlet-class>controller.InspectionsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Inspections</servlet-name>
+    <url-pattern>/inspections</url-pattern>
+    <url-pattern>/inspections/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>Inspectors</servlet-name>
     <servlet-class>controller.InspectorsServlet</servlet-class>
   </servlet>
