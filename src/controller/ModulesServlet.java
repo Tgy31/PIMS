@@ -134,7 +134,7 @@ public class ModulesServlet extends BootstrapServlet {
 		if (module != null) {
 			this.proceedSingleModule(module, request, response);
 		} else if (moduleSlug != null) {
-			this.setAlertView(AlertType.AlertTypeDanger, "Student not found", request);
+			this.setAlertView(AlertType.AlertTypeDanger, "Module not found", request);
 			this.proceedSingleModuleError(request, response);
 		} else {
 			this.proceedModuleList(request, response);
@@ -195,6 +195,9 @@ public class ModulesServlet extends BootstrapServlet {
 	}
 	
 	protected void proceedSingleModuleError(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		this.setBreadcrumbTitles("Modules%Error", request);
+		this.setBreadcrumbLinks("/PIMS/modules/", request);
 		this.proceedGet("/Module.jsp", request, response);
 	}
 	

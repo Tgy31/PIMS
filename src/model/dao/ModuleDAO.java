@@ -151,7 +151,7 @@ public class ModuleDAO {
 		e.printStackTrace();
 		System.out.println("Find by No operation is failed ");
 		}
-		return modules.get(0);
+		return modules.size() > 0 ? modules.get(0) : null;
 	}
 	
 	public Module findByModuleName(String name){
