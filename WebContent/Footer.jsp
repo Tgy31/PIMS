@@ -20,7 +20,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     
     <!-- DataTables -->
-	<script type="text/javascript" charset="utf8" src="${ rootPath }Ressources/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="${ rootPath }Ressources/js/jquery.dataTables.min.js"></script>
 	<script src="${ rootPath }Ressources/js/dataTables.bootstrap.js"></script>
 	
 	<!-- Include additional files -->

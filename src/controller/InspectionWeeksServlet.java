@@ -31,6 +31,7 @@ public class InspectionWeeksServlet extends BootstrapServlet {
     public InspectionWeeksServlet() {
         super();
         this.addJavascriptFile("inspectionweeks.js");
+        this.addJavascriptFile("inspectionweek.js");
     }
 
 	/**
