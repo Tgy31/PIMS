@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.dao.InspectionweekDAO;
+import model.dao.ModuleDAO;
 import model.dao.StudentDAO;
 import model.dao.StudentKeywordDAO;
 import model.entity.Inspectionweek;
@@ -73,8 +74,8 @@ public class InspectionWeeksServlet extends BootstrapServlet {
 		try {
 			inspectionWeekSlug = Integer.parseInt(this.getObjectSlug(request));
 			
-			StudentDAO inspectionWeekDAO = new StudentDAO();
-			Student inspectionWeek = inspectionWeekDAO.findByStudentID(inspectionWeekSlug);
+			InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
+			Inspectionweek inspectionWeek = inspectionWeekDAO.findByID(inspectionWeekSlug);
 			
 			if (inspectionWeek != null) {
 				this.proceedSingleInspectionWeek(inspectionWeek, request, response);
@@ -110,16 +111,20 @@ public class InspectionWeeksServlet extends BootstrapServlet {
 		this.proceedGet("/InspectionWeeks.jsp", request, response);
 	}
 	
-	protected void proceedSingleInspectionWeek(Student inspectionWeek, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void proceedSingleInspectionWeek(Inspectionweek inspectionWeek, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.relatedMenuClass = "inspection-weeks inspection-week-details";
 		request.setAttribute("inspectionWeek", inspectionWeek);
 		
+		ModuleDAO moduleDAO = new ModuleDAO();
+		Module inspectionModule = moduleDAO.findByModuleID(inspectionWeek.getModule_id());
+		request.setAttribute("inspectionModule", inspectionModule);
+		
 		Module module = this.getSelectedModule(request);
-		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Inspection Weeks%"+ inspectionWeek.getUsername(), request);
+		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Inspection Weeks%"+ inspectionWeek.getInspection_title(), request);
 		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/inspectionweeks/"+ module.getModule_id() +"/", request);
 
         this.layoutType = LayoutType.Grid;
-		this.proceedGet("/InspectionsWeeks.jsp", request, response);
+		this.proceedGet("/InspectionWeek.jsp", request, response);
 	}
 	
 	protected void proceedSingleInspectionWeekError(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

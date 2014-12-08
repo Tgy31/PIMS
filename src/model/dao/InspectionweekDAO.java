@@ -75,6 +75,23 @@ public class InspectionweekDAO {
 		return false;
 	}
 	
+	public Inspectionweek findByID(int ID){
+		String sql = "SELECT  * " + 
+							"FROM inspectionweek " + 
+							"WHERE inspectionweek_id= " + "'" + ID + "'";
+		List<Inspectionweek> inspectionweeks = null;
+		try {
+			inspectionweeks = template.query(sql, new InspectionweekMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return (inspectionweeks.size() > 0) ? inspectionweeks.get(0) : null;
+	}
+	
 	public List<Inspectionweek> findByModuleID(int ID){
 		String sql = "SELECT  * " + 
 							"FROM inspectionweek " + 

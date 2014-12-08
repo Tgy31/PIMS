@@ -5,7 +5,7 @@
 
 <%@ include file="Header.jsp" %>
 
-<c:if test="${ !empty sessionScope.alertType }">
+<c:if test="${ empty sessionScope.alertType }">
 
 <div id="json-variables">
 	{
@@ -27,13 +27,13 @@
 			  <div class="form-group">
 			    <label class="col-sm-2 control-label">Module</label>
 			    <div class="col-sm-10">
-			      <p class="form-control-static">${ inspectionWeek.getModule_id() }</p>
+			      <p class="form-control-static">${ inspectionModule.getModule_name() }</p>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="inputTitle" class="col-sm-2 control-label">Title</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="inputTitle" name="inputTitle" placeholder="Title" value="${ inspectionWeek.getProject_title() }">
+			      <input type="text" class="form-control" id="inputTitle" name="inputTitle" placeholder="Title" value="${ inspectionWeek.getInspection_title() }">
 			    </div>
 			  </div>
 	  
