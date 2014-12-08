@@ -6,6 +6,7 @@ body.inspectors .navbar li.inspectors,
 body.inspector-profile .navbar li.inspector-profile,
 body.modules .navbar li.modules,
 body.module .navbar li.module,
+body.inspection-weeks .navbar li.inspection-weeks,
 body.availability .navbar li.availability,
 body.keywords .navbar li.keywords,
 body.login .navbar li.login {

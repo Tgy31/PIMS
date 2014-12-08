@@ -135,7 +135,7 @@ public class StudentDAO {
 		e.printStackTrace();
 		System.out.println("Find by No operation is failed ");
 		}
-		return students.get(0);
+		return students.size() > 0 ? students.get(0) : null;
 	}
 	
 	public Student findByUsername(String username){

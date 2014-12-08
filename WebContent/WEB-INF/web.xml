@@ -27,15 +27,6 @@
     <url-pattern>/logout/</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>Projects</servlet-name>
-    <servlet-class>controller.ProjectsServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Projects</servlet-name>
-    <url-pattern>/projects</url-pattern>
-    <url-pattern>/projects/*</url-pattern>
-  </servlet-mapping>
-  <servlet>
     <servlet-name>Students</servlet-name>
     <servlet-class>controller.StudentsServlet</servlet-class>
   </servlet>
@@ -51,6 +42,15 @@
   <servlet-mapping>
     <servlet-name>StudentsJSON</servlet-name>
     <url-pattern>/students.json</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>InspectionWeeks</servlet-name>
+    <servlet-class>controller.InspectionWeeksServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InspectionWeeks</servlet-name>
+    <url-pattern>/inspectionweeks</url-pattern>
+    <url-pattern>/inspectionweeks/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>Inspectors</servlet-name>

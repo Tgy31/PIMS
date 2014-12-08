@@ -76,6 +76,7 @@
 					
 						<li class="students"><a href="${ rootPath }students/${ selectedModule.getModule_id() }/">Students</a></li>
 						<li class="inspectors"><a href="${ rootPath }inspectors/${ selectedModule.getModule_id() }/">Inspectors</a></li>
+						<li class="inspection-weeks"><a href="${ rootPath }inspectionweeks/${ selectedModule.getModule_id() }/">Inspections</a></li>
 						
 					</c:if>
 						

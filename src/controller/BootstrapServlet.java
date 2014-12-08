@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.InspectorDAO;
 import model.dao.ModuleDAO;
+import model.dao.StudentDAO;
 import model.entity.Module;
 import model.entity.User;
 
@@ -241,6 +243,33 @@ public class BootstrapServlet extends HttpServlet {
         	return BootstrapServlet.rootPath + "modules/";
     	}
     }
+	
+	protected User getUserWithTypeAndID(String userType, String userID) {
+		
+		User user = null;
+		
+		try {
+			int id = Integer.parseInt(userID);
+			
+			switch (userType) {
+				case "student": {
+					StudentDAO studentDAO = new StudentDAO();
+					user = studentDAO.findByStudentID(id);
+			        this.relatedMenuClass = "students keywords";
+			        break;
+				}
+				case "inspector": {
+					InspectorDAO inspectorDAO = new InspectorDAO();
+					user = inspectorDAO.findByInspectorID(id);
+			        this.relatedMenuClass = "inspectors keywords";
+			        break;
+				}
+			}
+			return user;
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
     
     public Boolean shouldDenyAcces(HttpServletRequest request) {
 		HttpSession session = request.getSession();

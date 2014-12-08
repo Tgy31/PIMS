@@ -150,28 +150,6 @@ public class KeywordsServlet extends BootstrapServlet {
 		this.proceedGet("/KeywordsJSON.jsp", request, response);
 	}
 	
-	private User getUserWithTypeAndID(String userType, String userID) {
-		
-		User user = null;
-		int id = Integer.parseInt(userID);
-		
-		switch (userType) {
-			case "student": {
-				StudentDAO studentDAO = new StudentDAO();
-				user = studentDAO.findByStudentID(id);
-		        this.relatedMenuClass = "students keywords";
-		        break;
-			}
-			case "inspector": {
-				InspectorDAO inspectorDAO = new InspectorDAO();
-				user = inspectorDAO.findByInspectorID(id);
-		        this.relatedMenuClass = "inspectors keywords";
-		        break;
-			}
-		}
-		return user;
-	}
-	
 	@Override
     public Boolean shouldDenyAcces(HttpServletRequest request) {
 		
