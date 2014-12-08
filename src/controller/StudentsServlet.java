@@ -79,6 +79,9 @@ public class StudentsServlet extends BootstrapServlet {
 	}
 	
 	protected void proceedSingleStudentError(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Module module = this.getSelectedModule(request);
+		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Students%Error", request);
+		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/students/"+ module.getModule_id() +"/", request);
 		this.proceedGet("/Student.jsp", request, response);
 	}
 
