@@ -28,6 +28,10 @@ public class Inspection {
 		this.start_date = start_date;
 		this.end_date = end_date;
 	}
+	
+	public Inspection(Inspectionweek inspectionWeek, Student student, Inspector firstInspector, Inspector secondInspector, Date start, Date end) {
+		
+	}
 
 
 
