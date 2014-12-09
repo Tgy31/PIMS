@@ -200,7 +200,8 @@
 					    	Student
 					    </td>
 					    <td>
-					    	<span data-bind="text: studentIsAvailable"></span>
+					    	<span class="glyphicon glyphicon-ok text-success" data-bind="visible: studentIsAvailable()"></span>
+					    	<span class="glyphicon glyphicon-remove text-danger" data-bind="visible: !studentIsAvailable()"></span>
 					    </td>
 					</tr>
 					<tr>
@@ -212,7 +213,8 @@
 					    	Spervisor
 					    </td>
 					    <td>
-					    	<span data-bind="text: supervisorIsAvailable"></span>
+					    	<span class="glyphicon glyphicon-ok text-success" data-bind="visible: supervisorIsAvailable()"></span>
+					    	<span class="glyphicon glyphicon-remove text-danger" data-bind="visible: !supervisorIsAvailable()"></span>
 					    </td>
 					</tr>
 					<tr>
@@ -224,7 +226,8 @@
 					    	First inspector
 					    </td>
 					    <td>
-					    	<span data-bind="text: firstInspectorIsAvailable"></span>
+					    	<span class="glyphicon glyphicon-ok text-success" data-bind="visible: firstInspectorIsAvailable()"></span>
+					    	<span class="glyphicon glyphicon-remove text-danger" data-bind="visible: !firstInspectorIsAvailable()"></span>
 					    </td>
 					</tr>
 					<tr>
@@ -236,7 +239,8 @@
 					    	Second inspector
 					    </td>
 					    <td>
-					    	<span data-bind="text: secondInspectorIsAvailable"></span>
+					    	<span class="glyphicon glyphicon-ok text-success" data-bind="visible: secondInspectorIsAvailable()"></span>
+					    	<span class="glyphicon glyphicon-remove text-danger" data-bind="visible: !secondInspectorIsAvailable()"></span>
 					    </td>
 					</tr>
 				</tbody>
