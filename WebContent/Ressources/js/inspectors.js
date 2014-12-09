@@ -6,7 +6,7 @@ $(document).ready( function () {
     $('#inspector-table').DataTable( {
         "ajax": '/PIMS/inspectors.json',
         "columnDefs": [{
-            "targets": 4,
+            "targets": 3,
             "render": showRender
           }]
     });
