@@ -182,24 +182,44 @@
 			<div id="calendar"></div>
 		  </div> <!-- end panel body -->
 				
-			<ul class="list-group" data-bind="">
-			    <li class="list-group-item text-info">
-			    	<span class="glyphicon glyphicon-calendar"></span>
-			    	<span>${ student.getFullName() }</span>
-			    </li>
-			    <li class="list-group-item text-danger">
-			    	<span class="glyphicon glyphicon-calendar"></span>
-			    	<span>${ supervisor.getFullName() }</span>
-			    </li>
-			    <li class="list-group-item text-warning" data-bind="with: firstInspector">
-			    	<span class="glyphicon glyphicon-calendar"></span>
-			    	<span data-bind="text: name"></span>
-			    </li>
-			    <li class="list-group-item text-success" data-bind="with: secondInspector">
-			    	<span class="glyphicon glyphicon-calendar"></span>
-			    	<span data-bind="text: name"></span>
-			    </li>
-			</ul>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Person</th>
+						<th>Available</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="text-info">
+					    	<span class="glyphicon glyphicon-calendar"></span>
+					    	<span>${ student.getFullName() }</span>
+					    </td>
+					    <td></td>
+					</tr>
+					<tr>
+						<td class="text-danger">
+					    	<span class="glyphicon glyphicon-calendar"></span>
+					    	<span>${ supervisor.getFullName() }</span>
+					    </td>
+					    <td></td>
+					</tr>
+					<tr>
+						<td class="text-warning" data-bind="with: firstInspector">
+					    	<span class="glyphicon glyphicon-calendar"></span>
+					    	<span data-bind="text: name"></span>
+					    </td>
+					    <td></td>
+					</tr>
+					<tr>
+						<td class="text-success" data-bind="with: secondInspector">
+					    	<span class="glyphicon glyphicon-calendar"></span>
+					    	<span data-bind="text: name"></span>
+					    </td>
+					    <td></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	  
 	  <div class="form-group">
