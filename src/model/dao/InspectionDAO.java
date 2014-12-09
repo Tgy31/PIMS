@@ -92,6 +92,23 @@ public class InspectionDAO {
 		return inspections.size() > 0 ? inspections.get(0) : null;
 	}
 	
+	public Inspection findByID(int ID){
+		String sql = "SELECT  * " + 
+							"FROM inspection " + 
+							"WHERE inspection_id= " + "'" + ID + "'";
+		List<Inspection> inspections= null;
+		try {
+			inspections = template.query(sql, new InspectionMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return inspections.size() > 0 ? inspections.get(0) : null;
+	}
+	
 	public boolean deleteByStudentID(int ID){
 		String sql = "delete from inspection where student_id = '"+ID+"'";
 		try {

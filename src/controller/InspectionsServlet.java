@@ -14,9 +14,9 @@ import javax.servlet.http.HttpSession;
 import model.dao.InspectionDAO;
 import model.dao.InspectionweekDAO;
 import model.dao.InspectorDAO;
-import model.dao.KeywordDAO;
 import model.dao.ModuleDAO;
 import model.dao.StudentDAO;
+import model.dao.StudentKeywordDAO;
 import model.entity.Inspection;
 import model.entity.Inspectionweek;
 import model.entity.Inspector;
@@ -76,12 +76,11 @@ public class InspectionsServlet extends BootstrapServlet {
 	}
     
 	private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int inspectionSlug = 0;
 		try {
-			inspectionSlug = Integer.parseInt(this.getObjectSlug(request));
+			int inspectionID = Integer.parseInt(this.getObjectSlug(request));
 			
-			StudentDAO inspectionDAO = new StudentDAO();
-			Student inspection = inspectionDAO.findByStudentID(inspectionSlug);
+			InspectionDAO inspectionDAO = new InspectionDAO();
+			Inspection inspection = inspectionDAO.findByID(inspectionID);
 			
 			if (inspection != null) {
 				this.proceedSingleInspection(inspection, request, response);
@@ -132,13 +131,41 @@ public class InspectionsServlet extends BootstrapServlet {
 		this.proceedGet("/Inspections.jsp", request, response);
 	}
 	
-	protected void proceedSingleInspection(Student inspection, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void proceedSingleInspection(Inspection inspection, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.relatedMenuClass = "inspections inspection";
+        
+        // Inspection
 		request.setAttribute("inspection", inspection);
 		
+		
+		// Student
+		StudentDAO studentDAO = new StudentDAO();
+		Student student = studentDAO.findByStudentID(inspection.getStudent_id());
+		request.setAttribute("student", student);
+		
+		// Keywords
+		StudentKeywordDAO studentKeywordsDAO = new StudentKeywordDAO();
+		List<Keyword> studentKeywords = studentKeywordsDAO.findByStudentID(student.getStudent_id());
+		String lKeywords = null;
+		if (studentKeywords.size() > 0) {
+			for (Keyword keyword : studentKeywords) {
+				if (lKeywords == null) {
+					lKeywords = keyword.getKeyword_name();
+				} else {
+					lKeywords.concat(", ");
+					lKeywords.concat(keyword.getKeyword_name());
+				}
+			}
+		}
+		request.setAttribute("keywords", lKeywords);
+		
+		// Supervisor
 		InspectorDAO inspectorDAO = new InspectorDAO();
+		Inspector supervisor = inspectorDAO.findByUsername(student.getSupervisor());
+		request.setAttribute("supervisor", supervisor);
+		
+		// Inspectors
 		List<Inspector> allInspectors = inspectorDAO.findAll();
-
 		List<Inspector> suggestedInspectors = allInspectors.subList(0, 2);
 		List<Inspector> otherInspectors = new ArrayList<Inspector>(allInspectors);
 		otherInspectors.removeAll(suggestedInspectors);

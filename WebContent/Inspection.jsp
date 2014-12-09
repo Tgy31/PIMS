@@ -7,20 +7,9 @@
 
 
 
-<c:if test="${ !empty sessionScope.alertType }">
+<c:if test="${ empty sessionScope.alertType }">
 
 	<div id="json-variables">
-	[
-	<c:forEach items="${ keywords }" var="keyword" varStatus="keywordStatus">
-		{
-			"id": "${ keyword.getKeyword_id() }",
-			"name": "${ keyword.getKeyword_name() }"
-		}
-		<c:if test="${ keywordStatus.index < keywords.size() - 1 }">
-		,
-		</c:if>
-	</c:forEach>
-	]
 	
 	</div>
 	
@@ -35,31 +24,31 @@
 			  <div class="form-group">
 			    <label class="col-sm-2 control-label">Student</label>
 			    <div class="col-sm-10">
-			      <p class="form-control-static">${ student.getModule_id() }</p>
+			      <p class="form-control-static">${ student.getFullName() }</p>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label class="col-sm-2 control-label">Title</label>
 			    <div class="col-sm-10">
-			      <p class="form-control-static">${ student.getModule_id() }</p>
+			      <p class="form-control-static">${ student.getProject_title() }</p>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label class="col-sm-2 control-label">Description</label>
 			    <div class="col-sm-10">
-			      <p class="form-control-static">${ student.getModule_id() }</p>
+			      <p class="form-control-static">${ student.getProject_description() }</p>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label class="col-sm-2 control-label">Keywords</label>
 			    <div class="col-sm-10">
-			      <p class="form-control-static">${ student.getModule_id() }</p>
+			      <p class="form-control-static">${ keywords }</p>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label class="col-sm-2 control-label">Supervisor</label>
 			    <div class="col-sm-10">
-			      <p class="form-control-static">${ student.getModule_id() }</p>
+			      <p class="form-control-static">${ supervisor.getFullName() }</p>
 			    </div>
 			  </div>
 				
@@ -104,8 +93,8 @@
 							<input type="radio" name="inputFirstInspector">
 						</td>
 						<td colspan="3">
-							<select  class="form-control">
-								<option>Other inspector</option>
+							<select  class="form-control" data-bind="selectedOptions: firstOtherInspector">
+								<option disabled selected>Other inspector</option>
 								<c:forEach items="${ otherInspectors }" var="inspector">
 									<option>${ inspector.getFirst_name() }</option>
 								</c:forEach>
@@ -136,7 +125,7 @@
 					<c:forEach items="${ suggestedInspectors }" var="inspector">	
 						<tr>
 							<td class="radio-cell">
-								<input type="radio" name="inputSecondInspector">
+								<input type="radio" name="inputSecondInspector" value="${ inspector.getInspector_id() }">
 							</td>
 							<td>
 								${ inspector.getFirst_name() }
@@ -154,8 +143,8 @@
 							<input type="radio" name="inputSecondInspector">
 						</td>
 						<td colspan="3">
-							<select  class="form-control">
-								<option>Other inspector</option>
+							<select  class="form-control" data-bind="selectedOptions: secondOtherInspector">
+								<option disabled selected>Other inspector</option>
 								<c:forEach items="${ otherInspectors }" var="inspector">
 									<option>${ inspector.getFirst_name() }</option>
 								</c:forEach>
