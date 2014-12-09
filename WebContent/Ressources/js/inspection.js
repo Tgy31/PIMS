@@ -26,17 +26,20 @@ function InspectionViewModel() {
 	var self = this;
 
 	self.defaultDate = "2014-11-12";
+	
 	self.studentID = null;
 	self.studentSlots = [];
+	
 	self.supervisorID = null;
 	self.supervisorSlots = [];
-	self.inspectionSlot = {
+	
+	self.inspectionSlot = ko.observable({
             title  : 'Inspection',
             start  : '2014-11-14T12:30:00',
-            start  : '2014-11-14T13:00:00',
+            end  : '2014-11-14T13:00:00',
             constraint: "businessHours",
             color: colorInspection
-    };
+    });
 	
 	self.suggestedInspectors = ko.observableArray();
 	self.otherInspectors = ko.observableArray();
@@ -119,13 +122,39 @@ function InspectionViewModel() {
 		}
 		slots = slots.concat(self.studentSlots);
 		slots = slots.concat(self.supervisorSlots);
-		slots.push(self.inspectionSlot);
+		slots.push(self.inspectionSlot());
 		callback(slots);
 	};
 	
+	
+	// Get availability
+	self.studentIsAvailable = ko.computed(function() {
+		return !slotsOverlap(self.studentSlots, self.inspectionSlot());
+	});
+	self.supervisorIsAvailable = ko.computed(function() {
+		return !slotsOverlap(self.supervisorSlots, self.inspectionSlot());
+	});
+	self.firstInspectorIsAvailable = ko.computed(function() {
+		var user = self.firstInspector();
+		if (user) {
+			return !slotsOverlap(user.slots, self.inspectionSlot());
+		} else {
+			return true;
+		}
+	});
+	self.secondInspectorIsAvailable = ko.computed(function() {
+		var user = self.secondInspector();
+		if (user) {
+			return !slotsOverlap(user.slots, self.inspectionSlot());
+		} else {
+			return true;
+		}
+	});
+	
+	
 	// Setters
 	self.slotChanged = function(event, delta, revertFunc) {
-		
+		self.inspectionSlot(event);
 	};
     
     self.setCalendarNeedUpdate = function() {
@@ -145,7 +174,6 @@ function InspectionViewModel() {
             	json.slots.forEach(function(slot) {
             		slot.color = colorFirstInspector;
             		slot.rendering = "background";
-            		slot.overlap = self.candOverlap("first inspector");
             		slot.user = "first inspector";
             	});
             	self.firstInspector().slots = json.slots;
@@ -233,13 +261,6 @@ function InspectionViewModel() {
 	self.secondOtherInspectorHandler = ko.computed(function() {
 		//console.log(self.secondOtherInspector());
 	});
-	
-	// Calendar Helpers
-	self.candOverlap = function(name) {
-		return function(fixedEvent, movingEvent) {
-			return confirm("The " + name + "may not be available at this time. Do you wish to confirm this time for the inspection ?");
-		};
-	};
 	
 	// Start
 	self.readInspectors();

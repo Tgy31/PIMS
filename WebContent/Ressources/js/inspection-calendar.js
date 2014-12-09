@@ -1,5 +1,22 @@
-var shouldOverlap = function(fixedEvent, movingEvent) {
-    return fixedEvent.type === 'inspector-unavailability';
+var overlap = function(slot1, slot2) {
+	var slot1Start = moment(slot1.start);
+	var slot1End = moment(slot1.end);
+	var slot2Start = moment(slot2.start);
+	var slot2End = moment(slot2.end);
+	var isBefore = slot2End.isBefore(slot1Start, 'seconde');
+	var isAfter = slot1End.isBefore(slot2Start, 'seconde');
+	return !isBefore && !isAfter;
+};
+
+var slotsOverlap = function(slots, referenceSlot) {
+	var overlapFound = false;
+	slots.forEach(function(slot) {
+		if (overlap(slot, referenceSlot)) {
+			overlapFound = true;
+			return;
+		}
+	});
+	return overlapFound;
 };
 
 var createCalendar = function(model) {

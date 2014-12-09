@@ -186,6 +186,7 @@
 				<thead>
 					<tr>
 						<th>Person</th>
+						<th>Role</th>
 						<th>Available</th>
 					</tr>
 				</thead>
@@ -195,28 +196,48 @@
 					    	<span class="glyphicon glyphicon-calendar"></span>
 					    	<span>${ student.getFullName() }</span>
 					    </td>
-					    <td></td>
+					    <td>
+					    	Student
+					    </td>
+					    <td>
+					    	<span data-bind="text: studentIsAvailable"></span>
+					    </td>
 					</tr>
 					<tr>
 						<td class="text-danger">
 					    	<span class="glyphicon glyphicon-calendar"></span>
 					    	<span>${ supervisor.getFullName() }</span>
 					    </td>
-					    <td></td>
+					    <td>
+					    	Spervisor
+					    </td>
+					    <td>
+					    	<span data-bind="text: supervisorIsAvailable"></span>
+					    </td>
 					</tr>
 					<tr>
 						<td class="text-warning" data-bind="with: firstInspector">
 					    	<span class="glyphicon glyphicon-calendar"></span>
 					    	<span data-bind="text: name"></span>
 					    </td>
-					    <td></td>
+					    <td>
+					    	First inspector
+					    </td>
+					    <td>
+					    	<span data-bind="text: firstInspectorIsAvailable"></span>
+					    </td>
 					</tr>
 					<tr>
 						<td class="text-success" data-bind="with: secondInspector">
 					    	<span class="glyphicon glyphicon-calendar"></span>
 					    	<span data-bind="text: name"></span>
 					    </td>
-					    <td></td>
+					    <td>
+					    	Second inspector
+					    </td>
+					    <td>
+					    	<span data-bind="text: secondInspectorIsAvailable"></span>
+					    </td>
 					</tr>
 				</tbody>
 			</table>
