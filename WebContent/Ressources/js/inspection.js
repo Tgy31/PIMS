@@ -11,6 +11,8 @@ function Inspector(json) {
 	self.formattedCapacity = function() {
 		return self.load + "/" + self.capacity;
 	};
+	
+	self.slots = [];
 }
 
 
@@ -28,20 +30,6 @@ function InspectionViewModel() {
 
 	self.firstOtherInspector = ko.observable();
 	self.secondOtherInspector = ko.observable();
-	
-	// Bind other inspectors changes
-	self.firstInspectorHandler = ko.computed(function() {
-		console.log(self.firstInspector());
-	});
-	self.secondInspectorHandler = ko.computed(function() {
-		console.log(self.secondInspector());
-	});
-	self.firstOtherInspectorHandler = ko.computed(function() {
-		//console.log(self.firstOtherInspector());
-	});
-	self.secondOtherInspectorHandler = ko.computed(function() {
-		//console.log(self.secondOtherInspector());
-	});
 	
 	// Inputs
 	self.readSuggestedInspectors = function(json) {
@@ -99,7 +87,12 @@ function InspectionViewModel() {
 	};
 	
 	self.getSlots = function(start, end, timezone, callback) {
-		callback([]);
+		var slots = [];
+		if (self.firstInspector() != null) {
+			slots = slots.concat(self.firstInspector().slots);
+		}
+		console.log(slots);
+		callback(slots);
 	};
 	
 	// Setters
@@ -110,6 +103,51 @@ function InspectionViewModel() {
     self.setCalendarNeedUpdate = function() {
     	$('#calendar').fullCalendar( 'refetchEvents' );
     };
+    
+    // Fetchers
+    self.fetchFirstInspectorSlots = function() {
+    	if (self.firstInspector() != null) {
+        	var userType = 'inspector';
+        	var userID = self.firstInspector().id;
+        	
+        	self.fetchAvailability(userType, userID, function(result) {
+        		// if success
+            	var json = JSON.parse(result);
+            	
+            	json.slots.forEach(function(slot) {
+            		slot.color = "yellow";
+            		slot.rendering = "background";
+            	});
+            	self.firstInspector().slots = json.slots;
+            	console.log(json.slots);
+            	self.setCalendarNeedUpdate();
+        	});
+    	}
+    };
+    
+    self.fetchAvailability = function(userType, userID, success) {
+    	var contentType = 'json';
+		$.ajax({
+			url: '/PIMS/availability/?type=' + userType + '&id=' + userID +'&content='+ contentType,
+			success: success,
+			error: null
+		});
+    };
+	
+	// Bind other inspectors changes
+	self.firstInspectorHandler = ko.computed(function() {
+		console.log(self.firstInspector());
+		self.fetchFirstInspectorSlots();
+	});
+	self.secondInspectorHandler = ko.computed(function() {
+		console.log(self.secondInspector());
+	});
+	self.firstOtherInspectorHandler = ko.computed(function() {
+		//console.log(self.firstOtherInspector());
+	});
+	self.secondOtherInspectorHandler = ko.computed(function() {
+		//console.log(self.secondOtherInspector());
+	});
 	
 	// Start
 	self.readInspectors();
