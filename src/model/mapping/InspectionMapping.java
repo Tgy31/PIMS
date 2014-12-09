@@ -14,7 +14,8 @@ public class InspectionMapping implements IEntityMapping{
 		Inspection inspection = new Inspection();
 		inspection.setInspection_id(rs.getInt("inspection_id"));
 		inspection.setInspectionweek_id(rs.getInt("inspectionweek_id"));
-		inspection.setInspector_id(rs.getInt("inspector_id"));
+		inspection.setFirst_inspector_id(rs.getInt("first_inspector_id"));;
+		inspection.setSecond_inspector_id(rs.getInt("second_inspector_id"));
 		inspection.setStudent_id(rs.getInt("student_id"));
 		inspection.setStart_date(rs.getTimestamp("start_date"));
 		inspection.setEnd_date(rs.getTimestamp("end_date"));	

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2014-12-08 12:11:00
+Date: 2014-12-09 11:08:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,21 +23,25 @@ CREATE TABLE `inspection` (
   `inspection_id` int(20) NOT NULL AUTO_INCREMENT,
   `inspectionweek_id` int(20) DEFAULT NULL,
   `student_id` int(20) DEFAULT NULL,
-  `inspector_id` int(20) DEFAULT NULL,
+  `first_inspector_id` int(20) DEFAULT NULL,
+  `second_inspector_id` int(20) DEFAULT NULL,
   `start_date` datetime(6) DEFAULT NULL,
   `end_date` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`inspection_id`),
   KEY `inspectionweek_id` (`inspectionweek_id`),
   KEY `student_id` (`student_id`),
-  KEY `inspector_id` (`inspector_id`),
+  KEY `inspector_id` (`first_inspector_id`),
+  KEY `second_inspector_id` (`second_inspector_id`),
   CONSTRAINT `inspection_ibfk_1` FOREIGN KEY (`inspectionweek_id`) REFERENCES `inspectionweek` (`inspectionweek_id`),
   CONSTRAINT `inspection_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
-  CONSTRAINT `inspection_ibfk_3` FOREIGN KEY (`inspector_id`) REFERENCES `inspector` (`inspector_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `inspection_ibfk_3` FOREIGN KEY (`first_inspector_id`) REFERENCES `inspector` (`inspector_id`),
+  CONSTRAINT `inspection_ibfk_4` FOREIGN KEY (`second_inspector_id`) REFERENCES `inspector` (`inspector_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inspection
 -- ----------------------------
+INSERT INTO `inspection` VALUES ('1', null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for inspectionweek
@@ -51,11 +55,12 @@ CREATE TABLE `inspectionweek` (
   PRIMARY KEY (`inspectionweek_id`),
   KEY `module_id` (`module_id`),
   CONSTRAINT `inspectionweek_ibfk_1` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inspectionweek
 -- ----------------------------
+INSERT INTO `inspectionweek` VALUES ('1', '26581', 'First inspection', '2014-12-08 11:05:33.000000');
 
 -- ----------------------------
 -- Table structure for inspector
@@ -71,7 +76,7 @@ CREATE TABLE `inspector` (
   `capacity` int(45) DEFAULT NULL,
   PRIMARY KEY (`inspector_id`),
   KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inspector
@@ -201,7 +206,7 @@ CREATE TABLE `student` (
   KEY `supervisor` (`supervisor`),
   CONSTRAINT `student_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`),
   CONSTRAINT `student_ibfk_3` FOREIGN KEY (`supervisor`) REFERENCES `inspector` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student
