@@ -13,6 +13,8 @@
 	{
 		"firstInspectorID": 1,
 		"secondInspectorID": 2,
+		"studentID": ${ student.getStudent_id() },
+		"supervisorID": ${ supervisor.getInspector_id() },
 		"suggestedInspectors": [
 		<c:forEach items="${ suggestedInspectors }" var="inspector" varStatus="inspectorStatus">
 			{
@@ -178,21 +180,23 @@
 		  </div>
 		  <div class="panel-body">
 			<div id="calendar"></div>
-			<br />
-			<br />	
-			</div> <!-- end panel body -->
+		  </div> <!-- end panel body -->
 				
 			<ul class="list-group" data-bind="">
-			    <li class="list-group-item">
+			    <li class="list-group-item text-info">
+			    	<span class="glyphicon glyphicon-calendar"></span>
 			    	<span>${ student.getFullName() }</span>
 			    </li>
-			    <li class="list-group-item">
+			    <li class="list-group-item text-danger">
+			    	<span class="glyphicon glyphicon-calendar"></span>
 			    	<span>${ supervisor.getFullName() }</span>
 			    </li>
-			    <li class="list-group-item" data-bind="with: firstInspector">
+			    <li class="list-group-item text-warning" data-bind="with: firstInspector">
+			    	<span class="glyphicon glyphicon-calendar"></span>
 			    	<span data-bind="text: name"></span>
 			    </li>
-			    <li class="list-group-item" data-bind="with: secondInspector">
+			    <li class="list-group-item text-success" data-bind="with: secondInspector">
+			    	<span class="glyphicon glyphicon-calendar"></span>
 			    	<span data-bind="text: name"></span>
 			    </li>
 			</ul>

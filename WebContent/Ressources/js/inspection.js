@@ -1,3 +1,8 @@
+var colorStudent = "#31708F";
+var colorSupervisor = "#A94442";
+var colorFirstInspector = "#8A6D3B";
+var colorSecondInspector = "#3C763D";
+
 function Inspector(json) {
 	var self = this;
 	
@@ -20,6 +25,10 @@ function InspectionViewModel() {
 	var self = this;
 
 	self.defaultDate = "2014-11-12";
+	self.studentID = null;
+	self.studentSlots = [];
+	self.supervisorID = null;
+	self.supervisorSlots = [];
 	
 	self.suggestedInspectors = ko.observableArray();
 	self.otherInspectors = ko.observableArray();
@@ -64,11 +73,17 @@ function InspectionViewModel() {
     	self.secondInspector(secondInspector);
 	};
 	
+	self.readStudent = function(json) {
+		self.supervisorID = json.supervisorID;
+		self.studentID = json.studentID;
+	};
+	
 	self.readInspectors = function() {
     	var jsonDiv = $('#json-variables');
     	var json = JSON.parse(jsonDiv.text());
     	
 		self.allInspectors([]);
+		self.readStudent(json);
 		self.readSuggestedInspectors(json);
 		self.readOtherInspectors(json);
 		self.readFirstInspector(json);
@@ -91,7 +106,11 @@ function InspectionViewModel() {
 		if (self.firstInspector() != null) {
 			slots = slots.concat(self.firstInspector().slots);
 		}
-		console.log(slots);
+		if (self.secondInspector() != null) {
+			slots = slots.concat(self.secondInspector().slots);
+		}
+		slots = slots.concat(self.studentSlots);
+		slots = slots.concat(self.supervisorSlots);
 		callback(slots);
 	};
 	
@@ -115,11 +134,64 @@ function InspectionViewModel() {
             	var json = JSON.parse(result);
             	
             	json.slots.forEach(function(slot) {
-            		slot.color = "yellow";
+            		slot.color = colorFirstInspector;
             		slot.rendering = "background";
             	});
             	self.firstInspector().slots = json.slots;
-            	console.log(json.slots);
+            	self.setCalendarNeedUpdate();
+        	});
+    	}
+    };
+    self.fetchSecondInspectorSlots = function() {
+    	if (self.secondInspector() != null) {
+        	var userType = 'inspector';
+        	var userID = self.secondInspector().id;
+        	
+        	self.fetchAvailability(userType, userID, function(result) {
+        		// if success
+            	var json = JSON.parse(result);
+            	
+            	json.slots.forEach(function(slot) {
+            		slot.color = colorSecondInspector;
+            		slot.rendering = "background";
+            	});
+            	self.secondInspector().slots = json.slots;
+            	self.setCalendarNeedUpdate();
+        	});
+    	}
+    };
+    self.fetchSupervisorSlots = function() {
+    	if (self.secondInspector() != null) {
+        	var userType = 'inspector';
+        	var userID = self.supervisorID;
+        	
+        	self.fetchAvailability(userType, userID, function(result) {
+        		// if success
+            	var json = JSON.parse(result);
+            	
+            	json.slots.forEach(function(slot) {
+            		slot.color = colorSupervisor;
+            		slot.rendering = "background";
+            	});
+            	self.supervisorSlots = json.slots;
+            	self.setCalendarNeedUpdate();
+        	});
+    	}
+    };
+    self.fetchStudentSlots = function() {
+    	if (self.secondInspector() != null) {
+        	var userType = 'student';
+        	var userID = self.studentID;
+        	
+        	self.fetchAvailability(userType, userID, function(result) {
+        		// if success
+            	var json = JSON.parse(result);
+            	
+            	json.slots.forEach(function(slot) {
+            		slot.color = colorStudent;
+            		slot.rendering = "background";
+            	});
+            	self.studentSlots = json.slots;
             	self.setCalendarNeedUpdate();
         	});
     	}
@@ -136,11 +208,10 @@ function InspectionViewModel() {
 	
 	// Bind other inspectors changes
 	self.firstInspectorHandler = ko.computed(function() {
-		console.log(self.firstInspector());
 		self.fetchFirstInspectorSlots();
 	});
 	self.secondInspectorHandler = ko.computed(function() {
-		console.log(self.secondInspector());
+		self.fetchSecondInspectorSlots();
 	});
 	self.firstOtherInspectorHandler = ko.computed(function() {
 		//console.log(self.firstOtherInspector());
@@ -151,6 +222,8 @@ function InspectionViewModel() {
 	
 	// Start
 	self.readInspectors();
+	self.fetchStudentSlots();
+	self.fetchSupervisorSlots();
 	createCalendar(self);
 }
 
