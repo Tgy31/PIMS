@@ -24,16 +24,18 @@ public class InspectionDAO {
 							"			(inspection_id, " +
 							"			 inspectionweek_id, " 	+
 							"			 student_id, " 	+
-							"			 inspector_id, " 	+
+							"			 first_inspector_id, " 	+
+							"			 second_inspector_id, " 	+
 							"			 start_date, " 	+
 							"			 end_date, " 	    +
 							"values"							+ENTER+
-							"			(?,?,?,?,?,?)";
+							"			(?,?,?,?,?,?,?)";
 		try {
 			return (template.update(sql, inspection.getInspection_id(),
 					                     inspection.getInspectionweek_id(),
 					                     inspection.getStudent_id(),
-					                     inspection.getInspector_id(),
+					                     inspection.getFirst_inspector_id(),
+					                     inspection.getSecond_inspector_id(),
 					                     inspection.getStart_date(),
 					                     inspection.getEnd_date())== 1);
 		} catch (ClassNotFoundException e) {
@@ -52,7 +54,8 @@ public class InspectionDAO {
 							"set"										+ENTER+
 						    "			 inspection_id= ?, "+
 						    "			 inspectionweek_id= ?, "+
-							"			 inspector_id= ?, "+
+							"			 first_inspector_id= ?, "+
+							"			 second_inspector_id= ?, "+
 							"			 start_date= ?, "+
 							"			 end_date= ?"					+ENTER+
 							"where"										+ENTER+
@@ -60,7 +63,8 @@ public class InspectionDAO {
 		try {
 			return (template.update(sql, inspection.getInspection_id(),
                     inspection.getInspectionweek_id(),
-                    inspection.getInspector_id(),
+                    inspection.getFirst_inspector_id(),
+                    inspection.getSecond_inspector_id(),
                     inspection.getStart_date(),
                     inspection.getEnd_date(),
                     inspection.getStudent_id())== 1);
@@ -123,8 +127,8 @@ public class InspectionDAO {
 		return false;
 	}
 	
-	public boolean deleteByInspectorID(int ID){
-		String sql = "delete from inspection where inspector_id = '"+ID+"'";
+	public boolean deleteByFirstInspectorID(int ID){
+		String sql = "delete from inspection where first_inspector_id = '"+ID+"'";
 		try {
 			return (template.update(sql) == 1);
 		} catch (ClassNotFoundException e) {
@@ -138,7 +142,20 @@ public class InspectionDAO {
 	}
 	
 	
-
+	public boolean deleteBySecondInspectorID(int ID){
+		String sql = "delete from inspection where second_inspector_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
 	
 
 }

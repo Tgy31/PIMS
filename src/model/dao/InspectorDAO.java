@@ -2,8 +2,11 @@ package model.dao;
 
 import static tools.Replace.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -253,5 +256,41 @@ public class InspectorDAO {
 		}
 		return true;
 	}
+	
+	public File exportCSV(File file) throws IOException{
+		List<Inspector> inspectorInfoList = findAll();
+		FileOutputStream fos = new FileOutputStream(file);
+		OutputStreamWriter writer = new OutputStreamWriter(fos);
+		BufferedWriter bw = new BufferedWriter(writer);
+		        for (int i=0; i<inspectorInfoList.size();i++) {
+		            if(i == 0){
+		                bw.write("Inspector ID,");
+		                bw.write("First name,");
+		                bw.write("Last name,");
+		                bw.write("Username,");
+		                bw.write("Email");
+		                if(i != inspectorInfoList.size() - 1){
+		                    bw.newLine();
+		                }
+		                continue;
+		            }
+		            bw.write(inspectorInfoList.get(i).getInspector_id()+",");
+		            bw.write(inspectorInfoList.get(i).getFirst_name()+",");
+		            bw.write(inspectorInfoList.get(i).getLast_name()+",");
+		            bw.write(inspectorInfoList.get(i).getUsername()+",");
+		            bw.write(inspectorInfoList.get(i).getEmail()+",");
+		            if(i != inspectorInfoList.size() - 1){
+		                bw.newLine();
+		            }
+		        }
+		        bw.write("\r\n");
+		        bw.flush();
+		        writer.flush();
+		        fos.flush();
+		        bw.close();
+		        writer.close();
+		        fos.close();
+		return file;
+		}
 	
 }

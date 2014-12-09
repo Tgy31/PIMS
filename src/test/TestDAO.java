@@ -1,5 +1,6 @@
 package test;
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -34,6 +35,7 @@ public class TestDAO {
 //*********Inspector**********		
 //		testDAO.testInspectorFind();
 //		testDAO.testInspectorImportCSV("G:/TestData.csv");
+		testDAO.testInspectorExportCSV("G:/OutputData.csv");
 		
 //*********First_Inspection****
 //		testDAO.testFirstInspectionSave();
@@ -46,8 +48,9 @@ public class TestDAO {
 //		testDAO.testCourseDeleteByID();
 		
 //**********Student**********		
-		testDAO.testStudentImportCSV("G:/TestData.csv");
-		//testDAO.testInspectorImportCSV("G:/TestData.csv");
+//		testDAO.testStudentImportCSV("G:/TestData.csv");
+//		testDAO.testInspectorImportCSV("G:/TestData.csv");
+//		testDAO.testStudentExportCSV("G:/OutputData.csv");
 //		testDAO.testStudentSave();
 //		testDAO.testStudentLogin();
 //		testDAO.testStudentFindByID();
@@ -75,6 +78,12 @@ public class TestDAO {
 	
 	
 	//======Test Inspector================
+	
+	public void testInspectorExportCSV(String path) throws IOException{
+		InspectorDAO inspectortDAO = new InspectorDAO();
+		inspectortDAO.exportCSV(new File(path));
+	}
+	
 	public void testInspectorFind(){
 		InspectorDAO inspectorDAO = new InspectorDAO();
 //		System.out.println(inspectorDAO.findAll());
@@ -91,6 +100,12 @@ public class TestDAO {
 	
 	
 	//========Test Student=================
+	
+	public void testStudentExportCSV(String path) throws IOException{
+		StudentDAO studentDAO = new StudentDAO();
+		studentDAO.exportCSV(new File(path));
+	}
+	
 	public void testStudentImportCSV(String path) throws Exception{
 		StudentDAO studentDAO = new StudentDAO();
 		Module module = new Module(); 
