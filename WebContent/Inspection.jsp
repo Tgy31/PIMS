@@ -10,7 +10,40 @@
 <c:if test="${ empty sessionScope.alertType }">
 
 	<div id="json-variables">
-	
+	{
+		"firstInspectorID": 1,
+		"secondInspectorID": 2,
+		"suggestedInspectors": [
+		<c:forEach items="${ suggestedInspectors }" var="inspector" varStatus="inspectorStatus">
+			{
+				"id": "${ inspector.getInspector_id() }",
+				"name": "${ inspector.getFullName() }",
+				"username": "${ inspector.getUsername() }",
+				"keywords": "Web, network",
+				"load": 0,
+				"capacity": ${ inspector.getCapacity() }
+			}
+			<c:if test="${ inspectorStatus.index < suggestedInspectors.size() - 1 }">
+			,
+			</c:if>
+		</c:forEach>
+		],
+		"otherInspectors": [
+		<c:forEach items="${ otherInspectors }" var="inspector" varStatus="inspectorStatus">
+			{
+				"id": "${ inspector.getInspector_id() }",
+				"name": "${ inspector.getFullName() }",
+				"username": "${ inspector.getUsername() }",
+				"keywords": "Web, network",
+				"load": 0,
+				"capacity": ${ inspector.getCapacity() }
+			}
+			<c:if test="${ inspectorStatus.index < otherInspectors.size() - 1 }">
+			,
+			</c:if>
+		</c:forEach>
+		]
+	}
 	</div>
 	
 	<form class="form-horizontal" role="form" method="post">
@@ -72,32 +105,24 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${ suggestedInspectors }" var="inspector">	
+					<!-- ko foreach: suggestedInspectors -->	
 						<tr>
 							<td class="radio-cell">
-								<input type="radio" name="inputFirstInspector">
+								<input type="radio" name="inputFirstInspector" data-bind="checkedValue: $data, checked: $root.firstInspector">
 							</td>
-							<td>
-								${ inspector.getFirst_name() }
-							</td>
-							<td>
-								Mobile, network
-							</td>
-							<td>
-								3/8
-							</td>
+							<td data-bind="text: name"></td>
+							<td data-bind="text: keywords"></td>
+							<td data-bind="text: formattedCapacity()"></td>
 						</tr>
-					</c:forEach>
+					<!-- /ko -->
 					<tr>
 						<td class="radio-cell last">
-							<input type="radio" name="inputFirstInspector">
+							<input type="radio" name="inputFirstInspector" data-bind="checkedValue: $root.firstOtherInspector(), checked: $root.firstInspector">
 						</td>
 						<td colspan="3">
-							<select  class="form-control" data-bind="selectedOptions: firstOtherInspector">
-								<option disabled selected>Other inspector</option>
-								<c:forEach items="${ otherInspectors }" var="inspector">
-									<option>${ inspector.getFirst_name() }</option>
-								</c:forEach>
+							<select  class="form-control" data-bind="options: otherInspectors,
+																	value: firstOtherInspector,
+																	optionsText: 'name'">
 							</select>
 						</td>
 					</tr>
@@ -122,32 +147,24 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${ suggestedInspectors }" var="inspector">	
+					<!-- ko foreach: suggestedInspectors -->	
 						<tr>
 							<td class="radio-cell">
-								<input type="radio" name="inputSecondInspector" value="${ inspector.getInspector_id() }">
+								<input type="radio" name="inputSecondInspector" data-bind="checkedValue: $data, checked: $root.secondInspector">
 							</td>
-							<td>
-								${ inspector.getFirst_name() }
-							</td>
-							<td>
-								Mobile, network
-							</td>
-							<td>
-								3/8
-							</td>
+							<td data-bind="text: name"></td>
+							<td data-bind="text: keywords"></td>
+							<td data-bind="text: formattedCapacity()"></td>
 						</tr>
-					</c:forEach>
+					<!-- /ko -->
 					<tr>
 						<td class="radio-cell last">
-							<input type="radio" name="inputSecondInspector">
+							<input type="radio" name="inputSecondInspector" data-bind="checkedValue: $root.secondOtherInspector(), checked: $root.secondInspector">
 						</td>
 						<td colspan="3">
-							<select  class="form-control" data-bind="selectedOptions: secondOtherInspector">
-								<option disabled selected>Other inspector</option>
-								<c:forEach items="${ otherInspectors }" var="inspector">
-									<option>${ inspector.getFirst_name() }</option>
-								</c:forEach>
+							<select  class="form-control" data-bind="options: otherInspectors,
+																	value: secondOtherInspector,
+																	optionsText: 'name'">
 							</select>
 						</td>
 					</tr>
@@ -165,11 +182,11 @@
 			<br />	
 			</div> <!-- end panel body -->
 				
-			<ul class="list-group" data-bind="foreach: keywords">
+			<ul class="list-group" data-bind="">
 			    <li class="list-group-item">
-			    	<span data-bind="text: name">
+			    	<span data-bind="">
 			    	</span>
-			    	<button type="button" class="close" data-bind="click: $root.removeKeyword"><span aria-hidden="true">&times;</span><span class="sr-only">Remove</span></button>
+			    	<button type="button" class="close" data-bind=""><span aria-hidden="true">&times;</span><span class="sr-only">Remove</span></button>
 			    </li>
 			</ul>
 		</div>
