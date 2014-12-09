@@ -1,0 +1,40 @@
+var shouldOverlap = function(fixedEvent, movingEvent) {
+    return fixedEvent.type === 'inspector-unavailability';
+};
+
+var createCalendar = function(model) {
+
+	$('#calendar').fullCalendar({
+		header: {
+			left: '',
+			center: '',
+			right: ''
+		},
+		height: 542,
+		defaultView: 'agendaWeek',
+		defaultDate: model.defaultDate,
+		slotDuration: '00:30:00',
+		snapDuration: '00:30:00',
+		minTime: '08:00:00',
+		maxTime: '19:00:00',
+		allDaySlot: false,
+		weekends: false,
+		businessHours: {
+		    start: '9:00', // a start time (9am in this example)
+		    end: '18:00', // an end time (6pm in this example)
+
+		    dow: [ 1, 2, 3, 4, 5 ]
+		    // days of week. an array of zero-based day of week integers (0=Sunday)
+		    // (Monday-Friday in this example)
+		},
+		editable: true,
+		events: model.getSlots,
+		eventDrop: model.slotChanged,
+		eventResize: model.slotChanged
+	});
+	
+};
+
+$(document).ready(function() {
+
+});

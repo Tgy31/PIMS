@@ -184,9 +184,16 @@
 				
 			<ul class="list-group" data-bind="">
 			    <li class="list-group-item">
-			    	<span data-bind="">
-			    	</span>
-			    	<button type="button" class="close" data-bind=""><span aria-hidden="true">&times;</span><span class="sr-only">Remove</span></button>
+			    	<span>${ student.getFullName() }</span>
+			    </li>
+			    <li class="list-group-item">
+			    	<span>${ supervisor.getFullName() }</span>
+			    </li>
+			    <li class="list-group-item" data-bind="with: firstInspector">
+			    	<span data-bind="text: name"></span>
+			    </li>
+			    <li class="list-group-item" data-bind="with: secondInspector">
+			    	<span data-bind="text: name"></span>
 			    </li>
 			</ul>
 		</div>

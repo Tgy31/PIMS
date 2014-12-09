@@ -40,6 +40,7 @@ public class InspectionsServlet extends BootstrapServlet {
         this.addJavascriptFile("moment.min.js");
         this.addJavascriptFile("fullcalendar.min.js");
         this.addJavascriptFile("knockout-3.2.0.js");
+        this.addJavascriptFile("inspection-calendar.js");
         this.addJavascriptFile("inspection.js");
     }
 

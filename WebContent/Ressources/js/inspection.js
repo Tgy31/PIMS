@@ -17,6 +17,8 @@ function Inspector(json) {
 function InspectionViewModel() {
 	var self = this;
 
+	self.defaultDate = "2014-11-12";
+	
 	self.suggestedInspectors = ko.observableArray();
 	self.otherInspectors = ko.observableArray();
 	self.allInspectors = ko.observableArray();
@@ -42,10 +44,7 @@ function InspectionViewModel() {
 	});
 	
 	// Inputs
-	self.readSuggestedInspectors = function() {
-    	var jsonDiv = $('#json-variables');
-    	var json = JSON.parse(jsonDiv.text());
-		
+	self.readSuggestedInspectors = function(json) {
     	var inspectors = [];
     	json.suggestedInspectors.forEach(function(inspectorJson) {
     		var inspector = new Inspector(inspectorJson);
@@ -56,10 +55,7 @@ function InspectionViewModel() {
     	self.firstInspector(null);
 	};
 	
-	self.readOtherInspectors = function() {
-    	var jsonDiv = $('#json-variables');
-    	var json = JSON.parse(jsonDiv.text());
-		
+	self.readOtherInspectors = function(json) {
     	var inspectors = [];
     	json.otherInspectors.forEach(function(inspectorJson) {
     		var inspector = new Inspector(inspectorJson);
@@ -70,28 +66,25 @@ function InspectionViewModel() {
     	self.secondInspector(null);
 	};
 	
-	self.readFirstInspector = function() {
-    	var jsonDiv = $('#json-variables');
-    	var json = JSON.parse(jsonDiv.text());
-		
+	self.readFirstInspector = function(json) {
     	var firstInspector = self.inspectorWithID(json.firstInspectorID);
     	self.firstInspector(firstInspector);
 	};
 	
-	self.readSecondInspector = function() {
-    	var jsonDiv = $('#json-variables');
-    	var json = JSON.parse(jsonDiv.text());
-		
+	self.readSecondInspector = function(json) {
     	var secondInspector = self.inspectorWithID(json.secondInspectorID);
     	self.secondInspector(secondInspector);
 	};
 	
 	self.readInspectors = function() {
+    	var jsonDiv = $('#json-variables');
+    	var json = JSON.parse(jsonDiv.text());
+    	
 		self.allInspectors([]);
-		self.readSuggestedInspectors();
-		self.readOtherInspectors();
-		self.readFirstInspector();
-		self.readSecondInspector();
+		self.readSuggestedInspectors(json);
+		self.readOtherInspectors(json);
+		self.readFirstInspector(json);
+		self.readSecondInspector(json);
 	};
 	
 	// Getters
@@ -105,8 +98,22 @@ function InspectionViewModel() {
 		return inspector;
 	};
 	
+	self.getSlots = function(start, end, timezone, callback) {
+		callback([]);
+	};
+	
+	// Setters
+	self.slotChanged = function(event, delta, revertFunc) {
+		
+	};
+    
+    self.setCalendarNeedUpdate = function() {
+    	$('#calendar').fullCalendar( 'refetchEvents' );
+    };
+	
 	// Start
 	self.readInspectors();
+	createCalendar(self);
 }
 
 var inspectionViewModel = new InspectionViewModel();
