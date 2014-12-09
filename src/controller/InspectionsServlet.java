@@ -177,9 +177,20 @@ public class InspectionsServlet extends BootstrapServlet {
 		request.setAttribute("otherInspectors", otherInspectors);
 		request.setAttribute("suggestedInspectors", suggestedInspectors);
 		
+		// InspectionWeek
+		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
+		Inspectionweek inspectionWeek = inspectionWeekDAO.findByID(inspection.getInspectionweek_id());
+		
 		Module module = this.getSelectedModule(request);
-		//this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Inspections%"+ inspection.getUsername(), request);
-		//this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/inspections/"+ module.getModule_id() +"/", request);
+		this.setBreadcrumbTitles("Modules%"+
+									module.getModule_name()+"%"+
+									"Inspection weeks%"+ 
+									inspectionWeek.getInspection_title() +"%"+
+									student.getUsername(), request);
+		this.setBreadcrumbLinks("/PIMS/modules/%"+
+									"/PIMS/modules/"+ module.getModule_id() +"/%"+
+									"/PIMS/inspectionweeks/"+ module.getModule_id() +"/%"+
+									"/PIMS/inspectionweeks/"+ module.getModule_id() +"/"+ inspection.getInspection_id()+"/", request);
 
         this.layoutType = LayoutType.Grid;
 		this.proceedGet("/Inspection.jsp", request, response);
