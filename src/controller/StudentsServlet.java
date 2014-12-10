@@ -103,7 +103,7 @@ public class StudentsServlet extends BootstrapServlet {
 		String email = request.getParameter("inputEmail");
 		String projectTitle = request.getParameter("inputTitle");
 		String projectDescription = request.getParameter("inputDescription");
-		String supervisorID = request.getParameter("inputSupervisor");
+		String supervisorSlug = request.getParameter("inputSupervisor");
 		String password = request.getParameter("inputPassword");
 		
 		String error = null;
@@ -120,7 +120,7 @@ public class StudentsServlet extends BootstrapServlet {
 			error = "Invalid project title";
 		} else if (projectDescription == null || projectDescription.equals("")) {
 			error = "Invalid project description";
-		} else if (supervisorID == null || supervisorID.equals("")) {
+		} else if (supervisorSlug == null || supervisorSlug.equals("")) {
 			error = "Invalid supervisor";
 		}
 		
@@ -143,6 +143,7 @@ public class StudentsServlet extends BootstrapServlet {
 				student.setProject_title(projectTitle);
 				student.setProject_description(projectDescription);
 				student.setPassword(password);
+				student.setSupervisor(supervisorSlug);
 				
 				success = studentDAO.update(student);
 				if (success) {

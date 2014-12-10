@@ -99,10 +99,10 @@
 			      	<c:forEach items="${ inspectors }" var="inspector">
 			      		<c:choose>
 			      			<c:when test="${ student.getSupervisor() eq inspector.getUsername() }">
-				    			<option value="${ inspector.getInspector_id() }" selected>${ inspector.getFullName() }</option>
+				    			<option value="${ inspector.getUsername() }" selected>${ inspector.getFullName() }</option>
 			      			</c:when>
 			      			<c:otherwise>
-				    			<option value="${ inspector.getInspector_id() }">${ inspector.getFullName() }</option>
+				    			<option value="${ inspector.getUsername() }">${ inspector.getFullName() }</option>
 			      			</c:otherwise>
 			      		</c:choose>
 			      	</c:forEach>
