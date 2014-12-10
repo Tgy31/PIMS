@@ -5,6 +5,7 @@ import static tools.Replace.PATTERN;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.db.Template;
@@ -154,6 +155,52 @@ public class InspectionDAO {
 			System.out.println("Delete opertaion failed !");
 		}
 		return false;
+	}
+	
+	public List<Inspection> inspectionsForFirstInspectorID(int inspectorID, int inspectionWeekID) {
+		String sql = "SELECT  * " + 
+				"FROM inspection " + 
+				"WHERE first_inspector_id= " + "'" + inspectorID + "'" +
+				"AND inspectionweek_id = '" + inspectionWeekID +"'";
+		List<Inspection> inspections= null;
+		try {
+		inspections = template.query(sql, new InspectionMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return inspections;
+	}
+	
+	public List<Inspection> inspectionsForSecondInspectorID(int inspectorID, int inspectionWeekID) {
+		String sql = "SELECT  * " + 
+				"FROM inspection " + 
+				"WHERE second_inspector_id= " + "'" + inspectorID + "'" +
+				"AND inspectionweek_id = '" + inspectionWeekID +"'";
+		List<Inspection> inspections= null;
+		try {
+		inspections = template.query(sql, new InspectionMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return inspections;
+	}
+	
+	public List<Inspection> inspectionsForInspectorID(int inspectorID, int inspectionWeekID) {
+		List<Inspection> inspectionsAsFirstInspector = this.inspectionsForFirstInspectorID(inspectorID, inspectionWeekID);
+		List<Inspection> inspectionsAsSecondInspector = this.inspectionsForSecondInspectorID(inspectorID, inspectionWeekID);
+		
+		List<Inspection> allInspections = new ArrayList<Inspection>();
+		allInspections.addAll(inspectionsAsFirstInspector);
+		allInspections.addAll(inspectionsAsSecondInspector);
+		return allInspections;
 	}
 	
 	

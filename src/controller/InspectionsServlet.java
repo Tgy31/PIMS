@@ -159,10 +159,6 @@ public class InspectionsServlet extends BootstrapServlet {
 	
 	private void doJSON(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		
-		//InspectionDAO inspectionDAO = new InspectionDAO();
-		//List<Inspection> inspections = inspectionDAO.findByStudentID(ID);
-		//request.setAttribute("inspections", inspections);	
-		
 		String inspectionWeekSlug = this.getModuleSlug(request);
 		int inspectionWeekID = Integer.parseInt(inspectionWeekSlug);
 		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
@@ -198,17 +194,20 @@ public class InspectionsServlet extends BootstrapServlet {
 	protected void proceedSingleInspection(Inspection inspection, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.relatedMenuClass = "inspections inspection inspection-weeks";
         
+        // DAOs
+		StudentDAO studentDAO = new StudentDAO();
+		StudentKeywordDAO studentKeywordsDAO = new StudentKeywordDAO();
+		InspectorDAO inspectorDAO = new InspectorDAO();
+        
         // Inspection
 		request.setAttribute("inspection", inspection);
 		
 		
 		// Student
-		StudentDAO studentDAO = new StudentDAO();
 		Student student = studentDAO.findByStudentID(inspection.getStudent_id());
 		request.setAttribute("student", student);
 		
 		// Keywords
-		StudentKeywordDAO studentKeywordsDAO = new StudentKeywordDAO();
 		List<Keyword> studentKeywords = studentKeywordsDAO.findByStudentID(student.getStudent_id());
 		String lKeywords = null;
 		if (studentKeywords.size() > 0) {
@@ -224,7 +223,6 @@ public class InspectionsServlet extends BootstrapServlet {
 		request.setAttribute("keywords", lKeywords);
 		
 		// Supervisor
-		InspectorDAO inspectorDAO = new InspectorDAO();
 		Inspector supervisor = inspectorDAO.findByUsername(student.getSupervisor());
 		request.setAttribute("supervisor", supervisor);
 		
@@ -237,12 +235,15 @@ public class InspectionsServlet extends BootstrapServlet {
 		request.setAttribute("otherInspectors", otherInspectors);
 		request.setAttribute("suggestedInspectors", suggestedInspectors);
 
+		// First inspector
 		Inspector firstInspector = inspectorDAO.findByInspectorID(inspection.getFirst_inspector_id());
 		if (firstInspector != null) {
 			request.setAttribute("firstInspector", firstInspector.getInspector_id());
 		} else {
 			request.setAttribute("firstInspector", -1);
 		}
+		
+		// Second inspector
 		Inspector secondInspector = inspectorDAO.findByInspectorID(inspection.getSecond_inspector_id());
 		if (secondInspector != null) {
 			request.setAttribute("secondInspector", secondInspector.getInspector_id());
@@ -265,6 +266,8 @@ public class InspectionsServlet extends BootstrapServlet {
 									"/PIMS/inspectionweeks/"+ module.getModule_id() +"/%"+
 									"/PIMS/inspectionweeks/"+ module.getModule_id() +"/"+ inspection.getInspection_id()+"/", request);
 
+		
+		request.setAttribute("servlet", this);
         this.layoutType = LayoutType.Grid;
 		this.proceedGet("/Inspection.jsp", request, response);
 	}
@@ -301,6 +304,11 @@ public class InspectionsServlet extends BootstrapServlet {
 		}
 	}
 
+	public int loadForInspector(Inspector inspector, Inspection inspection) {
+        InspectionDAO inspectionDAO = new InspectionDAO();
+		List<Inspection> firstInspectorInspections = inspectionDAO.inspectionsForInspectorID(inspector.getInspector_id(), inspection.getInspectionweek_id());
+		return firstInspectorInspections.size();
+	}
 	
 	@Override
     public Boolean shouldDenyAcces(HttpServletRequest request) {

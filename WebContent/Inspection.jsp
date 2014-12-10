@@ -24,7 +24,7 @@
 				"name": "${ inspector.getFullName() }",
 				"username": "${ inspector.getUsername() }",
 				"keywords": "Web, network",
-				"load": 0,
+				"load": ${ servlet.loadForInspector(inspector, inspection) },
 				"capacity": ${ inspector.getCapacity() }
 			}
 			<c:if test="${ inspectorStatus.index < suggestedInspectors.size() - 1 }">

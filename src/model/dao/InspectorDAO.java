@@ -15,6 +15,7 @@ import java.util.Map;
 import org.skife.csv.CSVReader;
 import org.skife.csv.SimpleReader;
 
+import model.entity.Inspection;
 import model.entity.Inspector;
 import model.entity.Student;
 import model.db.Template;
