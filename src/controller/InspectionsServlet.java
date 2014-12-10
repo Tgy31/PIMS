@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,8 +44,6 @@ public class InspectionsServlet extends BootstrapServlet {
      */
     public InspectionsServlet() {
         super();
-        this.relatedMenuClass = "inspections inspection";
-        
         this.addJavascriptFile("moment.min.js");
         this.addJavascriptFile("fullcalendar.min.js");
         this.addJavascriptFile("knockout-3.2.0.js");
@@ -193,13 +190,13 @@ public class InspectionsServlet extends BootstrapServlet {
 		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Inspections", request);
 		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/", request);
 		
-        this.relatedMenuClass = "inspections";
+        this.relatedMenuClass = "inspections inspection-weeks";
         this.layoutType = LayoutType.Grid;
 		this.proceedGet("/Inspections.jsp", request, response);
 	}
 	
 	protected void proceedSingleInspection(Inspection inspection, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.relatedMenuClass = "inspections inspection";
+        this.relatedMenuClass = "inspections inspection inspection-weeks";
         
         // Inspection
 		request.setAttribute("inspection", inspection);
