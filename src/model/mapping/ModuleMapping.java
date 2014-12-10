@@ -16,6 +16,7 @@ public class ModuleMapping implements IEntityMapping{
 		module.setStart_date(rs.getDate("start_date"));
 		module.setEnd_date(rs.getDate("end_date"));
 		module.setDefault_inspector_capacity(rs.getInt("default_inspector_capacity"));
+		module.setDefault_inspector_capacity(rs.getInt("unavailability_hour_limit"));
 		return module;
 	}
 }
