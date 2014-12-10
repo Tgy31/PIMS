@@ -90,12 +90,7 @@ function InspectionViewModel() {
     	}
 	};
 	
-	self.readStudent = function(json) {
-		self.supervisorID = json.supervisorID;
-		self.studentID = json.studentID;
-	};
-	
-	self.readInspectors = function() {
+	self.readInspection = function() {
     	var jsonDiv = $('#json-variables');
     	var json = JSON.parse(jsonDiv.text());
     	
@@ -105,6 +100,18 @@ function InspectionViewModel() {
 		self.readOtherInspectors(json);
 		self.readFirstInspector(json);
 		self.readSecondInspector(json);
+		
+		self.readInspectionDate(json);
+	};
+	
+	self.readStudent = function(json) {
+		self.supervisorID = json.supervisorID;
+		self.studentID = json.studentID;
+	};
+	
+	self.readInspectionDate = function(json) {
+		self.inspectionSlot().start = json.inspectionStart;
+		self.inspectionSlot().end = json.inspectionEnd;
 	};
 	
 	// Getters
@@ -300,7 +307,7 @@ function InspectionViewModel() {
     };
 	
 	// Start
-	self.readInspectors();
+	self.readInspection();
 	self.fetchStudentSlots();
 	self.fetchSupervisorSlots();
 	createCalendar(self);

@@ -1,5 +1,6 @@
 package model.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Inspection {
@@ -131,6 +132,16 @@ public class Inspection {
 
 	public void setEnd_date(Date end_date) {
 		this.end_date = end_date;
+	}
+	
+	public String getFormattedStartDate() {
+		String formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(this.start_date);
+		return formattedDate;
+	}
+	
+	public String getFormattedEndDate() {
+		String formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(this.end_date);
+		return formattedDate;
 	}
 
 	@Override

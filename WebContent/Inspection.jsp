@@ -15,6 +15,8 @@
 		"secondInspectorID": ${ secondInspector },
 		"studentID": ${ student.getStudent_id() },
 		"supervisorID": ${ supervisor.getInspector_id() },
+		"inspectionStart": "${ inspection.getFormattedStartDate() }",
+		"inspectionEnd": "${ inspection.getFormattedEndDate() }",
 		"suggestedInspectors": [
 		<c:forEach items="${ suggestedInspectors }" var="inspector" varStatus="inspectorStatus">
 			{

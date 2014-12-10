@@ -23,7 +23,6 @@ import model.dao.InspectionDAO;
 import model.dao.InspectionweekDAO;
 import model.dao.InspectorDAO;
 import model.dao.ModuleDAO;
-import model.dao.SlotDAO;
 import model.dao.StudentDAO;
 import model.dao.StudentKeywordDAO;
 import model.entity.Inspection;
@@ -31,7 +30,6 @@ import model.entity.Inspectionweek;
 import model.entity.Inspector;
 import model.entity.Keyword;
 import model.entity.Module;
-import model.entity.Slot;
 import model.entity.Student;
 import model.entity.User;
 
@@ -47,6 +45,8 @@ public class InspectionsServlet extends BootstrapServlet {
      */
     public InspectionsServlet() {
         super();
+        this.relatedMenuClass = "inspections inspection";
+        
         this.addJavascriptFile("moment.min.js");
         this.addJavascriptFile("fullcalendar.min.js");
         this.addJavascriptFile("knockout-3.2.0.js");
