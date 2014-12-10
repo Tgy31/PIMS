@@ -22,18 +22,16 @@ public class InspectionDAO {
 	
 	public boolean save(Inspection inspection){
 		String sql = "INSERT INTO inspection"					+ENTER+
-							"			(inspection_id, " +
-							"			 inspectionweek_id, " 	+
+							"			(inspectionweek_id, " 	+
 							"			 student_id, " 	+
 							"			 first_inspector_id, " 	+
 							"			 second_inspector_id, " 	+
 							"			 start_date, " 	+
-							"			 end_date, " 	    +
+							"			 end_date) " 	    +
 							"values"							+ENTER+
-							"			(?,?,?,?,?,?,?)";
+							"			(?,?,?,?,?,?)";
 		try {
-			return (template.update(sql, inspection.getInspection_id(),
-					                     inspection.getInspectionweek_id(),
+			return (template.update(sql, inspection.getInspectionweek_id(),
 					                     inspection.getStudent_id(),
 					                     inspection.getFirst_inspector_id(),
 					                     inspection.getSecond_inspector_id(),

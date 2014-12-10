@@ -229,15 +229,15 @@
 				    	<span>${ supervisor.getFullName() }</span>
 				    </td>
 				    <td>
-				    	Spervisor
+				    	Supervisor
 				    </td>
 				    <td>
 				    	<span class="glyphicon glyphicon-ok text-success" data-bind="visible: supervisorIsAvailable()"></span>
 				    	<span class="glyphicon glyphicon-remove text-danger" data-bind="visible: !supervisorIsAvailable()"></span>
 				    </td>
 				</tr>
-				<tr>
-					<td class="text-warning" data-bind="with: firstInspector">
+				<tr data-bind="with: firstInspector">
+					<td class="text-warning">
 				    	<span class="glyphicon glyphicon-calendar"></span>
 				    	<span data-bind="text: name"></span>
 				    </td>
@@ -245,12 +245,12 @@
 				    	First inspector
 				    </td>
 				    <td>
-				    	<span class="glyphicon glyphicon-ok text-success" data-bind="visible: firstInspectorIsAvailable()"></span>
-				    	<span class="glyphicon glyphicon-remove text-danger" data-bind="visible: !firstInspectorIsAvailable()"></span>
+				    	<span class="glyphicon glyphicon-ok text-success" data-bind="visible: $root.firstInspectorIsAvailable()"></span>
+				    	<span class="glyphicon glyphicon-remove text-danger" data-bind="visible: !$root.firstInspectorIsAvailable()"></span>
 				    </td>
 				</tr>
-				<tr>
-					<td class="text-success" data-bind="with: secondInspector">
+				<tr data-bind="with: secondInspector">
+					<td class="text-success">
 				    	<span class="glyphicon glyphicon-calendar"></span>
 				    	<span data-bind="text: name"></span>
 				    </td>
@@ -258,8 +258,8 @@
 				    	Second inspector
 				    </td>
 				    <td>
-				    	<span class="glyphicon glyphicon-ok text-success" data-bind="visible: secondInspectorIsAvailable()"></span>
-				    	<span class="glyphicon glyphicon-remove text-danger" data-bind="visible: !secondInspectorIsAvailable()"></span>
+				    	<span class="glyphicon glyphicon-ok text-success" data-bind="visible: $root.secondInspectorIsAvailable()"></span>
+				    	<span class="glyphicon glyphicon-remove text-danger" data-bind="visible: !$root.secondInspectorIsAvailable()"></span>
 				    </td>
 				</tr>
 			</tbody>

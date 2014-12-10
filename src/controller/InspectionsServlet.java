@@ -89,12 +89,10 @@ public class InspectionsServlet extends BootstrapServlet {
 		
 		int firstInspectorID = -1;
 		int secondInspectorID = -1;
-		int inspectionID = -1;
 		
 		try {
 			firstInspectorID = Integer.parseInt(firstInspectorSlug);
 			secondInspectorID = Integer.parseInt(secondInspectorSlug);
-			inspectionID = Integer.parseInt(this.getObjectSlug(request));
 		} catch (NumberFormatException e) {
 			response.setStatus(500); 
 		    PrintWriter out = response.getWriter();
@@ -128,16 +126,40 @@ public class InspectionsServlet extends BootstrapServlet {
 			e.printStackTrace();
 		}
 
+		int inspectionWeekID = -1;
+		int studentID = -1;
+		try {
+			inspectionWeekID = Integer.parseInt(this.getObjectSlug(request));
+			studentID = Integer.parseInt(this.getSecondObjectSlug(request));
+		} catch (NumberFormatException e) {
+			response.setStatus(500); 
+		    PrintWriter out = response.getWriter();
+		    out.println("Invalid inspection");
+		    out.close();
+			e.printStackTrace();
+		}
 		
 		InspectionDAO inspectionDAO = new InspectionDAO();
-		Inspection inspection = inspectionDAO.findByID(inspectionID);
+		Inspection inspection = inspectionDAO.findByStudentAndInspectionWeek(studentID, inspectionWeekID);
+		
+		if (inspection == null) {
+			inspection = new Inspection();
+			inspection.setStudent_id(studentID);
+			inspection.setInspectionweek_id(inspectionWeekID);
+		}
 		
 		inspection.setFirst_inspector_id(firstInspectorID);
 		inspection.setSecond_inspector_id(secondInspectorID);
 		inspection.setStart_date(start);
 		inspection.setEnd_date(end);
 		
-		inspectionDAO.update(inspection);
+		if (inspection.getInspection_id() > 0) {
+			System.out.println("Update "+inspection.getInspection_id());
+			inspectionDAO.update(inspection);
+		} else {
+			System.out.println("Save "+inspection.getInspection_id());
+			inspectionDAO.save(inspection);
+		}
 	}
     
 	private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -276,7 +298,7 @@ public class InspectionsServlet extends BootstrapServlet {
 		this.setBreadcrumbLinks("/PIMS/modules/%"+
 									"/PIMS/modules/"+ module.getModule_id() +"/%"+
 									"/PIMS/inspectionweeks/"+ module.getModule_id() +"/%"+
-									"/PIMS/inspectionweeks/"+ module.getModule_id() +"/"+ inspection.getInspection_id()+"/", request);
+									"/PIMS/inspectionweeks/"+ module.getModule_id() +"/"+ inspection.getInspectionweek_id()+"/", request);
 
 		
 		request.setAttribute("servlet", this);

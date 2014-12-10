@@ -316,29 +316,34 @@ function InspectionViewModel() {
 	
 	// Submit
     self.submitInspection = function() {
-    	var usersAvailable = self.studentIsAvailable();
-    	usersAvailable = usersAvailable && self.supervisorIsAvailable();
-    	usersAvailable = usersAvailable && self.firstInspectorIsAvailable();
-    	usersAvailable = usersAvailable && self.secondInspectorIsAvailable();
-    	var forceSave = false;
-    	
-    	if (!usersAvailable) {
-    		forceSave = confirm("Some people may not be available at this time. Do you wish to confirm this time for the inspection ?");
-    	}
-    	
-    	var firstInspectorOverload = (self.firstInspector().load() > self.firstInspector().capacity);
-    	if (firstInspectorOverload && (usersAvailable || forceSave)) {
-    		forceSave = confirm(self.firstInspector().name + " seems to be overloaded. Do you wish to confirm him/her as the first inspector ?");
-    	}
-    	
-    	if ((usersAvailable && !firstInspectorOverload) || forceSave) {
-        	var url = document.url;
-        	var data = {
-        		firstInspector: self.firstInspector().id,
-        		secondInspector: self.secondInspector().id,
-        		slot: JSON.stringify(self.inspectionSlot())
-        	};
-        	$.post(url, data, self.submitHandler);
+    	if (self.firstInspector() && self.secondInspector()) {
+        	var usersAvailable = self.studentIsAvailable();
+        	usersAvailable = usersAvailable && self.supervisorIsAvailable();
+        	usersAvailable = usersAvailable && self.firstInspectorIsAvailable();
+        	usersAvailable = usersAvailable && self.secondInspectorIsAvailable();
+        	var forceSave = false;
+        	
+        	if (!usersAvailable) {
+        		forceSave = confirm("Some people may not be available at this time. Do you wish to confirm this time for the inspection ?");
+        	}
+        	
+        	var firstInspectorOverload = (self.firstInspector().load() > self.firstInspector().capacity);
+        	if (firstInspectorOverload && (usersAvailable || forceSave)) {
+        		forceSave = confirm(self.firstInspector().name + " seems to be overloaded. Do you wish to confirm him/her as the first inspector ?");
+        	}
+        	
+        	if ((usersAvailable && !firstInspectorOverload) || forceSave) {
+            	var url = document.url;
+            	var data = {
+            		firstInspector: self.firstInspector().id,
+            		secondInspector: self.secondInspector().id,
+            		slot: JSON.stringify(self.inspectionSlot())
+            	};
+            	console.log(data);
+            	$.post(url, data, self.submitHandler);
+        	}
+    	} else { // if no first or second inspector
+    		alert('You first need to chose a first and a second inspector');
     	}
     };
     
