@@ -9,9 +9,23 @@ public class Module {
 	private Date start_date;
 	private Date end_date;
 	private int default_inspector_capacity;
+	private int unavailability_hour_limit;
 	
 	public Module() {
 		super();
+	}
+
+	public Module(int module_id, String module_name, String year,
+			Date start_date, Date end_date, int default_inspector_capacity,
+			int unavailability_hour_limit) {
+		super();
+		this.module_id = module_id;
+		this.module_name = module_name;
+		this.year = year;
+		this.start_date = start_date;
+		this.end_date = end_date;
+		this.default_inspector_capacity = default_inspector_capacity;
+		this.unavailability_hour_limit = unavailability_hour_limit;
 	}
 
 	@Override
@@ -26,6 +40,7 @@ public class Module {
 				+ ((module_name == null) ? 0 : module_name.hashCode());
 		result = prime * result
 				+ ((start_date == null) ? 0 : start_date.hashCode());
+		result = prime * result + unavailability_hour_limit;
 		result = prime * result + ((year == null) ? 0 : year.hashCode());
 		return result;
 	}
@@ -57,6 +72,8 @@ public class Module {
 			if (other.start_date != null)
 				return false;
 		} else if (!start_date.equals(other.start_date))
+			return false;
+		if (unavailability_hour_limit != other.unavailability_hour_limit)
 			return false;
 		if (year == null) {
 			if (other.year != null)
@@ -114,15 +131,23 @@ public class Module {
 		this.default_inspector_capacity = default_inspector_capacity;
 	}
 
+	public int getUnavailability_hour_limit() {
+		return unavailability_hour_limit;
+	}
+
+	public void setUnavailability_hour_limit(int unavailability_hour_limit) {
+		this.unavailability_hour_limit = unavailability_hour_limit;
+	}
+
 	@Override
 	public String toString() {
 		return "Module [module_id=" + module_id + ", module_name="
 				+ module_name + ", year=" + year + ", start_date=" + start_date
 				+ ", end_date=" + end_date + ", default_inspector_capacity="
-				+ default_inspector_capacity + "]";
+				+ default_inspector_capacity + ", unavailability_hour_limit="
+				+ unavailability_hour_limit + "]";
 	}
 
-	
 	
 	
 }

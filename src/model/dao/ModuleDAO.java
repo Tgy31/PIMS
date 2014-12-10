@@ -31,15 +31,17 @@ public class ModuleDAO {
 							"			 start_date, " 	+
 							"			 end_date, " 	+
 							"			 default_inspector_capacity, " 	+
+							"			 unavailability_hour_limit, " 	+
 							"values"							 					+ENTER+
-							"			(?,?,?,?,?,?)";
+							"			(?,?,?,?,?,?,?)";
 		try {
 			return (template.update(sql, module.getModule_id(),
 													  module.getModule_name(),
 													  module.getYear(),
 													  module.getStart_date(),
 													  module.getEnd_date(),
-													  module.getDefault_inspector_capacity()) == 1);
+													  module.getDefault_inspector_capacity(),
+													  module.getUnavailability_hour_limit()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("Class not found !");
@@ -57,7 +59,8 @@ public class ModuleDAO {
 							"			 year= ?, "+
 							"			 start_date= ?, "+
 							"			 end_date= ?, "+
-							"			 default_inspector_capacity= ?, "   +ENTER+
+							"			 default_inspector_capacity= ?, "+
+						    "			 unavailability_hour_limit= ?, "   +ENTER+
 							"where"											+ENTER+
 							"			module_id = ?";
 		try {
@@ -66,6 +69,7 @@ public class ModuleDAO {
 													  module.getStart_date(),
 													  module.getEnd_date(),
 													  module.getDefault_inspector_capacity(),
+													  module.getUnavailability_hour_limit(),
 													  module.getModule_id()) == 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
