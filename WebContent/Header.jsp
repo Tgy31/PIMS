@@ -13,6 +13,8 @@
 <link rel="stylesheet"
 	href="${ rootPath }Ressources/css/jquery.dataTables.min.css">
 <link rel="stylesheet"
+	href="${ rootPath }Ressources/css/jquery-ui.min.css">
+<link rel="stylesheet"
 	href="${ rootPath }Ressources/css/dataTables.bootstrap.css">
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"

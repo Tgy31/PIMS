@@ -32,4 +32,13 @@ $(document).ready( function () {
 	    });
 	    
 	}
+	
+
+    $( "#inputStartDate" ).datepicker({
+    	dateFormat: "yy-mm-dd"
+    });
+    
+    $("#buttonStartDate").on("click", function() {
+    	$("#inputStartDate").datepicker("show");
+    });
 } );

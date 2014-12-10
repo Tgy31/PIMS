@@ -39,18 +39,17 @@ public class InspectionweekDAO {
 	}
 	
 	public boolean update(Inspectionweek inspectionweek){
-		String sql = "update inspection"								+ENTER+
+		String sql = "update inspectionweek"								+ENTER+
 							"set"										+ENTER+
-						    "			 inspectionweek_id= ?, "+
 							"			 inspection_title= ?, "+
 							"			 start_date= ?"					+ENTER+
 							"where"										+ENTER+
-							"			module_id = ?";
+							"			inspectionweek_id = ?";
 		try {
-			return (template.update(sql, inspectionweek.getInspectionweek_id(),
+			return (template.update(sql,
                     inspectionweek.getInspection_title(),
                     inspectionweek.getStart_date(),
-                    inspectionweek.getModule_id())== 1);
+                    inspectionweek.getInspectionweek_id())== 1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("Class not found !");

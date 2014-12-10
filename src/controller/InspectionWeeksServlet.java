@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -34,6 +37,7 @@ public class InspectionWeeksServlet extends BootstrapServlet {
         super();
         this.addJavascriptFile("inspectionweeks.js");
         this.addJavascriptFile("inspectionweek.js");
+        this.addJavascriptFile("jquery-ui.min.js");
     }
 
 	/**
@@ -66,7 +70,49 @@ public class InspectionWeeksServlet extends BootstrapServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		try {
+			int inspectionWeekID = Integer.parseInt(this.getObjectSlug(request));
+			InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
+			Inspectionweek inspectionWeek = inspectionWeekDAO.findByID(inspectionWeekID);
+			
+			if (inspectionWeek != null) {
+
+				String title = request.getParameter("inputTitle");
+				String sStartDate = request.getParameter("inputStartDate");
+				Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(sStartDate);
+				
+				String error = null;
+				if (title == null || title.length() == 0) {
+					error = "Invalid title";
+				} else if (startDate == null) {
+					error = "Invalid start date";
+				}
+				
+				if (error == null) {
+					inspectionWeek.setInspection_title(title);
+					inspectionWeek.setStart_date(startDate);
+					if (inspectionWeekDAO.update(inspectionWeek)) {
+						this.setAlertView(AlertType.AlertTypeSuccess, "Inspection week successfully saved", request);
+						this.proceedSingleInspectionWeek(inspectionWeek, request, response);
+					} else {
+						this.setAlertView(AlertType.AlertTypeDanger, "Failed to save inspection week", request);
+						this.proceedSingleInspectionWeek(inspectionWeek, request, response);
+					}
+				} else {
+					this.setAlertView(AlertType.AlertTypeDanger, error, request);
+					this.proceedSingleInspectionWeek(inspectionWeek, request, response);
+				}
+			}
+		} catch (NumberFormatException e) {
+			this.setAlertView(AlertType.AlertTypeDanger, "Inspection week not found", request);
+			this.proceedInspectionWeekList(request, response);
+			e.printStackTrace();
+		} catch (ParseException e) {
+			this.setAlertView(AlertType.AlertTypeDanger, "Invalid start date", request);
+			this.doView(request, response);
+			e.printStackTrace();
+		}
 	}
 	
 	private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

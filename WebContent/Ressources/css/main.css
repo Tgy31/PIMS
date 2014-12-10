@@ -58,3 +58,7 @@ td.radio-cell {
 .cell-lg {
 	padding-top: 15px !important;
 }
+
+.readonly {
+	background-color: white !important;
+}
