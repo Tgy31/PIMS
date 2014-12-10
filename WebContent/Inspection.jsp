@@ -49,51 +49,51 @@
 	</div>
 	
 	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Project informations</h3>
-	  </div>
-	  <div class="panel-body">
-  
-		  <div class="form-group">
-		    <label class="col-sm-2 control-label">Student</label>
-		    <div class="col-sm-10">
-		      <p class="form-control-static">${ student.getFullName() }</p>
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="col-sm-2 control-label">Title</label>
-		    <div class="col-sm-10">
-		      <p class="form-control-static">${ student.getProject_title() }</p>
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="col-sm-2 control-label">Description</label>
-		    <div class="col-sm-10">
-		      <p class="form-control-static">${ student.getProject_description() }</p>
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="col-sm-2 control-label">Keywords</label>
-		    <div class="col-sm-10">
-		      <p class="form-control-static">${ keywords }</p>
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="col-sm-2 control-label">Supervisor</label>
-		    <div class="col-sm-10">
-		      <p class="form-control-static">${ supervisor.getFullName() }</p>
-		    </div>
-		  </div>
-			
+		<div class="panel-heading">
+	    	<h3 class="panel-title">Project informations</h3>
+	  	</div>
+	  	<div class="panel-body">
+  			<form class="form-horizontal">
+				<div class="form-group">
+				  	<label class="col-sm-2 control-label">Student</label>
+				    <div class="col-sm-10">
+				    	<p class="form-control-static">${ student.getFullName() }</p>
+				    </div>
+				</div>
+				<div class="form-group">
+				    <label class="col-sm-2 control-label">Title</label>
+				    <div class="col-sm-10">
+				    	<p class="form-control-static">${ student.getProject_title() }</p>
+				    </div>
+				</div>
+				<div class="form-group">
+				    <label class="col-sm-2 control-label">Description</label>
+				    <div class="col-sm-10">
+				    	<p class="form-control-static">${ student.getProject_description() }</p>
+				    </div>
+				</div>
+				<div class="form-group">
+				    <label class="col-sm-2 control-label">Keywords</label>
+				    <div class="col-sm-10">
+				    	<p class="form-control-static">${ keywords }</p>
+				    </div>
+				</div>
+				<div class="form-group">
+				    <label class="col-sm-2 control-label">Supervisor</label>
+				    <div class="col-sm-10">
+				    	<p class="form-control-static">${ supervisor.getFullName() }</p>
+					</div>
+				</div>
+			</form>
 		</div> <!-- end panel body -->
 	</div>
 	
 	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">First inspector</h3>
-	  </div>
-	  <div class="panel-body">
-		  Select an inspector below to be the first inspector.
+		<div class="panel-heading">
+	    	<h3 class="panel-title">First inspector</h3>
+	  	</div>
+	  	<div class="panel-body">
+			Select an inspector below to be the first inspector.
 		</div> <!-- end panel body -->
 		<table class="table">
 			<thead>
