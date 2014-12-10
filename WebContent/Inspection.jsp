@@ -120,6 +120,12 @@
 						<td data-bind="text: formattedCapacity()"></td>
 					</tr>
 				<!-- /ko -->
+				<tr data-bind="visible: suggestedInspectors().length == 0">
+					<td></td>
+					<td><i>No suggested inspector<i></i></td>
+					<td></td>
+					<td></td>
+				</tr>					
 				<thead>
 					<th class="radio-cell">Other</th>
 					<th></th>
@@ -170,6 +176,12 @@
 						<td data-bind="text: formattedCapacity()"></td>
 					</tr>
 				<!-- /ko -->
+				<tr data-bind="visible: suggestedInspectors().length == 0">
+					<td></td>
+					<td><i>No suggested inspector<i></i></td>
+					<td></td>
+					<td></td>
+				</tr>
 				<thead>
 					<th class="radio-cell">Other</th>
 					<th></th>

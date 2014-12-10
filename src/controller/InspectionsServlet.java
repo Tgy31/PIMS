@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -39,6 +40,9 @@ import model.entity.User;
 @WebServlet("/InspectionsServlet")
 public class InspectionsServlet extends BootstrapServlet {
 	private static final long serialVersionUID = 1L;
+
+	private static final int minimumSuggestedInspectors = 5; // Minimum number of inspector returned by the suggestions
+	private static final int maximumSuggestedInspectors = 10; // Maximum number of inspector returned by the suggestions
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -265,7 +269,7 @@ public class InspectionsServlet extends BootstrapServlet {
 		
 		// Inspectors
 		List<Inspector> allInspectors = inspectorDAO.findAll();
-		List<Inspector> suggestedInspectors = allInspectors.subList(0, 2);
+		List<Inspector> suggestedInspectors = this.suggestedInspectorsForStudent(student, allInspectors, inspection);
 		List<Inspector> otherInspectors = new ArrayList<Inspector>(allInspectors);
 		otherInspectors.removeAll(suggestedInspectors);
 
@@ -338,22 +342,86 @@ public class InspectionsServlet extends BootstrapServlet {
 	public String matchedKeywords(Student student, Inspector inspector) {
 		StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
 		List<Keyword> studentKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
-		InspectorKeywordDAO inspectorKeywordDAO = new InspectorKeywordDAO();
-		List<Keyword> inspectorKeywords = inspectorKeywordDAO.findByInspectorID(inspector.getInspector_id());
-
-		System.out.println(inspectorKeywords);
+		
+		List<Keyword> matchedKeywords = this.matchedKeywordsFromList(studentKeywords, inspector);
 		String result = null;
-		for (Keyword keyword : studentKeywords) {
-			if (inspectorKeywords.contains(keyword)) {
-				if (result == null) {
-					result = new String(keyword.getKeyword_name());
-				} else {
-					result += ", " + keyword.getKeyword_name();
-				}
+		for (Keyword keyword : matchedKeywords) {
+			if (result == null) {
+				result = new String(keyword.getKeyword_name());
+			} else {
+				result += ", " + keyword.getKeyword_name();
 			}
 		}
 		return result != null ? result : "None";
 	}
+
+	public List<Keyword> matchedKeywordsFromList(List<Keyword> keywords, Inspector inspector) {
+		InspectorKeywordDAO inspectorKeywordDAO = new InspectorKeywordDAO();
+		List<Keyword> inspectorKeywords = inspectorKeywordDAO.findByInspectorID(inspector.getInspector_id());
+
+		List<Keyword> matchedKeywords = new ArrayList<Keyword>();
+		for (Keyword keyword : keywords) {
+			if (inspectorKeywords.contains(keyword)) {
+				matchedKeywords.add(keyword);
+			}
+		}
+		return matchedKeywords;
+	}
+	
+	private List<Inspector> suggestedInspectorsForStudent(Student student, List<Inspector> allInspectors, Inspection inspection) {
+		StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
+		List<Keyword> studentKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
+		List<Inspector> suggestedInspectors = new ArrayList<Inspector>();
+		HashMap<Integer, List<Inspector>> orderedInspectors = new HashMap<Integer, List<Inspector>>();
+		
+		if (allInspectors.size() <= InspectionsServlet.minimumSuggestedInspectors) {
+			return allInspectors;
+		} else {
+			
+			// Order inspectors by number of keyword matched
+			for (Inspector inspector : allInspectors) {
+
+				// Get number keyword matched
+				List<Keyword> matchedKeywords = this.matchedKeywordsFromList(studentKeywords, inspector);
+				Integer matching = matchedKeywords.size();
+				
+				// Get the list of inspector with the same amount
+				List<Inspector> rangeMatching = orderedInspectors.get(matching);
+				if (rangeMatching == null) { // Create this list if does not exist yet
+					rangeMatching = new ArrayList<Inspector>();
+					orderedInspectors.put(matching, rangeMatching);
+				}
+				
+				// Add the inspector
+				rangeMatching.add(inspector);
+					
+			} // end for
+
+			System.out.println("-------------------- orderedInspectors --------------------");
+			System.out.println(orderedInspectors);
+			System.out.println("-------------------- /orderedInspectors -------------------");
+			
+			// Pick inspectors until lower limit reached
+			Integer maxMatch = studentKeywords.size();
+			System.out.println("-- MaxMatch = "+maxMatch);
+			System.out.println("-- Size = "+suggestedInspectors.size());
+			System.out.println("-------------------- rangeInspectors ----------------------");
+			for (Integer match = maxMatch; match >= 0 && suggestedInspectors.size() < InspectionsServlet.minimumSuggestedInspectors; match--) {
+				List<Inspector> rangeInspectors = orderedInspectors.get(match);
+				System.out.println(rangeInspectors);
+				if (rangeInspectors != null) {
+					suggestedInspectors.addAll(rangeInspectors);
+				}
+			}
+			System.out.println("-------------------- /rangeInspectors ---------------------");
+			
+			if (suggestedInspectors.size() > InspectionsServlet.maximumSuggestedInspectors) {
+				suggestedInspectors = suggestedInspectors.subList(0, InspectionsServlet.maximumSuggestedInspectors); // Trunc if too long
+			}
+			
+			return suggestedInspectors;
+		}
+	};
 	
 	@Override
     public Boolean shouldDenyAcces(HttpServletRequest request) {
