@@ -192,7 +192,8 @@ public class InspectorDAO {
 
 	public List<Inspector> findAll(){
 		String sql = "SELECT * " + 
-							"FROM inspector";
+					 "FROM inspector "+
+					 "ORDER BY first_name";
 		List<Inspector> inspectors = null;
 		try {
 			inspectors = template.query(sql, new InspectorMapping());

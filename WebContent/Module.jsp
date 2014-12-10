@@ -7,7 +7,7 @@
 
 
 
-<c:if test="${ empty sessionScope.alertType }">
+<c:if test="${ !empty module }">
 
 	<div id="json-variables">
 	[

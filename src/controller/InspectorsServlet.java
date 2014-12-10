@@ -95,18 +95,21 @@ public class InspectorsServlet extends BootstrapServlet {
 		String firstName = request.getParameter("inputFirstName");
 		String lastName = request.getParameter("inputLastName");
 		String email = request.getParameter("inputEmail");
+		String password = request.getParameter("inputPassword");
 		
 		String error = null;
 		
-		if (firstName != null && !firstName.equals("")) {
+		if (firstName == null || firstName.equals("")) {
 			error = "Invalid first name";
-		} else if (lastName != null && !lastName.equals("")) {
+		} else if (lastName == null || lastName.equals("")) {
 			error = "Invalid last name";
-		} else if (email != null && !email.equals("")) {
+		} else if (email == null || email.equals("")) {
 			error = "Invalid email";
+		} else if (password == null || password.length() < 5) {
+			error = "Invalid password";
 		}
 		
-		if (error != null) {
+		if (error == null) {
 			InspectorDAO inspectorDAO = new InspectorDAO();
 			String inspectorSlug = this.getObjectSlug(request);
 			Inspector inspector = inspectorDAO.findByUsername(inspectorSlug);
@@ -122,6 +125,7 @@ public class InspectorsServlet extends BootstrapServlet {
 				inspector.setFirst_name(firstName);
 				inspector.setLast_name(lastName);
 				inspector.setEmail(email);
+				inspector.setPassword(password);
 				
 				success = inspectorDAO.update(inspector);
 				if (success) {
@@ -136,6 +140,7 @@ public class InspectorsServlet extends BootstrapServlet {
 				inspector.setFirst_name(firstName);
 				inspector.setLast_name(lastName);
 				inspector.setEmail(email);
+				inspector.setPassword(password);
 
 				success = inspectorDAO.update(inspector);
 				if (success) {

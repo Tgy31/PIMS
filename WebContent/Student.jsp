@@ -4,7 +4,7 @@
 
 
 <%@ include file="Header.jsp" %>
-<c:if test="${ empty sessionScope.alertType }">
+<c:if test="${ !empty student }">
 
 	<form class="form-horizontal" role="form" method="post">
 	
@@ -96,8 +96,16 @@
 			    <label for="inputSupervisor" class="col-sm-2 control-label">Supervisor</label>
 			    <div class="col-sm-10">
 			      <select class="form-control" name="inputSupervisor">
-				    <option value="245">John Smith</option>
-				    <option value="456">Santa Claus</option>
+			      	<c:forEach items="${ inspectors }" var="inspector">
+			      		<c:choose>
+			      			<c:when test="${ student.getSupervisor() eq inspector.getUsername() }">
+				    			<option value="${ inspector.getInspector_id() }" selected>${ inspector.getFullName() }</option>
+			      			</c:when>
+			      			<c:otherwise>
+				    			<option value="${ inspector.getInspector_id() }">${ inspector.getFullName() }</option>
+			      			</c:otherwise>
+			      		</c:choose>
+			      	</c:forEach>
 				  </select>
 			    </div>
 			  </div>

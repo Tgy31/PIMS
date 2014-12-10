@@ -4,7 +4,7 @@
 
 
 <%@ include file="Header.jsp" %>
-<c:if test="${ empty sessionScope.alertType }">
+<c:if test="${ !empty inspector }">
 
 	<form class="form-horizontal" role="form" method="post">
 	
