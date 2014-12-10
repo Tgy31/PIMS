@@ -3,7 +3,7 @@ $(document).ready( function () {
 	var json = JSON.parse(jsonDiv.text());
 	
 	var actionRender = function ( data, type, full, meta ) {
-	    if (full[3] == true) {
+	    if (full[2] == true) {
 		    return '<a href="/PIMS/inspections/' + json.moduleID + '/' + data + '/">Edit</a>';
 	    } else {
 		    return '<a href="/PIMS/inspections/' + json.moduleID + '/' + data + '/">Create</a>';
@@ -12,7 +12,7 @@ $(document).ready( function () {
 	
 	var inspectionRender = function ( data, type, full, meta ) {
 	    if (data == true) {
-	    	return '<span class="glyphicon glyphicon-ok"><span>';
+	    	return '<span class="glyphicon glyphicon-ok text-success" title="The inspection has been set"><span>';
 	    } else {
 	    	return '';
 	    }
@@ -23,10 +23,10 @@ $(document).ready( function () {
 	    $('#inspection-table').DataTable( {
 	        "ajax": '/PIMS/inspections/'+ json.inspectionWeekID +'/?content=json',
 	        "columnDefs": [{
-	            "targets": 4,
+	            "targets": 3,
 	            "render": actionRender
 	          },{
-	            "targets": 3,
+	            "targets": 2,
 	            "render": inspectionRender
 	          }]
 	    });

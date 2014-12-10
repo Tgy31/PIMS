@@ -60,10 +60,9 @@
 		<table id="inspection-table" class="user-table row-border hover order-column">
 	        <thead>
 	            <tr>
-	                <th>First name</th>
-	                <th>Last name</th>
+	                <th>Name</th>
 	                <th>Username</th>
-	                <th>Inspection set</th>
+	                <th>Inspection</th>
 	                <th>Action</th>
 	            </tr>
 	        </thead>

@@ -5,8 +5,7 @@
   "data": [
 	<c:forEach items="${ students }" var="student" varStatus="studentStatus">
 		[
-			"${ student.getFirst_name() }",
-			"${ student.getLast_name() }",
+			"${ student.getFullName() }",
 			"${ student.getUsername() }",
 			${ servlet.studentHasInspection(student, inspectionWeek) },
 			"${ inspectionWeek.getInspectionweek_id() }/${ student.getStudent_id() }"
