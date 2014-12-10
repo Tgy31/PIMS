@@ -195,11 +195,11 @@ public class InspectionDAO {
 	
 	public List<Inspection> inspectionsForInspectorID(int inspectorID, int inspectionWeekID) {
 		List<Inspection> inspectionsAsFirstInspector = this.inspectionsForFirstInspectorID(inspectorID, inspectionWeekID);
-		List<Inspection> inspectionsAsSecondInspector = this.inspectionsForSecondInspectorID(inspectorID, inspectionWeekID);
+		//List<Inspection> inspectionsAsSecondInspector = this.inspectionsForSecondInspectorID(inspectorID, inspectionWeekID);
 		
 		List<Inspection> allInspections = new ArrayList<Inspection>();
 		allInspections.addAll(inspectionsAsFirstInspector);
-		allInspections.addAll(inspectionsAsSecondInspector);
+		//allInspections.addAll(inspectionsAsSecondInspector); // Second inspection does not count in load
 		return allInspections;
 	}
 	

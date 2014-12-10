@@ -289,12 +289,10 @@ function InspectionViewModel() {
 		
 		var firstInspector = self.inspectorMarkedFirstInspector();
 		if (firstInspector) {
-			console.log(firstInspector);
 			firstInspector.setFirstInspector(false); // unmark old first inspector
 		}
 		firstInspector = self.firstInspector();
 		if (firstInspector) {
-			console.log(firstInspector);
 			firstInspector.setFirstInspector(true); // mark new first inspector
 		}
 	});
@@ -317,10 +315,15 @@ function InspectionViewModel() {
     	var forceSave = false;
     	
     	if (!usersAvailable) {
-    		forceSave = confirm("Some person may not be available at this time. Do you wish to confirm this time for the inspection ?");
+    		forceSave = confirm("Some people may not be available at this time. Do you wish to confirm this time for the inspection ?");
     	}
     	
-    	if (usersAvailable || forceSave) {
+    	var firstInspectorOverload = (self.firstInspector().load() > self.firstInspector().capacity);
+    	if (firstInspectorOverload && (usersAvailable || forceSave)) {
+    		forceSave = confirm(self.firstInspector().name + " seems to be overloaded. Do you wish to confirm him/her as the first inspector ?");
+    	}
+    	
+    	if ((usersAvailable && !firstInspectorOverload) || forceSave) {
         	var url = document.url;
         	var data = {
         		firstInspector: self.firstInspector().id,
