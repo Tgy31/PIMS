@@ -1,10 +1,4 @@
-var activeRender = function ( data, type, full, meta ) {
-	if (data == true) {
-		return "<span class=\"glyphicon glyphicon-ok\"></span>";
-	} else {
-		return "<a href=\"#\" data-toggle=\"modal\" data-target=\"#myModal\" data-name=\""+full[0]+"\">Set active</a>";
-	}
-};
+
 
 var showRender = function ( data, type, full, meta ) {
     return '<a href="./'+data+'/">Edit</a>';
@@ -16,10 +10,6 @@ $(document).ready( function () {
         "columnDefs": [
           {
             "targets": 2,
-            "render": activeRender
-          },
-          {
-            "targets": 3,
             "render": showRender
           }
         ]

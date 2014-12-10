@@ -7,7 +7,6 @@
 		[
 			"${ module.getModule_name() }",
 			"${ module.getYear() }",
-			true,
 			"${ module.getModule_id() }"
 		]
 		<c:if test="${ moduleStatus.index < modules.size() - 1 }">
