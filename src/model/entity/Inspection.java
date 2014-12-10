@@ -134,6 +134,10 @@ public class Inspection {
 		this.end_date = end_date;
 	}
 	
+	public boolean isDateSet() {
+		return (this.getStart_date() != null && this.getEnd_date() != null);
+	}
+	
 	public String getFormattedStartDate() {
 		String formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(this.start_date);
 		return formattedDate;

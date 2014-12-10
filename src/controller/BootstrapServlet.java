@@ -193,6 +193,17 @@ public class BootstrapServlet extends HttpServlet {
 		return null;
     }
     
+    public String getSecondObjectSlug(HttpServletRequest request) {
+		String[] pathValues = this.getValueFromRequestPath(request);
+		
+		if (pathValues.length >= 4) {
+			if (!pathValues[3].equals("")) {
+				return pathValues[3];
+			}
+		}
+		return null;
+    }
+    
     public Module getSelectedModule(HttpServletRequest request) {
 
 		String moduleSlug = this.getModuleSlug(request);

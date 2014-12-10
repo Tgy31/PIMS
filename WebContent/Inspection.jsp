@@ -15,8 +15,11 @@
 		"secondInspectorID": ${ secondInspector },
 		"studentID": ${ student.getStudent_id() },
 		"supervisorID": ${ supervisor.getInspector_id() },
+		<c:if test="${ inspection.isDateSet() }">
 		"inspectionStart": "${ inspection.getFormattedStartDate() }",
 		"inspectionEnd": "${ inspection.getFormattedEndDate() }",
+		</c:if>
+		"firstDay": "${ inspectionWeek.getFormattedStartDate() }",
 		"suggestedInspectors": [
 		<c:forEach items="${ suggestedInspectors }" var="inspector" varStatus="inspectorStatus">
 			{

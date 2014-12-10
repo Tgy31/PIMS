@@ -142,16 +142,27 @@ public class InspectionsServlet extends BootstrapServlet {
     
 	private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			int inspectionID = Integer.parseInt(this.getObjectSlug(request));
+			int inspectionWeekID = Integer.parseInt(this.getObjectSlug(request));
+			int studentID = Integer.parseInt(this.getSecondObjectSlug(request));
 			
 			InspectionDAO inspectionDAO = new InspectionDAO();
-			Inspection inspection = inspectionDAO.findByID(inspectionID);
+			Inspection inspection = inspectionDAO.findByStudentAndInspectionWeek(studentID, inspectionWeekID);
 			
 			if (inspection != null) {
 				this.proceedSingleInspection(inspection, request, response);
 			} else {
-	    		this.setAlertView(AlertType.AlertTypeDanger, "Inspection not found", request);
-				this.proceedSingleInspection(inspection, request, response);
+				StudentDAO studentDAO = new StudentDAO();
+				Student student = studentDAO.findByStudentID(studentID);
+				
+				if (student != null) { // create inspection if student ok
+					inspection = new Inspection();
+					inspection.setInspectionweek_id(inspectionWeekID);
+					inspection.setStudent_id(studentID);
+					this.proceedSingleInspection(inspection, request, response);
+				} else { // Inspection not found either
+		    		this.setAlertView(AlertType.AlertTypeDanger, "Inspection not found", request);
+					this.proceedSingleInspection(inspection, request, response);
+				}
 			}
 		} catch (NumberFormatException e) {
 			this.proceedInspectionList(request, response);
@@ -199,10 +210,14 @@ public class InspectionsServlet extends BootstrapServlet {
 		StudentDAO studentDAO = new StudentDAO();
 		StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
 		InspectorDAO inspectorDAO = new InspectorDAO();
+		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
         
         // Inspection
 		request.setAttribute("inspection", inspection);
 		
+		// Inspection week
+		Inspectionweek inspectionWeek = inspectionWeekDAO.findByID(inspection.getInspectionweek_id());
+		request.setAttribute("inspectionWeek", inspectionWeek);
 		
 		// Student
 		Student student = studentDAO.findByStudentID(inspection.getStudent_id());
@@ -251,9 +266,6 @@ public class InspectionsServlet extends BootstrapServlet {
 			request.setAttribute("secondInspector", -1);
 		}
 		
-		// InspectionWeek
-		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
-		Inspectionweek inspectionWeek = inspectionWeekDAO.findByID(inspection.getInspectionweek_id());
 		
 		Module module = this.getSelectedModule(request);
 		this.setBreadcrumbTitles("Modules%"+
@@ -292,15 +304,6 @@ public class InspectionsServlet extends BootstrapServlet {
 			return "true";
 		} else {
 			return "false";
-		}
-	}
-	
-	public String inspectionIdForStudent(Student student, Inspectionweek inspectionWeek) {
-		Inspection inspection = this.inspectionForStudent(student, inspectionWeek);
-		if(inspection != null) {
-			return ""+inspection.getInspection_id();
-		} else {
-			return "0";
 		}
 	}
 

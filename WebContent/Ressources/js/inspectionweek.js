@@ -3,7 +3,7 @@ $(document).ready( function () {
 	var json = JSON.parse(jsonDiv.text());
 	
 	var actionRender = function ( data, type, full, meta ) {
-	    if (data > 0) {
+	    if (full[3] == true) {
 		    return '<a href="/PIMS/inspections/' + json.moduleID + '/' + data + '/">Edit</a>';
 	    } else {
 		    return '<a href="/PIMS/inspections/' + json.moduleID + '/' + data + '/">Create</a>';
@@ -11,7 +11,7 @@ $(document).ready( function () {
 	};
 	
 	var inspectionRender = function ( data, type, full, meta ) {
-	    if (data) {
+	    if (data == true) {
 	    	return '<span class="glyphicon glyphicon-ok"><span>';
 	    } else {
 	    	return '';

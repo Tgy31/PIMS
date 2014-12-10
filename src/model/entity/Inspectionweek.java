@@ -63,7 +63,7 @@ public class Inspectionweek {
 	}
 	
 	public String getFormattedStartDate() {
-		String formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(this.start_date);
+		String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(this.start_date);
 		return formattedDate;
 	}
 	

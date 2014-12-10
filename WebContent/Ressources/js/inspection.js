@@ -37,7 +37,7 @@ function Inspector(json) {
 function InspectionViewModel() {
 	var self = this;
 
-	self.defaultDate = "2014-11-12";
+	self.defaultDate = null;
 	
 	self.studentID = null;
 	self.studentSlots = [];
@@ -47,8 +47,6 @@ function InspectionViewModel() {
 	
 	self.inspectionSlot = ko.observable({
             title  : 'Inspection',
-            start  : '2014-11-14T12:30:00',
-            end  : '2014-11-14T13:00:00',
             constraint: "businessHours",
             color: colorInspection
     });
@@ -87,20 +85,24 @@ function InspectionViewModel() {
 	};
 	
 	self.readFirstInspector = function(json) {
-    	var firstInspector = self.inspectorWithID(json.firstInspectorID);
-    	firstInspector.isFirstInspector = true; // set selection with out changing his load
-    	self.firstInspector(firstInspector);
-    	if (self.otherInspectors().indexOf(firstInspector) >= 0) {
-        	self.firstOtherInspector(firstInspector);
-    	}
+		if (json.firstInspectorID >= 0) {// Get first inspector from back end if it exist
+	    	var firstInspector = self.inspectorWithID(json.firstInspectorID);
+	    	firstInspector.isFirstInspector = true; // set selection with out changing his load
+	    	self.firstInspector(firstInspector);
+	    	if (self.otherInspectors().indexOf(firstInspector) >= 0) {
+	        	self.firstOtherInspector(firstInspector);
+	    	}
+		}
 	};
 	
 	self.readSecondInspector = function(json) {
-    	var secondInspector = self.inspectorWithID(json.secondInspectorID);
-    	self.secondInspector(secondInspector);
-    	if (self.otherInspectors().indexOf(secondInspector) >= 0) {
-        	self.secondOtherInspector(secondInspector);
-    	}
+		if (json.secondInspectorID >= 0) { // Get second inspector from back end if it exist
+	    	var secondInspector = self.inspectorWithID(json.secondInspectorID);
+	    	self.secondInspector(secondInspector);
+	    	if (self.otherInspectors().indexOf(secondInspector) >= 0) {
+	        	self.secondOtherInspector(secondInspector);
+	    	}
+		}
 	};
 	
 	self.readInspection = function() {
@@ -123,8 +125,14 @@ function InspectionViewModel() {
 	};
 	
 	self.readInspectionDate = function(json) {
-		self.inspectionSlot().start = json.inspectionStart;
-		self.inspectionSlot().end = json.inspectionEnd;
+		self.defaultDate = json.firstDay;
+		if (json.inspectionStart && json.inspectionEnd) {
+			self.inspectionSlot().start = json.inspectionStart;
+			self.inspectionSlot().end = json.inspectionEnd;
+		} else {
+			self.inspectionSlot().start = self.defaultDate + 'T09:00:00';
+			self.inspectionSlot().end = self.defaultDate + 'T09:30:00';
+		}
 	};
 	
 	// Getters
