@@ -146,13 +146,20 @@ public class KeywordsServlet extends BootstrapServlet {
 		
 		System.out.println(userType);
 		switch (userType) {
-			case "student": {
-				Student student = (Student)user;
-				StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
-				List<Keyword> userKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
-				request.setAttribute("userKeywords", userKeywords);
-				break;
-			}
+		case "student": {
+			Student student = (Student)user;
+			StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
+			List<Keyword> userKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
+			request.setAttribute("userKeywords", userKeywords);
+			break;
+		}
+		case "inspector": {
+			Inspector inspector = (Inspector)user;
+			InspectorKeywordDAO inspectorKeywordDAO = new InspectorKeywordDAO();
+			List<Keyword> userKeywords = inspectorKeywordDAO.findByInspectorID(inspector.getInspector_id());
+			request.setAttribute("userKeywords", userKeywords);
+			break;
+		}
 		}
 		
 	
