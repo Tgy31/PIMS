@@ -65,8 +65,10 @@ function InspectionViewModel() {
 	self.readSuggestedInspectors = function(json) {
     	var inspectors = [];
     	json.suggestedInspectors.forEach(function(inspectorJson) {
-    		var inspector = new Inspector(inspectorJson);
-    		inspectors.push(inspector);
+    		if (inspectorJson.id != self.supervisorID) {
+        		var inspector = new Inspector(inspectorJson);
+        		inspectors.push(inspector);
+    		}
     	});
     	self.suggestedInspectors(inspectors);
     	ko.utils.arrayPushAll(self.allInspectors, inspectors);
@@ -76,8 +78,10 @@ function InspectionViewModel() {
 	self.readOtherInspectors = function(json) {
     	var inspectors = [];
     	json.otherInspectors.forEach(function(inspectorJson) {
-    		var inspector = new Inspector(inspectorJson);
-    		inspectors.push(inspector);
+    		if (inspectorJson.id != self.supervisorID) {
+	    		var inspector = new Inspector(inspectorJson);
+	    		inspectors.push(inspector);
+    		}
     	});
     	self.otherInspectors(inspectors);
     	ko.utils.arrayPushAll(self.allInspectors, inspectors);
@@ -316,7 +320,11 @@ function InspectionViewModel() {
 	
 	// Submit
     self.submitInspection = function() {
-    	if (self.firstInspector() && self.secondInspector()) {
+    	if (!self.firstInspector() || !self.secondInspector()) { 
+    		alert('You first need to chose a first and a second inspector');
+    	} else if (self.firstInspector() == self.secondInspector()) {
+    		alert('The first and the second inspector can\'t be the same person');
+    	} else {
         	var usersAvailable = self.studentIsAvailable();
         	usersAvailable = usersAvailable && self.supervisorIsAvailable();
         	usersAvailable = usersAvailable && self.firstInspectorIsAvailable();
@@ -333,18 +341,19 @@ function InspectionViewModel() {
         	}
         	
         	if ((usersAvailable && !firstInspectorOverload) || forceSave) {
-            	var url = document.url;
-            	var data = {
-            		firstInspector: self.firstInspector().id,
-            		secondInspector: self.secondInspector().id,
-            		slot: JSON.stringify(self.inspectionSlot())
-            	};
-            	console.log(data);
-            	$.post(url, data, self.submitHandler);
+        		self.postInspection();
         	}
-    	} else { // if no first or second inspector
-    		alert('You first need to chose a first and a second inspector');
     	}
+    };
+    
+    self.postInspection = function() {
+    	var url = document.url;
+    	var data = {
+    		firstInspector: self.firstInspector().id,
+    		secondInspector: self.secondInspector().id,
+    		slot: JSON.stringify(self.inspectionSlot())
+    	};
+    	$.post(url, data, self.submitHandler);
     };
     
     self.submitHandler = function(data, status) {
