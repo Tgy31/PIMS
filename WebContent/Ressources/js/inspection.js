@@ -41,9 +41,9 @@ function InspectionViewModel() {
             color: colorInspection
     });
 	
-	self.suggestedInspectors = ko.observableArray();
-	self.otherInspectors = ko.observableArray();
-	self.allInspectors = ko.observableArray();
+	self.suggestedInspectors = ko.observableArray([]);
+	self.otherInspectors = ko.observableArray([]);
+	self.allInspectors = ko.observableArray([]);
 
 	self.firstInspector = ko.observable();
 	self.secondInspector = ko.observable();
@@ -77,11 +77,17 @@ function InspectionViewModel() {
 	self.readFirstInspector = function(json) {
     	var firstInspector = self.inspectorWithID(json.firstInspectorID);
     	self.firstInspector(firstInspector);
+    	if (self.otherInspectors().indexOf(firstInspector) >= 0) {
+        	self.firstOtherInspector(firstInspector);
+    	}
 	};
 	
 	self.readSecondInspector = function(json) {
     	var secondInspector = self.inspectorWithID(json.secondInspectorID);
     	self.secondInspector(secondInspector);
+    	if (self.otherInspectors().indexOf(secondInspector) >= 0) {
+        	self.secondOtherInspector(secondInspector);
+    	}
 	};
 	
 	self.readStudent = function(json) {
@@ -261,6 +267,38 @@ function InspectionViewModel() {
 	self.secondOtherInspectorHandler = ko.computed(function() {
 		//console.log(self.secondOtherInspector());
 	});
+	
+	// Submit
+    self.submitInspection = function() {
+    	var usersAvailable = self.studentIsAvailable();
+    	usersAvailable = usersAvailable && self.supervisorIsAvailable();
+    	usersAvailable = usersAvailable && self.firstInspectorIsAvailable();
+    	usersAvailable = usersAvailable && self.secondInspectorIsAvailable();
+    	var forceSave = false;
+    	
+    	if (!usersAvailable) {
+    		forceSave = confirm("Some person may not be available at this time. Do you wish to confirm this time for the inspection ?");
+    	}
+    	
+    	if (usersAvailable || forceSave) {
+        	var url = document.url;
+        	var data = {
+        		firstInspector: self.firstInspector().id,
+        		secondInspector: self.secondInspector().id,
+        		slot: self.inspectionSlot
+        	};
+        	console.log(data);
+        	$.post(url, data, self.submitHandler);
+    	}
+    };
+    
+    self.submitHandler = function(data, status) {
+    	if (status == "success") {
+        	popSuccess('Inspection saved');
+    	} else {
+    		popError('Error');
+    	}
+    };
 	
 	// Start
 	self.readInspectors();

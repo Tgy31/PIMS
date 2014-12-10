@@ -52,6 +52,14 @@ var createCalendar = function(model) {
 	
 };
 
-$(document).ready(function() {
+function popSuccess(message) {
+	var html = '<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+message+'</div>';
+	html = html + $("#alert-zone").html();
+	$("#alert-zone").html(html);
+}
 
-});
+function popError(message) {
+	var html = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+message+'</div>';
+	html = html + $("#alert-zone").html();
+	$("#alert-zone").html(html);
+}

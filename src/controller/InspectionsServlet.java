@@ -1,7 +1,11 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,10 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import model.dao.InspectionDAO;
 import model.dao.InspectionweekDAO;
 import model.dao.InspectorDAO;
 import model.dao.ModuleDAO;
+import model.dao.SlotDAO;
 import model.dao.StudentDAO;
 import model.dao.StudentKeywordDAO;
 import model.entity.Inspection;
@@ -22,6 +31,7 @@ import model.entity.Inspectionweek;
 import model.entity.Inspector;
 import model.entity.Keyword;
 import model.entity.Module;
+import model.entity.Slot;
 import model.entity.Student;
 import model.entity.User;
 
@@ -76,7 +86,58 @@ public class InspectionsServlet extends BootstrapServlet {
 	 */
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String firstInspectorSlug = request.getParameter("firstInspector");
+		String secondInspectorSlug = request.getParameter("secondInspector");
+		
+		int firstInspectorID = -1;
+		int secondInspectorID = -1;
+		int inspectionID = -1;
+		
+		try {
+			firstInspectorID = Integer.parseInt(firstInspectorSlug);
+			secondInspectorID = Integer.parseInt(secondInspectorSlug);
+			inspectionID = Integer.parseInt(this.getObjectSlug(request));
+		} catch (NumberFormatException e) {
+			response.setStatus(500); 
+		    PrintWriter out = response.getWriter();
+		    out.println("Invalid users");
+		    out.close();
+			e.printStackTrace();
+		}
+		
+		Date start = null;
+		Date end = null;
+		
+		try {
+			JSONObject slot = new JSONObject(request.getParameter("slot"));
+			String sStart = slot.getString("start");
+			String sEnd = slot.getString("end");
+			start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(sStart);
+			end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(sEnd);
+		} catch (JSONException e) {
+			response.setStatus(500); 
+		    PrintWriter out = response.getWriter();
+		    out.println("Invalid data");
+		    out.close();
+			e.printStackTrace();
+		} catch (ParseException e) {
+			response.setStatus(500); 
+		    PrintWriter out = response.getWriter();
+		    out.println("Invalid time");
+		    out.close();
+			e.printStackTrace();
+		}
+
+		
+		InspectionDAO inspectionDAO = new InspectionDAO();
+		Inspection inspection = inspectionDAO.findByID(inspectionID);
+		
+		inspection.setFirst_inspector_id(firstInspectorID);
+		inspection.setSecond_inspector_id(secondInspectorID);
+		inspection.setStart_date(start);
+		inspection.setEnd_date(end);
+		
+		inspectionDAO.update(inspection);
 	}
     
 	private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -176,6 +237,15 @@ public class InspectionsServlet extends BootstrapServlet {
 
 		request.setAttribute("otherInspectors", otherInspectors);
 		request.setAttribute("suggestedInspectors", suggestedInspectors);
+
+		Inspector firstInspector = inspectorDAO.findByInspectorID(inspection.getFirst_inspector_id());
+		if (firstInspector != null) {
+			request.setAttribute("firstInspector", firstInspector);
+		}
+		Inspector secondInspector = inspectorDAO.findByInspectorID(inspection.getSecond_inspector_id());
+		if (secondInspector != null) {
+			request.setAttribute("secondInspector", secondInspector);
+		}
 		
 		// InspectionWeek
 		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
