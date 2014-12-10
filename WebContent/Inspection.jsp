@@ -11,8 +11,8 @@
 
 	<div id="json-variables">
 	{
-		"firstInspectorID": ${ firstInspector.getInspector_id() },
-		"secondInspectorID": ${ secondInspector.getInspector_id() },
+		"firstInspectorID": ${ firstInspector },
+		"secondInspectorID": ${ secondInspector },
 		"studentID": ${ student.getStudent_id() },
 		"supervisorID": ${ supervisor.getInspector_id() },
 		"suggestedInspectors": [

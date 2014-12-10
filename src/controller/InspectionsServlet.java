@@ -240,11 +240,15 @@ public class InspectionsServlet extends BootstrapServlet {
 
 		Inspector firstInspector = inspectorDAO.findByInspectorID(inspection.getFirst_inspector_id());
 		if (firstInspector != null) {
-			request.setAttribute("firstInspector", firstInspector);
+			request.setAttribute("firstInspector", firstInspector.getInspector_id());
+		} else {
+			request.setAttribute("firstInspector", -1);
 		}
 		Inspector secondInspector = inspectorDAO.findByInspectorID(inspection.getSecond_inspector_id());
 		if (secondInspector != null) {
-			request.setAttribute("secondInspector", secondInspector);
+			request.setAttribute("secondInspector", secondInspector.getInspector_id());
+		} else {
+			request.setAttribute("secondInspector", -1);
 		}
 		
 		// InspectionWeek
