@@ -28,7 +28,8 @@
 				"username": "${ inspector.getUsername() }",
 				"keywords": "${ servlet.matchedKeywords(student, inspector) }",
 				"load": ${ servlet.loadForInspector(inspector, inspection) },
-				"capacity": ${ inspector.getCapacity() }
+				"capacity": ${ inspector.getCapacity() },
+				"suggested": true
 			}
 			<c:if test="${ inspectorStatus.index < suggestedInspectors.size() - 1 }">
 			,
@@ -43,7 +44,8 @@
 				"username": "${ inspector.getUsername() }",
 				"keywords": "${ servlet.matchedKeywords(student, inspector) }",
 				"load": ${ servlet.loadForInspector(inspector, inspection) },
-				"capacity": ${ inspector.getCapacity() }
+				"capacity": ${ inspector.getCapacity() },
+				"suggested": false
 			}
 			<c:if test="${ inspectorStatus.index < otherInspectors.size() - 1 }">
 			,
@@ -98,7 +100,12 @@
 	    	<h3 class="panel-title">First inspector</h3>
 	  	</div>
 	  	<div class="panel-body">
-			Select an inspector below to be the first inspector.
+		  	<p>Select an inspector below to be the first inspector.</p>
+  			<div class="checkbox">
+  				<label>
+					<input type="checkbox" data-bind="checked: showOverloaded"> <i>Show overloaded inspectors</i>
+				</label>
+			</div>
 		</div> <!-- end panel body -->
 		<table class="table">
 			<thead>
@@ -154,7 +161,12 @@
 	    <h3 class="panel-title">Second inspector</h3>
 	  </div>
 	  <div class="panel-body">
-		  Select an inspector below to be the second inspector.
+		  	<p>Select an inspector below to be the second inspector.</p>
+  			<div class="checkbox">
+  				<label>
+					<input type="checkbox" data-bind="checked: showOverloaded"> <i>Show overloaded inspectors</i>
+				</label>
+			</div>
 		</div> <!-- end panel body -->
 		<table class="table">
 			<thead>

@@ -14,6 +14,7 @@ function Inspector(json) {
 	self.load = ko.observable(json.load);
 	self.capacity = json.capacity;
 	self.isFirstInspector = false;
+	self.suggested = json.suggested;
 	
 	self.setFirstInspector = function(isFirstInspector) {
 		if (self.isFirstInspector != isFirstInspector) {
@@ -27,7 +28,11 @@ function Inspector(json) {
 	};
 	
 	self.formattedCapacity = function() {
-		return self.load() + "/" + self.capacity;
+		return self.capacity - self.load() + "/" + self.capacity;
+	};
+	
+	self.overloaded = function() {
+		return self.load() >= self.capacity;
 	};
 	
 	self.slots = [];
@@ -52,9 +57,21 @@ function InspectionViewModel() {
             color: colorInspection
     });
 	
-	self.suggestedInspectors = ko.observableArray([]);
-	self.otherInspectors = ko.observableArray([]);
 	self.allInspectors = ko.observableArray([]);
+	self.showOverloaded = ko.observable(false);
+	
+	// Splitted list of inspectors
+	self.filteredInspectors = function(isSuggested, canBeOverloaded) {
+		return self.allInspectors().filter(function (inspector) {
+			  return inspector.suggested == isSuggested && (canBeOverloaded || !inspector.overloaded() || inspector.isFirstInspector);
+		});
+	};
+	self.suggestedInspectors = ko.computed(function() {
+		return self.filteredInspectors(true, self.showOverloaded());
+	});
+	self.otherInspectors = ko.computed(function() {
+		return self.filteredInspectors(false, self.showOverloaded());
+	});
 
 	self.firstInspector = ko.observable();
 	self.secondInspector = ko.observable();
@@ -71,7 +88,7 @@ function InspectionViewModel() {
         		inspectors.push(inspector);
     		}
     	});
-    	self.suggestedInspectors(inspectors);
+    	//self.suggestedInspectors(inspectors);
     	ko.utils.arrayPushAll(self.allInspectors, inspectors);
     	self.firstInspector(null);
 	};
@@ -84,7 +101,7 @@ function InspectionViewModel() {
 	    		inspectors.push(inspector);
     		}
     	});
-    	self.otherInspectors(inspectors);
+    	//self.otherInspectors(inspectors);
     	ko.utils.arrayPushAll(self.allInspectors, inspectors);
     	self.secondInspector(null);
 	};
@@ -155,6 +172,15 @@ function InspectionViewModel() {
 		var inspector = null;
 		self.allInspectors().forEach(function(i) {
 			if (i.isFirstInspector) {
+				inspector = i;
+			}
+		});
+		return inspector;
+	};
+	self.inspectorMarkedSecondInspector = function() {
+		var inspector = null;
+		self.allInspectors().forEach(function(i) {
+			if (i.isSecondInspector) {
 				inspector = i;
 			}
 		});
