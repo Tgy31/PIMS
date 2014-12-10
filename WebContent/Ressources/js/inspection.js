@@ -11,11 +11,23 @@ function Inspector(json) {
 	self.username= json.username;
 	self.name = json.name;
 	self.keywords = json.keywords;
-	self.load = json.load;
+	self.load = ko.observable(json.load);
 	self.capacity = json.capacity;
+	self.isFirstInspector = false;
+	
+	self.setFirstInspector = function(isFirstInspector) {
+		if (self.isFirstInspector != isFirstInspector) {
+			self.isFirstInspector = isFirstInspector;
+			if (self.isFirstInspector) {
+				self.load(self.load() + 1);
+			} else {
+				self.load(self.load() - 1);
+			}
+		}
+	};
 	
 	self.formattedCapacity = function() {
-		return self.load + "/" + self.capacity;
+		return self.load() + "/" + self.capacity;
 	};
 	
 	self.slots = [];
@@ -76,6 +88,7 @@ function InspectionViewModel() {
 	
 	self.readFirstInspector = function(json) {
     	var firstInspector = self.inspectorWithID(json.firstInspectorID);
+    	firstInspector.isFirstInspector = true; // set selection with out changing his load
     	self.firstInspector(firstInspector);
     	if (self.otherInspectors().indexOf(firstInspector) >= 0) {
         	self.firstOtherInspector(firstInspector);
@@ -119,6 +132,15 @@ function InspectionViewModel() {
 		var inspector = null;
 		self.allInspectors().forEach(function(i) {
 			if (i.id == inspectorID) {
+				inspector = i;
+			}
+		});
+		return inspector;
+	};
+	self.inspectorMarkedFirstInspector = function() {
+		var inspector = null;
+		self.allInspectors().forEach(function(i) {
+			if (i.isFirstInspector) {
 				inspector = i;
 			}
 		});
@@ -264,6 +286,17 @@ function InspectionViewModel() {
 	// Bind other inspectors changes
 	self.firstInspectorHandler = ko.computed(function() {
 		self.fetchFirstInspectorSlots();
+		
+		var firstInspector = self.inspectorMarkedFirstInspector();
+		if (firstInspector) {
+			console.log(firstInspector);
+			firstInspector.setFirstInspector(false); // unmark old first inspector
+		}
+		firstInspector = self.firstInspector();
+		if (firstInspector) {
+			console.log(firstInspector);
+			firstInspector.setFirstInspector(true); // mark new first inspector
+		}
 	});
 	self.secondInspectorHandler = ko.computed(function() {
 		self.fetchSecondInspectorSlots();
