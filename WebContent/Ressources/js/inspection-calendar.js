@@ -29,7 +29,7 @@ var createCalendar = function(model) {
 		},
 		height: 542,
 		defaultView: 'agendaWeek',
-		defaultDate: model.defaultDate,
+		defaultDate: model.startDate,
 		slotDuration: '00:30:00',
 		snapDuration: '00:30:00',
 		minTime: '08:00:00',

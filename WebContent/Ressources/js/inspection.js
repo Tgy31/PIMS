@@ -37,7 +37,8 @@ function Inspector(json) {
 function InspectionViewModel() {
 	var self = this;
 
-	self.defaultDate = null;
+	self.startDate = null;
+	self.endDate = null;
 	
 	self.studentID = null;
 	self.studentSlots = [];
@@ -129,13 +130,14 @@ function InspectionViewModel() {
 	};
 	
 	self.readInspectionDate = function(json) {
-		self.defaultDate = json.firstDay;
+		self.startDate = json.firstDay;
+		self.endDate = moment(self.startDate).add(5, 'days').format("YYYY-MM-DD");
 		if (json.inspectionStart && json.inspectionEnd) {
 			self.inspectionSlot().start = json.inspectionStart;
 			self.inspectionSlot().end = json.inspectionEnd;
 		} else {
-			self.inspectionSlot().start = self.defaultDate + 'T09:00:00';
-			self.inspectionSlot().end = self.defaultDate + 'T09:30:00';
+			self.inspectionSlot().start = self.startDate + 'T09:00:00';
+			self.inspectionSlot().end = self.startDate + 'T09:30:00';
 		}
 	};
 	
@@ -289,7 +291,7 @@ function InspectionViewModel() {
     self.fetchAvailability = function(userType, userID, success) {
     	var contentType = 'json';
 		$.ajax({
-			url: '/PIMS/availability/?type=' + userType + '&id=' + userID +'&content='+ contentType,
+			url: '/PIMS/availability/?type=' + userType + '&id=' + userID +'&content='+ contentType +'&start='+ self.startDate +'&end='+ self.endDate,
 			success: success,
 			error: null
 		});
