@@ -96,6 +96,14 @@ public class InspectorsServlet extends BootstrapServlet {
 		String lastName = request.getParameter("inputLastName");
 		String email = request.getParameter("inputEmail");
 		String password = request.getParameter("inputPassword");
+		String sCapacity = request.getParameter("inputCapacity");
+		
+		int capacity = -1;
+		try {
+			capacity = Integer.parseInt(sCapacity);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
 		
 		String error = null;
 		
@@ -107,6 +115,8 @@ public class InspectorsServlet extends BootstrapServlet {
 			error = "Invalid email";
 		} else if (password == null || password.length() < 5) {
 			error = "Invalid password";
+		} else if (capacity < 0) {
+			error = "Invalid capacity";
 		}
 		
 		if (error == null) {
@@ -126,6 +136,7 @@ public class InspectorsServlet extends BootstrapServlet {
 				inspector.setLast_name(lastName);
 				inspector.setEmail(email);
 				inspector.setPassword(password);
+				inspector.setCapacity(capacity);
 				
 				success = inspectorDAO.update(inspector);
 				if (success) {
@@ -141,6 +152,7 @@ public class InspectorsServlet extends BootstrapServlet {
 				inspector.setLast_name(lastName);
 				inspector.setEmail(email);
 				inspector.setPassword(password);
+				inspector.setCapacity(capacity);
 
 				success = inspectorDAO.update(inspector);
 				if (success) {
