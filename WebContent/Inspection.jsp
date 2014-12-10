@@ -23,7 +23,7 @@
 				"id": ${ inspector.getInspector_id() },
 				"name": "${ inspector.getFullName() }",
 				"username": "${ inspector.getUsername() }",
-				"keywords": "Web, network",
+				"keywords": "${ servlet.matchedKeywords(student, inspector) }",
 				"load": ${ servlet.loadForInspector(inspector, inspection) },
 				"capacity": ${ inspector.getCapacity() }
 			}
@@ -38,8 +38,8 @@
 				"id": ${ inspector.getInspector_id() },
 				"name": "${ inspector.getFullName() }",
 				"username": "${ inspector.getUsername() }",
-				"keywords": "Web, network",
-				"load": 0,
+				"keywords": "${ servlet.matchedKeywords(student, inspector) }",
+				"load": ${ servlet.loadForInspector(inspector, inspection) },
 				"capacity": ${ inspector.getCapacity() }
 			}
 			<c:if test="${ inspectorStatus.index < otherInspectors.size() - 1 }">
@@ -100,9 +100,9 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th class="radio-cell">Selection</th>
-					<th>Inspector</th>
-					<th>Matching</th>
+					<th class="radio-cell">Suggested</th>
+					<th>Name</th>
+					<th>Matched keywords</th>
 					<th>Capacity</th>
 				</tr>
 			</thead>
@@ -117,16 +117,24 @@
 						<td data-bind="text: formattedCapacity()"></td>
 					</tr>
 				<!-- /ko -->
+				<thead>
+					<th class="radio-cell">Other</th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</thead>
 				<tr>
-					<td class="radio-cell last">
+					<td class="radio-cell cell-lg">
 						<input type="radio" name="inputFirstInspector" data-bind="checkedValue: $root.firstOtherInspector(), checked: $root.firstInspector">
 					</td>
-					<td colspan="3">
+					<td>
 						<select  class="form-control" data-bind="options: otherInspectors,
 																value: firstOtherInspector,
 																optionsText: 'name'">
 						</select>
 					</td>
+					<td class="cell-lg" data-bind="text: firstOtherInspector().keywords"></td>
+					<td class="cell-lg" data-bind="text: firstOtherInspector().formattedCapacity()"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -142,9 +150,9 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th class="radio-cell">Selection</th>
-					<th>Inspector</th>
-					<th>Matching</th>
+					<th class="radio-cell">Suggested</th>
+					<th>Name</th>
+					<th>Matched keywords</th>
 					<th>Capacity</th>
 				</tr>
 			</thead>
@@ -159,16 +167,24 @@
 						<td data-bind="text: formattedCapacity()"></td>
 					</tr>
 				<!-- /ko -->
+				<thead>
+					<th class="radio-cell">Other</th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</thead>
 				<tr>
-					<td class="radio-cell last">
+					<td class="radio-cell cell-lg">
 						<input type="radio" name="inputSecondInspector" data-bind="checkedValue: $root.secondOtherInspector(), checked: $root.secondInspector">
 					</td>
-					<td colspan="3">
+					<td>
 						<select  class="form-control" data-bind="options: otherInspectors,
 																value: secondOtherInspector,
 																optionsText: 'name'">
 						</select>
 					</td>
+					<td class="cell-lg" data-bind="text: secondOtherInspector().keywords"></td>
+					<td class="cell-lg" data-bind="text: secondOtherInspector().formattedCapacity()"></td>
 				</tr>
 			</tbody>
 		</table>

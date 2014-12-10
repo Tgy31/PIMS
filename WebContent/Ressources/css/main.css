@@ -55,6 +55,6 @@ td.radio-cell {
 	text-align: center;
 }
 
-.radio-cell.last input {
-	margin-top: 10px;
+.cell-lg {
+	padding-top: 15px !important;
 }

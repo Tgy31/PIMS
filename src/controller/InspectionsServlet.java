@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import model.dao.InspectionDAO;
 import model.dao.InspectionweekDAO;
 import model.dao.InspectorDAO;
+import model.dao.InspectorKeywordDAO;
 import model.dao.ModuleDAO;
 import model.dao.StudentDAO;
 import model.dao.StudentKeywordDAO;
@@ -196,7 +197,7 @@ public class InspectionsServlet extends BootstrapServlet {
         
         // DAOs
 		StudentDAO studentDAO = new StudentDAO();
-		StudentKeywordDAO studentKeywordsDAO = new StudentKeywordDAO();
+		StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
 		InspectorDAO inspectorDAO = new InspectorDAO();
         
         // Inspection
@@ -208,15 +209,14 @@ public class InspectionsServlet extends BootstrapServlet {
 		request.setAttribute("student", student);
 		
 		// Keywords
-		List<Keyword> studentKeywords = studentKeywordsDAO.findByStudentID(student.getStudent_id());
+		List<Keyword> studentKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
 		String lKeywords = null;
 		if (studentKeywords.size() > 0) {
 			for (Keyword keyword : studentKeywords) {
 				if (lKeywords == null) {
-					lKeywords = keyword.getKeyword_name();
+					lKeywords = new String(keyword.getKeyword_name());
 				} else {
-					lKeywords.concat(", ");
-					lKeywords.concat(keyword.getKeyword_name());
+					lKeywords += ", " + keyword.getKeyword_name();
 				}
 			}
 		}
@@ -308,6 +308,26 @@ public class InspectionsServlet extends BootstrapServlet {
         InspectionDAO inspectionDAO = new InspectionDAO();
 		List<Inspection> firstInspectorInspections = inspectionDAO.inspectionsForInspectorID(inspector.getInspector_id(), inspection.getInspectionweek_id());
 		return firstInspectorInspections.size();
+	}
+	
+	public String matchedKeywords(Student student, Inspector inspector) {
+		StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
+		List<Keyword> studentKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
+		InspectorKeywordDAO inspectorKeywordDAO = new InspectorKeywordDAO();
+		List<Keyword> inspectorKeywords = inspectorKeywordDAO.findByInspectorID(inspector.getInspector_id());
+
+		System.out.println(inspectorKeywords);
+		String result = null;
+		for (Keyword keyword : studentKeywords) {
+			if (inspectorKeywords.contains(keyword)) {
+				if (result == null) {
+					result = new String(keyword.getKeyword_name());
+				} else {
+					result += ", " + keyword.getKeyword_name();
+				}
+			}
+		}
+		return result != null ? result : "None";
 	}
 	
 	@Override
