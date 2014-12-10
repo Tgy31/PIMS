@@ -108,7 +108,13 @@
 			  <div class="form-group">
 			    <label for="inputEmail" class="col-sm-2 control-label">Password</label>
 			    <div class="col-sm-10">
-			      <input type="password" class="form-control" id="inputEmail" name="inputPassword" placeholder="password" value="${ inspector.getPassword() }">
+			      <input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder="password" value="${ inspector.getPassword() }">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputEmail" class="col-sm-2 control-label">Capacity</label>
+			    <div class="col-sm-10">
+			      <input type="number" class="form-control" id="inputCapacity" name="inputCapacity" value="${ inspector.getCapacity() }" disabled>
 			    </div>
 			  </div>
 			  <div class="form-group">

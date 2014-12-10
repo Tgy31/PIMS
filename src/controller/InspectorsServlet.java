@@ -147,12 +147,11 @@ public class InspectorsServlet extends BootstrapServlet {
 				
 			} else if (user.isInspector() && user.getUsername().equals(inspector.getUsername())) {
 				
-				// Inspector can change everything
+				// Inspector can change everything except capacity
 				inspector.setFirst_name(firstName);
 				inspector.setLast_name(lastName);
 				inspector.setEmail(email);
 				inspector.setPassword(password);
-				inspector.setCapacity(capacity);
 
 				success = inspectorDAO.update(inspector);
 				if (success) {
