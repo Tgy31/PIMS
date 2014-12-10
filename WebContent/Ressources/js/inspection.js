@@ -285,9 +285,8 @@ function InspectionViewModel() {
         	var data = {
         		firstInspector: self.firstInspector().id,
         		secondInspector: self.secondInspector().id,
-        		slot: self.inspectionSlot
+        		slot: JSON.stringify(self.inspectionSlot())
         	};
-        	console.log(data);
         	$.post(url, data, self.submitHandler);
     	}
     };

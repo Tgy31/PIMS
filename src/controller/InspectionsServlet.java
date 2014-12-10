@@ -109,7 +109,9 @@ public class InspectionsServlet extends BootstrapServlet {
 		Date end = null;
 		
 		try {
-			JSONObject slot = new JSONObject(request.getParameter("slot"));
+			String sSlot = request.getParameter("slot");
+			System.out.println(sSlot);
+			JSONObject slot = new JSONObject(sSlot);
 			String sStart = slot.getString("start");
 			String sEnd = slot.getString("end");
 			start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(sStart);
