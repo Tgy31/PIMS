@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.InspectionDAO;
+import model.dao.InspectionweekDAO;
 import model.dao.InspectorDAO;
 import model.dao.StudentDAO;
+import model.entity.Inspection;
+import model.entity.Inspectionweek;
 import model.entity.Inspector;
 import model.entity.Module;
 import model.entity.Student;
@@ -83,6 +87,12 @@ public class StudentsServlet extends BootstrapServlet {
 		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Students%"+ student.getUsername(), request);
 		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/students/"+ module.getModule_id() +"/", request);
 		
+		// Inspections
+		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
+		List<Inspectionweek> inspectionWeeks = inspectionWeekDAO.findByModuleID(student.getModule_id());
+		request.setAttribute("inspectionWeeks", inspectionWeeks);
+		
+		request.setAttribute("servlet", this);
 		this.proceedGet("/Student.jsp", request, response);
 	}
 	
@@ -176,6 +186,12 @@ public class StudentsServlet extends BootstrapServlet {
 			this.setAlertView(AlertType.AlertTypeDanger, error, request);
 		}
 		this.doView(request, response);
+	}
+	
+	public Inspection inspectionForInspectionWeek(Student student, Inspectionweek inspectionWeek) {
+		InspectionDAO inspectionDAO = new InspectionDAO();
+		Inspection inspection = inspectionDAO.findByStudentAndInspectionWeek(student.getStudent_id(), inspectionWeek.getInspectionweek_id());
+		return inspection;
 	}
 	
 	@Override

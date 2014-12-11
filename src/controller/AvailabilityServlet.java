@@ -19,13 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import model.dao.InspectorDAO;
-import model.dao.KeywordDAO;
 import model.dao.SlotDAO;
-import model.dao.StudentDAO;
-import model.dao.StudentKeywordDAO;
 import model.entity.Inspector;
-import model.entity.Keyword;
 import model.entity.Module;
 import model.entity.Slot;
 import model.entity.Student;
@@ -138,6 +133,7 @@ public class AvailabilityServlet extends BootstrapServlet {
 		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%" + entityName +"%"+ user.getUsername() +"%Availability", request);
 		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%"+ entityLink +"%"+ userLink, request);
 
+		this.relatedMenuClass = userType + "s availability";
         this.layoutType = LayoutType.Grid;
 		this.proceedGet("/Availability.jsp", request, response);
 	}

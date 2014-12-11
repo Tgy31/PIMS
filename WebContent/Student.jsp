@@ -11,6 +11,50 @@
 	
 	<c:choose>
 	    <c:when test="${ sessionScope.user.isCoordinator() }">
+	    
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Inspections</h3>
+		  </div>
+		  <div class="panel-body">
+	  		  <p>Inspection weeks can be edited in the <b>Inspections</b> menu.</p>
+		  </div> <!-- panel body -->
+		  
+		  <table class="table">
+		  	<thead>
+			  	<tr>
+			  		<th>Inspection</th>
+			  		<th>Date</th>
+			  		<th>Inspection</th>
+			  		<th>Availability</th>
+			  	</tr>
+		  	</thead>
+		  	<tbody>
+		  		<c:forEach items="${ inspectionWeeks }" var="inspectionWeek" varStatus="i">
+					<c:set var="inspection" value="${ servlet.inspectionForInspectionWeek(student, inspectionWeek) }"/>
+			  		<tr>
+			  			<td>${ inspectionWeek.getInspection_title() }</td>
+			  			<td>${ inspectionWeek.getFormattedStartDate() }</td>
+						<c:choose>
+			  				<c:when test="${ !empty inspection }">
+			  					<td>
+				  					<a href="${ rootPath }inspections/${ inspectionWeek.getModule_id() }/${ inspectionWeek.getInspectionweek_id() }/${ student.getStudent_id() }/">View</a>
+			  					</td>
+			  				</c:when>
+			  				<c:otherwise>
+			  					<td>
+			  						<span>Not defined yet</span>
+			  					</td>
+			  				</c:otherwise>
+		  				</c:choose>
+			  			<td>
+			  				<a href="${ rootPath }availability/?type=student&id=${ student.getStudent_id() }&week=${ inspectionWeek.getInspectionweek_id() }">Edit</a>
+			  			</td>
+			  		</tr>
+		  		</c:forEach>
+		  	</tbody>
+		  </table>
+		</div> <!-- panel -->
 	
 		<div class="panel panel-default">
 		  <div class="panel-heading">
@@ -52,14 +96,6 @@
 			    <label for="inputEmail" class="col-sm-2 control-label">Password</label>
 			    <div class="col-sm-10">
 			      <input type="password" class="form-control" id="inputEmail" name="inputPassword" placeholder="password" value="${ student.getPassword() }">
-			    </div>
-			  </div>
-			  <div class="form-group">
-			    <label class="col-sm-2 control-label">Unavailability</label>
-			    <div class="col-sm-10">
-			      <p class="form-control-static">
-			      	<a href="${ rootPath }availability/?type=student&id=${ student.getStudent_id() }">Show</a>
-			      </p>
 			    </div>
 			  </div>
 	  
@@ -115,6 +151,50 @@
 		
 		</c:when>
 		<c:otherwise>
+		
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Inspections</h3>
+		  </div>
+		  <div class="panel-body">
+	  		  <p>The dates below are the dates chosen by the project coordinator for each inspection week.</p>
+		  </div> <!-- panel body -->
+		  
+		  <table class="table">
+		  	<thead>
+			  	<tr>
+			  		<th>Inspection</th>
+			  		<th>Date</th>
+			  		<th>Inspection</th>
+			  		<th>Availability</th>
+			  	</tr>
+		  	</thead>
+		  	<tbody>
+		  		<c:forEach items="${ inspectionWeeks }" var="inspectionWeek" varStatus="i">
+					<c:set var="inspection" value="${ servlet.inspectionForInspectionWeek(student, inspectionWeek) }"/>
+			  		<tr>
+			  			<td>${ inspectionWeek.getInspection_title() }</td>
+			  			<td>${ inspectionWeek.getFormattedStartDate() }</td>
+						<c:choose>
+			  				<c:when test="${ !empty inspection }">
+			  					<td>
+				  					<a href="${ rootPath }inspections/${ inspectionWeek.getModule_id() }/${ inspectionWeek.getInspectionweek_id() }/${ student.getStudent_id() }/">View</a>
+			  					</td>
+			  				</c:when>
+			  				<c:otherwise>
+			  					<td>
+			  						<span>Not defined yet</span>
+			  					</td>
+			  				</c:otherwise>
+		  				</c:choose>
+			  			<td>
+			  				<a href="${ rootPath }availability/?type=student&id=${ student.getStudent_id() }&week=${ inspectionWeek.getInspectionweek_id() }">Edit</a>
+			  			</td>
+			  		</tr>
+		  		</c:forEach>
+		  	</tbody>
+		  </table>
+		</div> <!-- panel -->
 		
 		<div class="panel panel-default">
 		  <div class="panel-heading">
