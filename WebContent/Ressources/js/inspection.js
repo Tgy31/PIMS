@@ -21,19 +21,19 @@ function Inspector(json) {
 	self.name = json.name;
 	self.keywords = json.keywords;
 	self.load = ko.observable(json.load);
-	self.capacity = json.capacity;
-	self.isFirstInspector = false;
+	self.capacity = json.capacity+10;
 	self.suggested = json.suggested;
+
+	self.isFirstInspector = json.isFirstInspector;
+	self.isSecondInspector = json.isSecondInspector;
+	console.log(self.isFirstInspector, " - ", self.isSecondInspector);
 	
-	self.setFirstInspector = function(isFirstInspector) {
-		if (self.isFirstInspector != isFirstInspector) {
-			self.isFirstInspector = isFirstInspector;
-			if (self.isFirstInspector) {
-				self.load(self.load() + 1);
-			} else {
-				self.load(self.load() - 1);
-			}
-		}
+	self.increaseLoad = function() {
+		self.load(self.load() + 1);
+	};
+	
+	self.decreaseLoad = function() {
+		self.load(self.load() - 1);
 	};
 	
 	self.formattedCapacity = function() {
@@ -76,7 +76,7 @@ function InspectionViewModel() {
 	// Splitted list of inspectors
 	self.filteredInspectors = function(isSuggested, canBeOverloaded) {
 		return self.allInspectors().filter(function (inspector) {
-			  return inspector.suggested == isSuggested && (canBeOverloaded || !inspector.overloaded() || inspector.isFirstInspector);
+			return inspector.suggested == isSuggested && (canBeOverloaded || !inspector.overloaded() || inspector.isFirstInspector || inspector.isSecondInspector);
 		});
 	};
 	self.suggestedInspectors = ko.computed(function() {
@@ -119,27 +119,6 @@ function InspectionViewModel() {
     	self.secondInspector(null);
 	};
 	
-	self.readFirstInspector = function(json) {
-		if (json.firstInspectorID >= 0) {// Get first inspector from back end if it exist
-	    	var firstInspector = self.inspectorWithID(json.firstInspectorID);
-	    	firstInspector.isFirstInspector = true; // set selection with out changing his load
-	    	self.firstInspector(firstInspector);
-	    	if (self.otherInspectors().indexOf(firstInspector) >= 0) {
-	        	self.firstOtherInspector(firstInspector);
-	    	}
-		}
-	};
-	
-	self.readSecondInspector = function(json) {
-		if (json.secondInspectorID >= 0) { // Get second inspector from back end if it exist
-	    	var secondInspector = self.inspectorWithID(json.secondInspectorID);
-	    	self.secondInspector(secondInspector);
-	    	if (self.otherInspectors().indexOf(secondInspector) >= 0) {
-	        	self.secondOtherInspector(secondInspector);
-	    	}
-		}
-	};
-	
 	self.readInspection = function() {
     	var jsonDiv = $('#json-variables');
     	var json = JSON.parse(jsonDiv.text());
@@ -149,8 +128,6 @@ function InspectionViewModel() {
 		self.readStudent(json);
 		self.readSuggestedInspectors(json);
 		self.readOtherInspectors(json);
-		self.readFirstInspector(json);
-		self.readSecondInspector(json);
 		
 		self.inspectionSlot().id = json.inspectionID;
 	};
@@ -184,22 +161,14 @@ function InspectionViewModel() {
 		return inspector;
 	};
 	self.inspectorMarkedFirstInspector = function() {
-		var inspector = null;
-		self.allInspectors().forEach(function(i) {
-			if (i.isFirstInspector) {
-				inspector = i;
-			}
-		});
-		return inspector;
+		return self.allInspectors().filter(function(inspector) {
+	        return inspector.isFirstInspector;
+	    })[0];
 	};
 	self.inspectorMarkedSecondInspector = function() {
-		var inspector = null;
-		self.allInspectors().forEach(function(i) {
-			if (i.isSecondInspector) {
-				inspector = i;
-			}
-		});
-		return inspector;
+		return self.allInspectors().filter(function(inspector) {
+	        return inspector.isSecondInspector;
+	    })[0];
 	};
 	
 	self.getSlots = function(start, end, timezone, callback) {
@@ -273,6 +242,7 @@ function InspectionViewModel() {
             		slot.rendering = "background";
             		slot.user = "first inspector";
             	});
+            	console.log(self.firstInspector());
             	self.firstInspector().slots = json.slots;
             	
             	json.inspections.forEach(function(slot) {
@@ -301,6 +271,7 @@ function InspectionViewModel() {
             		slot.rendering = "background";
             		slot.user = "second inspector";
             	});
+            	console.log(self.secondInspector());
             	self.secondInspector().slots = json.slots;
             	
             	json.inspections.forEach(function(slot) {
@@ -382,19 +353,32 @@ function InspectionViewModel() {
 	
 	// Bind other inspectors changes
 	self.firstInspectorHandler = ko.computed(function() {
+		console.log('first inspector changed:', self.firstInspector());
 		self.fetchFirstInspectorSlots();
 		
-		var firstInspector = self.inspectorMarkedFirstInspector();
-		if (firstInspector) {
-			firstInspector.setFirstInspector(false); // unmark old first inspector
+		var oldFirst = self.inspectorMarkedFirstInspector();
+		var newFirst = self.firstInspector();
+		if (newFirst != null) {
+			newFirst.isFirstInspector = true;
+			newFirst.increaseLoad();
 		}
-		firstInspector = self.firstInspector();
-		if (firstInspector) {
-			firstInspector.setFirstInspector(true); // mark new first inspector
+		if (oldFirst != null) {
+			oldFirst.isFirstInspector = false;
+			oldFirst.decreaseLoad();
 		}
 	});
 	self.secondInspectorHandler = ko.computed(function() {
+		console.log('second inspector changed:', self.secondInspector());
 		self.fetchSecondInspectorSlots();
+		
+		var oldSecond = self.inspectorMarkedSecondInspector();
+		var newSecond = self.secondInspector();
+		if (newSecond != null) {
+			newSecond.isSecondInspector = true;
+		}
+		if (oldSecond != null) {
+			oldSecond.isSecondInspector = false;
+		}
 	});
 	self.firstOtherInspectorHandler = ko.computed(function() {
 		//console.log(self.firstOtherInspector());
@@ -457,6 +441,7 @@ function InspectionViewModel() {
 	self.readInspection();
 	self.fetchStudentSlots();
 	self.fetchSupervisorSlots();
+	
 	createCalendar(self);
 }
 

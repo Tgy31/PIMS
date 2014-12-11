@@ -339,6 +339,14 @@ public class InspectionsServlet extends BootstrapServlet {
 		return firstInspectorInspections.size();
 	}
 	
+	public boolean inspectorIsFirstInspector(Inspector inspector, Inspection inspection) {
+		return inspector.getInspector_id() == inspection.getFirst_inspector_id();
+	}
+	
+	public boolean inspectorIsSecondInspector(Inspector inspector, Inspection inspection) {
+		return inspector.getInspector_id() == inspection.getSecond_inspector_id();
+	}
+	
 	public String matchedKeywords(Student student, Inspector inspector) {
 		StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
 		List<Keyword> studentKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
