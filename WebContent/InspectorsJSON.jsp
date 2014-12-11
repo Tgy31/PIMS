@@ -7,7 +7,6 @@
 		[
 			"${ inspector.getFirst_name() }",
 			"${ inspector.getLast_name() }",
-			"${ inspector.getTitle() }",
 			"${ inspector.getEmail() }",
 			"${ inspector.getUsername() }"
 		]

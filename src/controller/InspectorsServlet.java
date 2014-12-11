@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,8 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.InspectionDAO;
+import model.dao.InspectionweekDAO;
 import model.dao.InspectorDAO;
 import model.dao.StudentDAO;
+import model.entity.Inspection;
+import model.entity.Inspectionweek;
 import model.entity.Module;
 import model.entity.Inspector;
 import model.entity.Student;
@@ -52,7 +57,7 @@ public class InspectorsServlet extends BootstrapServlet {
 		if (inspector != null) {
 			this.proceedSingleInspector(inspector, request, response);
 		} else if (inspectorSlug != null) {
-    		this.setAlertView(AlertType.AlertTypeDanger, "Student not found", request);
+    		this.setAlertView(AlertType.AlertTypeDanger, "Inspector not found", request);
 			this.proceedSingleInspectorError(request, response);
 		} else {
 			this.proceedInspectorList(request, response);
@@ -77,10 +82,28 @@ public class InspectorsServlet extends BootstrapServlet {
 		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Inspectors%"+ inspector.getUsername(), request);
 		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/inspectors/"+ module.getModule_id() +"/", request);
 		
+		// Inspection weeks
+		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
+		List<Inspectionweek> inspectionWeeks = inspectionWeekDAO.findAll();
+		request.setAttribute("inspectionWeeks", inspectionWeeks);
+		
+		// Inspections
+		InspectionDAO inspectionDAO = new InspectionDAO();
+		List<Inspection> inspections = inspectionDAO.findByInspector(inspector);
+		request.setAttribute("inspections", inspections);
+		
+		// Load 
+		List<Inspection> loadInspections = inspectionDAO.inspectionAsFirstInspectorOrSupervisor(inspector);
+		request.setAttribute("load", loadInspections.size());
+		
+		request.setAttribute("servlet", this);
 		this.proceedGet("/Inspector.jsp", request, response);
 	}
 	
 	protected void proceedSingleInspectorError(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Module module = this.getSelectedModule(request);
+		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Inspectors%Error", request);
+		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/inspectors/"+ module.getModule_id() +"/", request);
 		this.proceedGet("/Inspector.jsp", request, response);
 	}
 
@@ -92,18 +115,31 @@ public class InspectorsServlet extends BootstrapServlet {
 		String firstName = request.getParameter("inputFirstName");
 		String lastName = request.getParameter("inputLastName");
 		String email = request.getParameter("inputEmail");
+		String password = request.getParameter("inputPassword");
+		String sCapacity = request.getParameter("inputCapacity");
+		
+		int capacity = -1;
+		try {
+			capacity = Integer.parseInt(sCapacity);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
 		
 		String error = null;
 		
-		if (firstName != null && !firstName.equals("")) {
+		if (firstName == null || firstName.equals("")) {
 			error = "Invalid first name";
-		} else if (lastName != null && !lastName.equals("")) {
+		} else if (lastName == null || lastName.equals("")) {
 			error = "Invalid last name";
-		} else if (email != null && !email.equals("")) {
+		} else if (email == null || email.equals("")) {
 			error = "Invalid email";
+		} else if (password == null || password.length() < 5) {
+			error = "Invalid password";
+		} else if (capacity < 0) {
+			error = "Invalid capacity";
 		}
 		
-		if (error != null) {
+		if (error == null) {
 			InspectorDAO inspectorDAO = new InspectorDAO();
 			String inspectorSlug = this.getObjectSlug(request);
 			Inspector inspector = inspectorDAO.findByUsername(inspectorSlug);
@@ -119,6 +155,8 @@ public class InspectorsServlet extends BootstrapServlet {
 				inspector.setFirst_name(firstName);
 				inspector.setLast_name(lastName);
 				inspector.setEmail(email);
+				inspector.setPassword(password);
+				inspector.setCapacity(capacity);
 				
 				success = inspectorDAO.update(inspector);
 				if (success) {
@@ -129,10 +167,11 @@ public class InspectorsServlet extends BootstrapServlet {
 				
 			} else if (user.isInspector() && user.getUsername().equals(inspector.getUsername())) {
 				
-				// Inspector can change everything
+				// Inspector can change everything except capacity
 				inspector.setFirst_name(firstName);
 				inspector.setLast_name(lastName);
 				inspector.setEmail(email);
+				inspector.setPassword(password);
 
 				success = inspectorDAO.update(inspector);
 				if (success) {
@@ -150,6 +189,22 @@ public class InspectorsServlet extends BootstrapServlet {
 			this.setAlertView(AlertType.AlertTypeDanger, error, request);
 		}
 		this.doView(request, response);
+	}
+	
+	public Student studentForInspection(Inspection inspection) {
+		StudentDAO studentDAO = new StudentDAO();
+		Student student = studentDAO.findByStudentID(inspection.getStudent_id());
+		return student;
+	}
+	
+	public String roleForInspectorInInspection(Inspector inspector, Inspection inspection) {
+		if (inspection.getFirst_inspector_id() == inspector.getInspector_id()) {
+			return "First Inspector";
+		} else if (inspection.getSecond_inspector_id() == inspector.getInspector_id()) {
+			return "Second Inspector";
+		} else {
+			return "Supervisor";
+		}
 	}
 	
 	@Override

@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.InspectionDAO;
+import model.dao.InspectionweekDAO;
+import model.dao.InspectorDAO;
 import model.dao.StudentDAO;
+import model.entity.Inspection;
+import model.entity.Inspectionweek;
+import model.entity.Inspector;
 import model.entity.Module;
 import model.entity.Student;
 import model.entity.User;
@@ -71,14 +79,27 @@ public class StudentsServlet extends BootstrapServlet {
         this.relatedMenuClass = "students student-profile";
 		request.setAttribute("student", student);
 		
+		InspectorDAO inspectorDAO = new InspectorDAO();
+		List<Inspector> inspectors = inspectorDAO.findAll();
+		request.setAttribute("inspectors", inspectors);
+		
 		Module module = this.getSelectedModule(request);
 		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Students%"+ student.getUsername(), request);
 		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/students/"+ module.getModule_id() +"/", request);
 		
+		// Inspections
+		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
+		List<Inspectionweek> inspectionWeeks = inspectionWeekDAO.findByModuleID(student.getModule_id());
+		request.setAttribute("inspectionWeeks", inspectionWeeks);
+		
+		request.setAttribute("servlet", this);
 		this.proceedGet("/Student.jsp", request, response);
 	}
 	
 	protected void proceedSingleStudentError(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Module module = this.getSelectedModule(request);
+		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Students%Error", request);
+		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/students/"+ module.getModule_id() +"/", request);
 		this.proceedGet("/Student.jsp", request, response);
 	}
 
@@ -92,25 +113,28 @@ public class StudentsServlet extends BootstrapServlet {
 		String email = request.getParameter("inputEmail");
 		String projectTitle = request.getParameter("inputTitle");
 		String projectDescription = request.getParameter("inputDescription");
-		String supervisorID = request.getParameter("inputSupervisor");
+		String supervisorSlug = request.getParameter("inputSupervisor");
+		String password = request.getParameter("inputPassword");
 		
 		String error = null;
 		
-		if (firstName != null && !firstName.equals("")) {
+		if (firstName == null || firstName.equals("")) {
 			error = "Invalid first name";
-		} else if (lastName != null && !lastName.equals("")) {
+		} else if (lastName == null || lastName.equals("")) {
 			error = "Invalid last name";
-		} else if (email != null && !email.equals("")) {
+		} else if (email == null || email.equals("")) {
 			error = "Invalid email";
-		} else if (projectTitle != null && !projectTitle.equals("")) {
+		} else if (password == null || password.length() < 5) {
+			error = "Invalid password";
+		} else if (projectTitle == null || projectTitle.equals("")) {
 			error = "Invalid project title";
-		} else if (projectDescription != null && !projectDescription.equals("")) {
+		} else if (projectDescription == null || projectDescription.equals("")) {
 			error = "Invalid project description";
-		} else if (supervisorID != null && !supervisorID.equals("")) {
+		} else if (supervisorSlug == null || supervisorSlug.equals("")) {
 			error = "Invalid supervisor";
 		}
 		
-		if (error != null) {
+		if (error == null) {
 			StudentDAO studentDAO = new StudentDAO();
 			String studentSlug = this.getObjectSlug(request);
 			Student student = this.getStudentBySlug(studentSlug);
@@ -128,6 +152,8 @@ public class StudentsServlet extends BootstrapServlet {
 				student.setEmail(email);
 				student.setProject_title(projectTitle);
 				student.setProject_description(projectDescription);
+				student.setPassword(password);
+				student.setSupervisor(supervisorSlug);
 				
 				success = studentDAO.update(student);
 				if (success) {
@@ -142,6 +168,7 @@ public class StudentsServlet extends BootstrapServlet {
 				student.setEmail(email);
 				student.setProject_title(projectTitle);
 				student.setProject_description(projectDescription);
+				student.setPassword(password);
 				
 				success = studentDAO.update(student);
 				if (success) {
@@ -159,6 +186,12 @@ public class StudentsServlet extends BootstrapServlet {
 			this.setAlertView(AlertType.AlertTypeDanger, error, request);
 		}
 		this.doView(request, response);
+	}
+	
+	public Inspection inspectionForInspectionWeek(Student student, Inspectionweek inspectionWeek) {
+		InspectionDAO inspectionDAO = new InspectionDAO();
+		Inspection inspection = inspectionDAO.findByStudentAndInspectionWeek(student.getStudent_id(), inspectionWeek.getInspectionweek_id());
+		return inspection;
 	}
 	
 	@Override

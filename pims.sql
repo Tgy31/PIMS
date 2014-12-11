@@ -10,46 +10,57 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2014-12-03 21:25:27
+Date: 2014-12-09 11:08:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for course
+-- Table structure for inspection
 -- ----------------------------
-DROP TABLE IF EXISTS `course`;
-CREATE TABLE `course` (
-  `course_id` int(20) NOT NULL AUTO_INCREMENT,
-  `course_name` varchar(45) DEFAULT NULL,
-  `course_description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6584 DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `inspection`;
+CREATE TABLE `inspection` (
+  `inspection_id` int(20) NOT NULL AUTO_INCREMENT,
+  `inspectionweek_id` int(20) DEFAULT NULL,
+  `student_id` int(20) DEFAULT NULL,
+  `first_inspector_id` int(20) DEFAULT NULL,
+  `second_inspector_id` int(20) DEFAULT NULL,
+  `start_date` datetime(6) DEFAULT NULL,
+  `end_date` datetime(6) DEFAULT NULL,
+  PRIMARY KEY (`inspection_id`),
+  KEY `inspectionweek_id` (`inspectionweek_id`),
+  KEY `student_id` (`student_id`),
+  KEY `inspector_id` (`first_inspector_id`),
+  KEY `second_inspector_id` (`second_inspector_id`),
+  CONSTRAINT `inspection_ibfk_1` FOREIGN KEY (`inspectionweek_id`) REFERENCES `inspectionweek` (`inspectionweek_id`),
+  CONSTRAINT `inspection_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
+  CONSTRAINT `inspection_ibfk_3` FOREIGN KEY (`first_inspector_id`) REFERENCES `inspector` (`inspector_id`),
+  CONSTRAINT `inspection_ibfk_4` FOREIGN KEY (`second_inspector_id`) REFERENCES `inspector` (`inspector_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of course
+-- Records of inspection
 -- ----------------------------
-INSERT INTO `course` VALUES ('8', 'Computer Science', '');
-INSERT INTO `course` VALUES ('14', 'Advanced Computer Science', null);
-INSERT INTO `course` VALUES ('6583', 'Computer Security', null);
+INSERT INTO `inspection` VALUES ('1', null, null, null, null, null, null);
 
 -- ----------------------------
--- Table structure for first_inspection
+-- Table structure for inspectionweek
 -- ----------------------------
-DROP TABLE IF EXISTS `first_inspection`;
-CREATE TABLE `first_inspection` (
-  `first_inspection_id` int(20) NOT NULL AUTO_INCREMENT,
-  `student_id` int(20) DEFAULT '0',
-  `inspector_id` int(20) DEFAULT NULL,
+DROP TABLE IF EXISTS `inspectionweek`;
+CREATE TABLE `inspectionweek` (
+  `inspectionweek_id` int(20) NOT NULL AUTO_INCREMENT,
   `module_id` int(20) DEFAULT NULL,
-  `date` datetime(6) DEFAULT NULL,
-  `first_inspectioncol` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`first_inspection_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `inspection_title` varchar(100) DEFAULT NULL,
+  `start_date` datetime(6) DEFAULT NULL,
+  PRIMARY KEY (`inspectionweek_id`),
+  KEY `module_id` (`module_id`),
+  CONSTRAINT `inspectionweek_ibfk_1` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of first_inspection
+-- Records of inspectionweek
 -- ----------------------------
+INSERT INTO `inspectionweek` VALUES ('1', '26581', 'First inspection', '2014-12-08 11:05:33.000000');
 
 -- ----------------------------
 -- Table structure for inspector
@@ -59,19 +70,18 @@ CREATE TABLE `inspector` (
   `username` char(20) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
   `inspector_id` int(45) NOT NULL AUTO_INCREMENT,
-  `title` varchar(45) DEFAULT NULL,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `capacity` int(45) DEFAULT NULL,
   PRIMARY KEY (`inspector_id`),
   KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=383 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inspector
 -- ----------------------------
-INSERT INTO `inspector` VALUES ('Zhiwei', 'Zhiwei', '1', 'Mr.', 'Zhiwei', 'Liu', null, null);
+INSERT INTO `inspector` VALUES ('Zhiwei', 'Zhiwei', '1', 'Zhiwei', 'Liu', null, null);
 
 -- ----------------------------
 -- Table structure for inspector_keyword
@@ -81,7 +91,11 @@ CREATE TABLE `inspector_keyword` (
   `inspector_keyword_id` int(20) NOT NULL AUTO_INCREMENT,
   `inspector_id` int(20) DEFAULT NULL,
   `keyword_id` int(20) DEFAULT NULL,
-  PRIMARY KEY (`inspector_keyword_id`)
+  PRIMARY KEY (`inspector_keyword_id`),
+  KEY `keyword_id` (`keyword_id`),
+  KEY `inspector_id` (`inspector_id`),
+  CONSTRAINT `inspector_keyword_ibfk_1` FOREIGN KEY (`keyword_id`) REFERENCES `keyword` (`keyword_id`),
+  CONSTRAINT `inspector_keyword_ibfk_2` FOREIGN KEY (`inspector_id`) REFERENCES `inspector` (`inspector_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -96,7 +110,9 @@ CREATE TABLE `keyword` (
   `keyword_id` int(20) NOT NULL AUTO_INCREMENT,
   `keyword_name` varchar(45) DEFAULT NULL,
   `module_id` int(20) DEFAULT NULL,
-  PRIMARY KEY (`keyword_id`)
+  PRIMARY KEY (`keyword_id`),
+  KEY `module_id` (`module_id`),
+  CONSTRAINT `keyword_ibfk_1` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -115,24 +131,16 @@ CREATE TABLE `module` (
   `year` varchar(255) DEFAULT NULL,
   `start_date` datetime(6) DEFAULT NULL,
   `end_date` datetime(6) DEFAULT NULL,
-  `students_enrolled` int(45) DEFAULT NULL,
-  `inspector_available` int(45) DEFAULT NULL,
   `default_inspector_capacity` int(45) DEFAULT NULL,
-  `first_inspection_start_date` datetime(6) DEFAULT NULL,
-  `first_inspection_end_date` datetime(6) DEFAULT NULL,
-  `second_inspection_start_date` datetime(6) DEFAULT NULL,
-  `second_inspection_end_date` datetime(6) DEFAULT NULL,
-  `dissertation_deadline` datetime(6) DEFAULT NULL,
-  `pc_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`module_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26588 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of module
 -- ----------------------------
-INSERT INTO `module` VALUES ('26581', 'BSc project', '2014/15', '2014-09-30 12:00:51.000000', '2015-06-01 00:00:33.000000', null, null, '4', '2014-12-01 00:00:25.000000', '2014-11-10 00:00:43.000000', '2015-05-01 00:00:53.000000', '2014-11-14 00:00:14.000000', null, null);
-INSERT INTO `module` VALUES ('26584', 'BSc project', '2013/14', null, null, null, null, null, null, null, null, null, null, null);
-INSERT INTO `module` VALUES ('26587', 'MSc project', '2014/15', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `module` VALUES ('26581', 'BSc project', '2014/15', '2014-09-30 12:00:51.000000', '2015-06-01 00:00:33.000000', null);
+INSERT INTO `module` VALUES ('26584', 'BSc project', '2013/14', null, null, null);
+INSERT INTO `module` VALUES ('26587', 'MSc project', '2014/15', null, null, null);
 
 -- ----------------------------
 -- Table structure for project_coordinator
@@ -155,24 +163,6 @@ CREATE TABLE `project_coordinator` (
 INSERT INTO `project_coordinator` VALUES ('hxs235', 'hxs235', '1', 'Prof.', 'He', 'Shan', 'hxs235@bham.ac.uk');
 INSERT INTO `project_coordinator` VALUES ('jxh123', 'jxh123', '2', 'Ms.', 'Julie', 'Heathcote', 'jxh123@bham.ac.uk');
 INSERT INTO `project_coordinator` VALUES ('Jane2', 'jane', '3', 'Mr.', 'Jane', null, 'jane@bham.ac.uk');
-
--- ----------------------------
--- Table structure for second_inspection
--- ----------------------------
-DROP TABLE IF EXISTS `second_inspection`;
-CREATE TABLE `second_inspection` (
-  `second_inspection_id` int(20) NOT NULL AUTO_INCREMENT,
-  `student_id` int(20) DEFAULT NULL,
-  `inspector_id` int(20) DEFAULT NULL,
-  `modeule_id` int(20) DEFAULT NULL,
-  `date` datetime(6) DEFAULT NULL,
-  `second_inspectioncol` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`second_inspection_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of second_inspection
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for slot
@@ -216,7 +206,7 @@ CREATE TABLE `student` (
   KEY `supervisor` (`supervisor`),
   CONSTRAINT `student_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`),
   CONSTRAINT `student_ibfk_3` FOREIGN KEY (`supervisor`) REFERENCES `inspector` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student
@@ -231,14 +221,14 @@ CREATE TABLE `student_keyword` (
   `student_keyword_id` int(20) NOT NULL AUTO_INCREMENT,
   `keyword_id` int(20) DEFAULT NULL,
   `student_id` int(20) DEFAULT NULL,
-  PRIMARY KEY (`student_keyword_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`student_keyword_id`),
+  KEY `keyword_id` (`keyword_id`),
+  KEY `student_id` (`student_id`),
+  CONSTRAINT `student_keyword_ibfk_1` FOREIGN KEY (`keyword_id`) REFERENCES `keyword` (`keyword_id`),
+  CONSTRAINT `student_keyword_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student_keyword
 -- ----------------------------
-INSERT INTO `student_keyword` VALUES ('10', '2', '1');
-INSERT INTO `student_keyword` VALUES ('13', '1', '2');
-INSERT INTO `student_keyword` VALUES ('14', '1', '3');
-INSERT INTO `student_keyword` VALUES ('15', '2', '3');
-INSERT INTO `student_keyword` VALUES ('16', '3', '3');
+INSERT INTO `student_keyword` VALUES ('3', '2', '1');

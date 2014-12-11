@@ -6,7 +6,9 @@ import java.util.List;
 
 import model.db.Template;
 import model.entity.InspectorKeyword;
+import model.entity.Keyword;
 import model.mapping.InspectorKeywordMapping;
+import model.mapping.KeywordMapping;
 
 public class InspectorKeywordDAO {
 private Template template = new Template();
@@ -53,21 +55,6 @@ private Template template = new Template();
 		return false;
 	}
 	
-	
-	public boolean deleteByInspectorID(int ID){
-		String sql = "delete from inspector_keyword where inspector_id = '"+ID+"'";
-		try {
-			return (template.update(sql) == 1);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			System.out.println("Class not found !");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Delete opertaion failed !");
-		}
-		return false;
-	}
-	
 	public boolean deleteByInspectorKeywordID(int ID){
 		String sql = "delete from inspector_keyword where inspector_keyword_id = '"+ID+"'";
 		try {
@@ -96,13 +83,13 @@ private Template template = new Template();
 		return false;
 	}
 	
-	public InspectorKeyword findByInspectorID(int ID){
-		String sql = "SELECT  * " + 
-							"FROM inspector_keyword " + 
-							"WHERE inspector_id= " + "'" + ID + "'";
-		List<InspectorKeyword> inspectorKeywords = null;
+	public List<Keyword> findByInspectorID(int ID){
+		String sql = "SELECT * " + 
+					"FROM inspector_keyword sk, keyword k " + 
+					"WHERE sk.keyword_id = k.keyword_id AND sk.inspector_id = " + ID;
+		List<Keyword> inspectorKeywords = null;
 		try {
-			inspectorKeywords = template.query(sql, new InspectorKeywordMapping());
+			inspectorKeywords = template.query(sql, new KeywordMapping());
 		} catch (ClassNotFoundException e) {
 		e.printStackTrace();
 		System.out.println("Class not found !");
@@ -110,7 +97,7 @@ private Template template = new Template();
 		e.printStackTrace();
 		System.out.println("Find by No operation is failed ");
 		}
-		return inspectorKeywords.get(0);
+		return inspectorKeywords;
 	}
 	
 	public InspectorKeyword findByInspectorKeywordID(int ID){
@@ -161,6 +148,46 @@ private Template template = new Template();
 		System.out.println("Find by No operation is failed ");
 		}
 		return inspectorKeywords;
+	}
+	
+	public boolean deleteByInspectorID(int ID){
+		String sql = "delete from inspector_keyword where inspector_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
+	}
+	
+	public boolean addKeywordsforInspector(List<Integer> keywordIDs, int inspectorID){
+		boolean success = false; 
+		String sql = "INSERT INTO inspector_keyword"		+ENTER+
+				"			 (keyword_id, " 	+
+				"			 inspector_id)" 				+ENTER+
+				"values"							 	+ENTER+
+				"			(?,?)";
+		for (Integer keywordID : keywordIDs) {
+			try {
+				template.update(sql, keywordID, inspectorID);
+				success=true;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return success;
+	}
+	
+	public boolean setKeywordsforInspector(List<Integer> keywordIDs, int inspectorID) {
+		boolean deleteStatus = this.deleteByInspectorID(inspectorID);
+		boolean addStatus = this.addKeywordsforInspector(keywordIDs, inspectorID);	
+		return deleteStatus && addStatus;
 	}
 	
 }

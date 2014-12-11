@@ -13,6 +13,8 @@
 <link rel="stylesheet"
 	href="${ rootPath }Ressources/css/jquery.dataTables.min.css">
 <link rel="stylesheet"
+	href="${ rootPath }Ressources/css/jquery-ui.min.css">
+<link rel="stylesheet"
 	href="${ rootPath }Ressources/css/dataTables.bootstrap.css">
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -76,6 +78,7 @@
 					
 						<li class="students"><a href="${ rootPath }students/${ selectedModule.getModule_id() }/">Students</a></li>
 						<li class="inspectors"><a href="${ rootPath }inspectors/${ selectedModule.getModule_id() }/">Inspectors</a></li>
+						<li class="inspection-weeks"><a href="${ rootPath }inspectionweeks/${ selectedModule.getModule_id() }/">Inspections</a></li>
 						
 					</c:if>
 						
@@ -89,7 +92,7 @@
 						
 					<c:if test="${ sessionScope.user.isInspector() }">
 					
-						<li class="student-profile"><a href="${ userProfilePath }/">Profile</a></li>
+						<li class="inspector-profile"><a href="${ userProfilePath }/">Profile</a></li>
 						<li class="keywords"><a href="/PIMS/keywords/?type=inspector&id=${ sessionScope.user.getUserID() }">Keywords</a></li>
 						<li class="availability"><a href="/PIMS/availability/?type=inspector&id=${ sessionScope.user.getUserID() }">Availability</a></li>
 
@@ -101,7 +104,7 @@
 					<c:choose>
 						<c:when test="${ empty sessionScope.user }">
 
-							<li class="${ rootPath }login/"><a href="${ rootPath }login">Log in</a></li>
+							<li class="${ rootPath }login/"><a href="${ rootPath }login/">Log in</a></li>
 
 						</c:when>
 						<c:when test="${ !empty sessionScope.user }">
@@ -132,8 +135,7 @@
 <c:choose>
     <c:when test="${ layoutType eq 'Grid' }">
     
-		<div id="body-container" class="container">	
-			<%@ include file="AlertView.jsp" %>
+		<div id="body-container" class="container">
 	
 			<div class="row">
 			
@@ -172,7 +174,8 @@
 						</a>
 					</div>
 				</div>
-				<div class="col-xs-9 col-lg-9">
+				<div class="col-xs-9 col-lg-9">	
+					<%@ include file="AlertView.jsp" %>
 		
 	</c:when>
 	<c:otherwise>

@@ -15,15 +15,8 @@ public class ModuleMapping implements IEntityMapping{
 		module.setYear(rs.getString("year"));
 		module.setStart_date(rs.getDate("start_date"));
 		module.setEnd_date(rs.getDate("end_date"));
-		module.setStudents_enrolled(rs.getInt("students_enrolled"));
-		module.setInspector_available(rs.getInt("inspector_available"));
 		module.setDefault_inspector_capacity(rs.getInt("default_inspector_capacity"));
-		module.setFirst_inspection_start_date(rs.getDate("first_inspection_start_date"));
-		module.setFirst_inspection_end_date(rs.getDate("first_inspection_end_date"));
-		module.setSecond_inspection_start_date(rs.getDate("second_inspection_start_date"));
-		module.setSecond_inspection_end_date(rs.getDate("second_inspection_end_date"));
-		module.setDisseration_deadline(rs.getDate("dissertation_deadline"));
-		module.setPc_id(rs.getInt("pc_id"));
+		module.setUnavailability_hour_limit(rs.getInt("unavailability_hour_limit"));
 		return module;
 	}
 }

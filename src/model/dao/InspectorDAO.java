@@ -2,8 +2,11 @@ package model.dao;
 
 import static tools.Replace.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.Map;
 import org.skife.csv.CSVReader;
 import org.skife.csv.SimpleReader;
 
+import model.entity.Inspection;
 import model.entity.Inspector;
 import model.entity.Student;
 import model.db.Template;
@@ -27,18 +31,16 @@ public class InspectorDAO {
 							"			 capacity, "+
 							"			 username, "+
 							"			 password, "+
-							"			 title, "   +
 							"			 first_name, "+
 							"			 last_name, "+
 							"			 email)" 				 +ENTER+
 							"values"							 +ENTER+
-							"			(?,?,?,?,?,?,?,?)";
+							"			(?,?,?,?,?,?,?)";
 		try {
 			return (template.update(sql, inspector.getInspector_id(), 
 													  inspector.getCapacity(), 
 													  inspector.getUsername(), 
 													  inspector.getPassword(), 
-													  inspector.getTitle(), 
 													  inspector.getFirst_name(), 
 													  inspector.getLast_name(), 
 													  inspector.getEmail()) == 1);
@@ -52,13 +54,12 @@ public class InspectorDAO {
 		return false;
 	}
 	
-	public boolean update(Inspector inspector){ //µ½µ×Ö÷¼üÊÇË­£¿£¿
+	public boolean update(Inspector inspector){
 		String sql = "update inspector"				+ENTER+
 				"set"												+ENTER+
 				"			 capacity= ?, "+
 				"			 username= ?, "+
 				"			 password= ?, "+
-				"			 title= ?, "+
 				"			 first_name= ?, "+
 				"			 last_name= ?, "+
 				"			 email= ?"							+ENTER+
@@ -68,7 +69,6 @@ public class InspectorDAO {
 			return (template.update(sql, inspector.getCapacity(), 
 													  inspector.getUsername(), 
 													  inspector.getPassword(), 
-													  inspector.getTitle(), 
 													  inspector.getFirst_name(), 
 													  inspector.getLast_name(), 
 													  inspector.getEmail(),
@@ -192,7 +192,8 @@ public class InspectorDAO {
 
 	public List<Inspector> findAll(){
 		String sql = "SELECT * " + 
-							"FROM inspector";
+					 "FROM inspector "+
+					 "ORDER BY first_name";
 		List<Inspector> inspectors = null;
 		try {
 			inspectors = template.query(sql, new InspectorMapping());
@@ -219,7 +220,7 @@ public class InspectorDAO {
 	
 	
 	public boolean importCSV(File file) {
-		//truncateTable();
+		truncateTable();
 		Map<String, Integer> titleName = new HashMap<String, Integer>();
 		List<String[]> recordList = null;
 		String[] record = null;
@@ -249,7 +250,6 @@ public class InspectorDAO {
 				inspector.setLast_name(record[titleName.get("username")]);
 				inspector.setUsername(record[titleName.get("username")]);
 				inspector.setPassword(record[titleName.get("username")]);
-				inspector.setTitle("Mr.");
 				inspector.setEmail(record[titleName.get("username")].substring(0,1)+"."+record[titleName.get("username")]+"@bham.ac.uk");
 			} catch( NumberFormatException e){
 				e.printStackTrace();
@@ -258,5 +258,41 @@ public class InspectorDAO {
 		}
 		return true;
 	}
+	
+	public File exportCSV(File file) throws IOException{
+		List<Inspector> inspectorInfoList = findAll();
+		FileOutputStream fos = new FileOutputStream(file);
+		OutputStreamWriter writer = new OutputStreamWriter(fos);
+		BufferedWriter bw = new BufferedWriter(writer);
+		        for (int i=0; i<inspectorInfoList.size();i++) {
+		            if(i == 0){
+		                bw.write("Inspector ID,");
+		                bw.write("First name,");
+		                bw.write("Last name,");
+		                bw.write("Username,");
+		                bw.write("Email");
+		                if(i != inspectorInfoList.size() - 1){
+		                    bw.newLine();
+		                }
+		                continue;
+		            }
+		            bw.write(inspectorInfoList.get(i).getInspector_id()+",");
+		            bw.write(inspectorInfoList.get(i).getFirst_name()+",");
+		            bw.write(inspectorInfoList.get(i).getLast_name()+",");
+		            bw.write(inspectorInfoList.get(i).getUsername()+",");
+		            bw.write(inspectorInfoList.get(i).getEmail()+",");
+		            if(i != inspectorInfoList.size() - 1){
+		                bw.newLine();
+		            }
+		        }
+		        bw.write("\r\n");
+		        bw.flush();
+		        writer.flush();
+		        fos.flush();
+		        bw.close();
+		        writer.close();
+		        fos.close();
+		return file;
+		}
 	
 }

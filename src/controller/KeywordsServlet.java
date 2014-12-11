@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import model.dao.InspectorDAO;
+import model.dao.InspectorKeywordDAO;
 import model.dao.KeywordDAO;
 import model.dao.StudentDAO;
 import model.dao.StudentKeywordDAO;
@@ -97,8 +98,18 @@ public class KeywordsServlet extends BootstrapServlet {
 		
 		System.out.println(keywordIDs);
 		
-		StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
-		boolean status = studentKeywordDAO.setKeywordsforStudent(keywordIDs, userID);
+		switch (userType) {
+			case "student": {
+				StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
+				studentKeywordDAO.setKeywordsforStudent(keywordIDs, userID);
+				break;
+			}
+			case "inspector": {
+				InspectorKeywordDAO inspectorKeywordDAO = new InspectorKeywordDAO();
+				inspectorKeywordDAO.setKeywordsforInspector(keywordIDs, userID);
+				break;
+			}
+		}
 	}
 	
 	private void doView(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
@@ -135,41 +146,26 @@ public class KeywordsServlet extends BootstrapServlet {
 		
 		System.out.println(userType);
 		switch (userType) {
-			case "student": {
-				Student student = (Student)user;
-				StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
-				List<Keyword> userKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
-				request.setAttribute("userKeywords", userKeywords);
-				break;
-			}
+		case "student": {
+			Student student = (Student)user;
+			StudentKeywordDAO studentKeywordDAO = new StudentKeywordDAO();
+			List<Keyword> userKeywords = studentKeywordDAO.findByStudentID(student.getStudent_id());
+			request.setAttribute("userKeywords", userKeywords);
+			break;
+		}
+		case "inspector": {
+			Inspector inspector = (Inspector)user;
+			InspectorKeywordDAO inspectorKeywordDAO = new InspectorKeywordDAO();
+			List<Keyword> userKeywords = inspectorKeywordDAO.findByInspectorID(inspector.getInspector_id());
+			request.setAttribute("userKeywords", userKeywords);
+			break;
+		}
 		}
 		
 	
         this.layoutType = LayoutType.JSON;
         response.setContentType("application/json"); 
 		this.proceedGet("/KeywordsJSON.jsp", request, response);
-	}
-	
-	private User getUserWithTypeAndID(String userType, String userID) {
-		
-		User user = null;
-		int id = Integer.parseInt(userID);
-		
-		switch (userType) {
-			case "student": {
-				StudentDAO studentDAO = new StudentDAO();
-				user = studentDAO.findByStudentID(id);
-		        this.relatedMenuClass = "students keywords";
-		        break;
-			}
-			case "inspector": {
-				InspectorDAO inspectorDAO = new InspectorDAO();
-				user = inspectorDAO.findByInspectorID(id);
-		        this.relatedMenuClass = "inspectors keywords";
-		        break;
-			}
-		}
-		return user;
 	}
 	
 	@Override

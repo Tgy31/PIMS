@@ -6,6 +6,7 @@ body.inspectors .navbar li.inspectors,
 body.inspector-profile .navbar li.inspector-profile,
 body.modules .navbar li.modules,
 body.module .navbar li.module,
+body.inspection-weeks .navbar li.inspection-weeks,
 body.availability .navbar li.availability,
 body.keywords .navbar li.keywords,
 body.login .navbar li.login {
@@ -47,4 +48,30 @@ textarea {
 
 #json-variables {
 	display: none;
+}
+
+th.radio-cell,
+td.radio-cell {
+	text-align: center;
+}
+
+.cell-lg {
+	padding-top: 15px !important;
+}
+
+.readonly {
+	background-color: white !important;
+}
+
+.fc-content {
+	text-align: center !important;
+}
+
+.fc-time {
+	display: none !important;
+}
+
+.inspection-legend {
+	color: orange;
+	font-weight: 600;
 }

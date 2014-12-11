@@ -86,6 +86,10 @@ public class User {
 	public Boolean isCoordinator() {
 		return (this instanceof Coordinator);
 	}
+	
+	public String getFullName() {
+		return this.getFirst_name() + " " + this.getLast_name();
+	}
 
 
 

@@ -5,8 +5,6 @@
 
 <%@ include file="Header.jsp" %>
 
-<div id="alert-zone">
-</div>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -54,6 +52,8 @@
 	</table>
 </div>
 
+<div id="alert-zone">
+</div>
 		
 <div class="form-group">
 		<button class="btn btn-success" data-bind="click: addSlot">Add unavailability</button>

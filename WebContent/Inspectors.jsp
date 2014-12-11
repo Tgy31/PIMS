@@ -16,7 +16,6 @@
 	            <tr>
 	                <th>First Name</th>
 	                <th>Last Name</th>
-	                <th>Title</th>
 	                <th>Email</th>
 	                <th>Action</th>
 	            </tr>

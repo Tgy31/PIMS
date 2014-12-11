@@ -54,18 +54,23 @@ function AvailabilityViewModel() {
     var self = this;
 
     // Non-editable catalog data - would come from the server
-    self.maxHours = ko.observable(5);
+    self.maxHours = ko.observable(1);
+    self.startDate = null;
+    self.endDate = null;
     
     self.slots = ko.observableArray([]);
+    self.otherSlots = null; // list of slots fetched but not used
     
     // Operations
     self.addSlot = function() {
-    	var earliestDate = moment('2014-11-10T09:00:00');
-    	var latestDate = moment('2014-11-10T18:00:00');
+    	var earliestDate = moment(self.startDate + 'T09:00:00');
+    	var latestDate = moment(self.startDate + 'T18:00:00');
     	var deltaHours = 1.0;
     	var slot = self.firstAvailableSlot(earliestDate, latestDate, deltaHours);
-        self.slots.push(slot);
-        self.setCalendarNeedUpdate();
+    	if (slot) {
+            self.slots.push(slot);
+            self.setCalendarNeedUpdate();
+    	}
     };
     
     self.removeSlot = function(slot) { 
@@ -79,15 +84,25 @@ function AvailabilityViewModel() {
     };
     
     self.addSlotsFromJSON = function(json) {
+		var weekSlot = {
+			start: self.startDate,
+			end: self.endDate
+		};
     	var tempSlots = [];
+    	var tempOthers = [];
     	json.forEach(function(slotData) {
     		slotData.constraint = 'businessHours';
     		slotData.color = "#F1A72F";
     		slotData.overlap = shouldOverlap;
     		var newSlot = new Slot(slotData);
-    		tempSlots.push(newSlot);
+    		if (overlap(weekSlot, slotData)) { // Test if event is in the inspection week limits
+        		tempSlots.push(newSlot);
+    		} else {
+    			tempOthers.push(newSlot); // If not for this inspection week, put on the side
+    		}
     	});
     	self.slots(tempSlots);
+    	self.otherSlots = tempOthers;
     	self.setCalendarNeedUpdate();
     };
     
@@ -183,9 +198,10 @@ function AvailabilityViewModel() {
     self.fetchSlots = function() {
     	var userType = getParameterByName('type');
     	var userID = getParameterByName('id');
+    	var weekID = getParameterByName('week');
     	var contentType = 'json';
 		$.ajax({
-			url: '/PIMS/availability/?type=' + userType + '&id=' + userID +'&content='+ contentType,
+			url: '/PIMS/availability/?type=' + userType + '&id=' + userID +'&content='+ contentType +'&week='+ weekID,
 			success: this.handleFetchSlots,
 			error: null
 		});
@@ -194,8 +210,9 @@ function AvailabilityViewModel() {
     self.handleFetchSlots = function(result) {
     	var json = JSON.parse(result);
     	
-    	var defaultDate = json.defaultDate;
-    	createCalendar(defaultDate);
+    	self.startDate = moment(json.defaultDate).format('YYYY-MM-DD');
+    	self.endDate = moment(self.startDate).add(4, 'days').format('YYYY-MM-DD');
+    	createCalendar(self);
     	
     	self.maxHours(json.maxUnavailability);
     	
@@ -209,12 +226,12 @@ function AvailabilityViewModel() {
         	var userType = getParameterByName('type');
         	var userID = getParameterByName('id');
         	var url = '/PIMS/availability/';
+        	var slots = self.slots().concat(self.otherSlots); // get the slots we did not used back
         	var data = {
         		userType: userType,
         		userID: userID,
-        		slots: JSON.stringify(self.slots())
+        		slots: JSON.stringify(slots) // send all the slots at once
         	};
-        	
         	$.post(url, data, self.generateSubmitHandler());
     	}
     };

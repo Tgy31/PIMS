@@ -58,21 +58,6 @@ public class StudentKeywordDAO {
 		return false;
 	}
 	
-
-	
-	public boolean deleteByStudentID(int ID){
-		String sql = "delete from student_keyword where student_id = '"+ID+"'";
-		try {
-			return (template.update(sql) == 1);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			System.out.println("Class not found !");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Delete opertaion failed !");
-		}
-		return false;
-	}
 	
 	public boolean deleteByStudentKeywordID(int ID){
 		String sql = "delete from student_keyword where student_keyword_id = '"+ID+"'";
@@ -155,10 +140,18 @@ public class StudentKeywordDAO {
 		return StudentKeywords;
 	}
 	
-	public boolean setKeywordsforStudent(List<Integer> keywordIDs, int studentID) {
-		boolean deleteStatus = this.deleteByStudentID(studentID);
-		boolean addStatus = this.addKeywordsforStudent(keywordIDs, studentID);	
-		return deleteStatus && addStatus;
+	public boolean deleteByStudentID(int ID){
+		String sql = "delete from student_keyword where student_id = '"+ID+"'";
+		try {
+			return (template.update(sql) == 1);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Class not found !");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Delete opertaion failed !");
+		}
+		return false;
 	}
 	
 	public boolean addKeywordsforStudent(List<Integer> keywordIDs, int studentID){
@@ -179,6 +172,12 @@ public class StudentKeywordDAO {
 			}
 		}
 		return success;
+	}
+	
+	public boolean setKeywordsforStudent(List<Integer> keywordIDs, int studentID) {
+		boolean deleteStatus = this.deleteByStudentID(studentID);
+		boolean addStatus = this.addKeywordsforStudent(keywordIDs, studentID);	
+		return deleteStatus && addStatus;
 	}
 	
 }

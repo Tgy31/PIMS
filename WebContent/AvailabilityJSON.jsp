@@ -14,5 +14,17 @@
 			,
 			</c:if>
 		</c:forEach>
+	],
+	"inspections": [
+		<c:forEach items="${ inspections }" var="inspection" varStatus="inspectionStatus">
+			{
+				"id": ${ inspection.getInspection_id() },
+				"start": "${ inspection.getFormattedStartDate() }",
+				"end": "${ inspection.getFormattedEndDate() }"
+			}
+			<c:if test="${ inspectionStatus.index < inspections.size() - 1 }">
+			,
+			</c:if>
+		</c:forEach>
 	]
 }
