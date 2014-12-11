@@ -65,7 +65,7 @@ function InspectionViewModel() {
 	self.supervisorOtherInspectionSlots = [];
 	
 	self.inspectionSlot = ko.observable({
-            title  : 'New inspection',
+            title  : 'Project inspection',
             constraint: "businessHours",
             color: "orange"
     });
@@ -151,6 +151,8 @@ function InspectionViewModel() {
 		self.readOtherInspectors(json);
 		self.readFirstInspector(json);
 		self.readSecondInspector(json);
+		
+		self.inspectionSlot().id = json.inspectionID;
 	};
 	
 	self.readStudent = function(json) {
@@ -202,6 +204,7 @@ function InspectionViewModel() {
 	
 	self.getSlots = function(start, end, timezone, callback) {
 		var slots = [];
+		slots.push(self.inspectionSlot());
 		if (self.firstInspector() != null) {
 			slots = slots.concat(self.firstInspector().slots);
 			slots = slots.concat(self.firstInspector().otherInspectionSlots);
@@ -214,8 +217,7 @@ function InspectionViewModel() {
 		slots = slots.concat(self.studentOtherInspectionSlots);
 		slots = slots.concat(self.supervisorSlots);
 		slots = slots.concat(self.supervisorOtherInspectionSlots);
-		slots.push(self.inspectionSlot());
-		callback(uniq(slots));
+		callback(slots);
 	};
 	
 	
@@ -242,6 +244,9 @@ function InspectionViewModel() {
 			return true;
 		}
 	});
+	self.otherInspectionOverlaped = function () {
+		
+	};
 	
 	
 	// Setters
@@ -311,60 +316,56 @@ function InspectionViewModel() {
     	}
     };
     self.fetchSupervisorSlots = function() {
-    	if (self.secondInspector() != null) {
-        	var userType = 'inspector';
-        	var userID = self.supervisorID;
+    	var userType = 'inspector';
+    	var userID = self.supervisorID;
+    	
+    	self.fetchAvailability(userType, userID, function(result) {
+    		// if success
+        	var json = JSON.parse(result);
         	
-        	self.fetchAvailability(userType, userID, function(result) {
-        		// if success
-            	var json = JSON.parse(result);
-            	
-            	json.slots.forEach(function(slot) {
-            		slot.color = colorSupervisor;
-            		slot.rendering = "background";
-            		slot.user = "supervisor";
-            	});
-            	self.supervisorSlots = json.slots;
-            	
-            	json.inspections.forEach(function(slot) {
-            		slot.color = colorSupervisor;
-            		slot.title = "Supervisor";
-            		slot.overlap = false;
-            		slot.editable = false;
-            	});
-            	self.supervisorOtherInspectionSlots = json.inspections;
-            	
-            	self.setCalendarNeedUpdate();
+        	json.slots.forEach(function(slot) {
+        		slot.color = colorSupervisor;
+        		slot.rendering = "background";
+        		slot.user = "supervisor";
         	});
-    	}
+        	self.supervisorSlots = json.slots;
+        	
+        	json.inspections.forEach(function(slot) {
+        		slot.color = colorSupervisor;
+        		slot.title = "Supervisor";
+        		slot.overlap = false;
+        		slot.editable = false;
+        	});
+        	self.supervisorOtherInspectionSlots = json.inspections;
+        	
+        	self.setCalendarNeedUpdate();
+    	});
     };
     self.fetchStudentSlots = function() {
-    	if (self.secondInspector() != null) {
-        	var userType = 'student';
-        	var userID = self.studentID;
+    	var userType = 'student';
+    	var userID = self.studentID;
+    	
+    	self.fetchAvailability(userType, userID, function(result) {
+    		// if success
+        	var json = JSON.parse(result);
         	
-        	self.fetchAvailability(userType, userID, function(result) {
-        		// if success
-            	var json = JSON.parse(result);
-            	
-            	json.slots.forEach(function(slot) {
-            		slot.color = colorStudent;
-            		slot.rendering = "background";
-            		slot.user = "student";
-            	});
-            	self.studentSlots = json.slots;
-            	
-            	json.inspections.forEach(function(slot) {
-            		slot.color = colorStudent;
-            		slot.title = "Student";
-            		slot.overlap = false;
-            		slot.editable = false;
-            	});
-            	self.studentOtherInspectionSlots = json.inspections;
-            	
-            	self.setCalendarNeedUpdate();
+        	json.slots.forEach(function(slot) {
+        		slot.color = colorStudent;
+        		slot.rendering = "background";
+        		slot.user = "student";
         	});
-    	}
+        	self.studentSlots = json.slots;
+        	
+        	json.inspections.forEach(function(slot) {
+        		slot.color = colorStudent;
+        		slot.title = "Student";
+        		slot.overlap = false;
+        		slot.editable = false;
+        	});
+        	self.studentOtherInspectionSlots = json.inspections;
+        	
+        	self.setCalendarNeedUpdate();
+    	});
     };
     
     self.fetchAvailability = function(userType, userID, success) {
