@@ -143,6 +143,12 @@ public class Inspection {
 		return formattedDate;
 	}
 	
+	public String getDisplayableDate() {
+		String formattedStartDate = new SimpleDateFormat("MM-dd HH:mm").format(this.start_date);
+		String formattedEndDate = new SimpleDateFormat("HH:mm").format(this.end_date);
+		return formattedStartDate + "-" + formattedEndDate;
+	}
+	
 	public String getFormattedEndDate() {
 		String formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(this.end_date);
 		return formattedDate;

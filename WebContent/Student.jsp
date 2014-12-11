@@ -238,14 +238,6 @@
 			      <input type="password" class="form-control" id="inputEmail" name="inputPassword" placeholder="password" value="${ student.getPassword() }">
 			    </div>
 			  </div>
-			  <div class="form-group">
-			    <label class="col-sm-2 control-label">Unavailability</label>
-			    <div class="col-sm-10">
-			      <p class="form-control-static">
-			      	<a href="${ rootPath }availability/?type=student&id=${ student.getStudent_id() }">Show</a>
-			      </p>
-			    </div>
-			  </div>
 	  
 		  </div> <!-- panel body -->
 		</div> <!-- panel -->

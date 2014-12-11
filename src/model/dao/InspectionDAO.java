@@ -11,6 +11,7 @@ import java.util.List;
 import model.db.Template;
 import model.entity.Inspection;
 import model.entity.Inspectionweek;
+import model.entity.Inspector;
 import model.entity.Keyword;
 import model.entity.Slot;
 import model.mapping.InspectionMapping;
@@ -95,6 +96,49 @@ public class InspectionDAO {
 		return inspections.size() > 0 ? inspections.get(0) : null;
 	}
 	
+	public List<Inspection> findByInspector(Inspector inspector){
+		int inspectorID = inspector.getInspector_id();
+		String inspectorUsername = inspector.getUsername();
+		String sql = "SELECT  * " + 
+							"FROM inspection i , student s " + 
+							"WHERE s.student_id = i.student_id "+
+							"AND (first_inspector_id = " + inspectorID + " " +
+							"OR second_inspector_id = " + inspectorID +" " +
+							"OR supervisor= '" + inspectorUsername +"')";
+		List<Inspection> inspections= null;
+		try {
+			inspections = template.query(sql, new InspectionMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return inspections;
+	}
+	
+	public List<Inspection> inspectionAsFirstInspectorOrSupervisor(Inspector inspector){
+		int inspectorID = inspector.getInspector_id();
+		String inspectorUsername = inspector.getUsername();
+		String sql = "SELECT  * " + 
+							"FROM inspection i , student s " + 
+							"WHERE s.student_id = i.student_id "+
+							"AND (first_inspector_id = " + inspectorID + " " +
+							"OR supervisor= '" + inspectorUsername +"')";
+		List<Inspection> inspections= null;
+		try {
+			inspections = template.query(sql, new InspectionMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return inspections;
+	}
+	
 	public Inspection findByID(int ID){
 		String sql = "SELECT  * " + 
 							"FROM inspection " + 
@@ -153,52 +197,6 @@ public class InspectionDAO {
 			System.out.println("Delete opertaion failed !");
 		}
 		return false;
-	}
-	
-	public List<Inspection> inspectionsForFirstInspectorID(int inspectorID, int inspectionWeekID) {
-		String sql = "SELECT  * " + 
-				"FROM inspection " + 
-				"WHERE first_inspector_id= " + "'" + inspectorID + "'" +
-				"AND inspectionweek_id = '" + inspectionWeekID +"'";
-		List<Inspection> inspections= null;
-		try {
-		inspections = template.query(sql, new InspectionMapping());
-		} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-		System.out.println("Class not found !");
-		} catch (SQLException e) {
-		e.printStackTrace();
-		System.out.println("Find by No operation is failed ");
-		}
-		return inspections;
-	}
-	
-	public List<Inspection> inspectionsForSecondInspectorID(int inspectorID, int inspectionWeekID) {
-		String sql = "SELECT  * " + 
-				"FROM inspection " + 
-				"WHERE second_inspector_id= " + "'" + inspectorID + "'" +
-				"AND inspectionweek_id = '" + inspectionWeekID +"'";
-		List<Inspection> inspections= null;
-		try {
-		inspections = template.query(sql, new InspectionMapping());
-		} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-		System.out.println("Class not found !");
-		} catch (SQLException e) {
-		e.printStackTrace();
-		System.out.println("Find by No operation is failed ");
-		}
-		return inspections;
-	}
-	
-	public List<Inspection> inspectionsForInspectorID(int inspectorID, int inspectionWeekID) {
-		List<Inspection> inspectionsAsFirstInspector = this.inspectionsForFirstInspectorID(inspectorID, inspectionWeekID);
-		//List<Inspection> inspectionsAsSecondInspector = this.inspectionsForSecondInspectorID(inspectorID, inspectionWeekID);
-		
-		List<Inspection> allInspections = new ArrayList<Inspection>();
-		allInspections.addAll(inspectionsAsFirstInspector);
-		//allInspections.addAll(inspectionsAsSecondInspector); // Second inspection does not count in load
-		return allInspections;
 	}
 	
 	

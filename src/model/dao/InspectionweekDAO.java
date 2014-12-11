@@ -108,4 +108,20 @@ public class InspectionweekDAO {
 		return inspectionweeks;
 	}
 	
+	public List<Inspectionweek> findAll(){
+		String sql = "SELECT  * " + 
+							"FROM inspectionweek ";
+		List<Inspectionweek> inspectionweeks = null;
+		try {
+			inspectionweeks = template.query(sql, new InspectionweekMapping());
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		System.out.println("Class not found !");
+		} catch (SQLException e) {
+		e.printStackTrace();
+		System.out.println("Find by No operation is failed ");
+		}
+		return inspectionweeks;
+	}
+	
 }

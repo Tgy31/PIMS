@@ -335,7 +335,7 @@ public class InspectionsServlet extends BootstrapServlet {
 
 	public int loadForInspector(Inspector inspector, Inspection inspection) {
         InspectionDAO inspectionDAO = new InspectionDAO();
-		List<Inspection> firstInspectorInspections = inspectionDAO.inspectionsForInspectorID(inspector.getInspector_id(), inspection.getInspectionweek_id());
+		List<Inspection> firstInspectorInspections = inspectionDAO.inspectionAsFirstInspectorOrSupervisor(inspector);
 		return firstInspectorInspections.size();
 	}
 	

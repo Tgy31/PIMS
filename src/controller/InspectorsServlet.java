@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,8 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.InspectionDAO;
+import model.dao.InspectionweekDAO;
 import model.dao.InspectorDAO;
 import model.dao.StudentDAO;
+import model.entity.Inspection;
+import model.entity.Inspectionweek;
 import model.entity.Module;
 import model.entity.Inspector;
 import model.entity.Student;
@@ -77,6 +82,17 @@ public class InspectorsServlet extends BootstrapServlet {
 		this.setBreadcrumbTitles("Modules%"+ module.getModule_name() +"%Inspectors%"+ inspector.getUsername(), request);
 		this.setBreadcrumbLinks("/PIMS/modules/%/PIMS/modules/"+ module.getModule_id() +"/%/PIMS/inspectors/"+ module.getModule_id() +"/", request);
 		
+		// Inspection weeks
+		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
+		List<Inspectionweek> inspectionWeeks = inspectionWeekDAO.findAll();
+		request.setAttribute("inspectionWeeks", inspectionWeeks);
+		
+		// Inspections
+		InspectionDAO inspectionDAO = new InspectionDAO();
+		List<Inspection> inspections = inspectionDAO.findByInspector(inspector);
+		request.setAttribute("inspections", inspections);
+		
+		request.setAttribute("servlet", this);
 		this.proceedGet("/Inspector.jsp", request, response);
 	}
 	
@@ -169,6 +185,22 @@ public class InspectorsServlet extends BootstrapServlet {
 			this.setAlertView(AlertType.AlertTypeDanger, error, request);
 		}
 		this.doView(request, response);
+	}
+	
+	public Student studentForInspection(Inspection inspection) {
+		StudentDAO studentDAO = new StudentDAO();
+		Student student = studentDAO.findByStudentID(inspection.getStudent_id());
+		return student;
+	}
+	
+	public String roleForInspectorInInspection(Inspector inspector, Inspection inspection) {
+		if (inspection.getFirst_inspector_id() == inspector.getInspector_id()) {
+			return "First Inspector";
+		} else if (inspection.getFirst_inspector_id() == inspector.getInspector_id()) {
+			return "Second Inspector";
+		} else {
+			return "Supervisor";
+		}
 	}
 	
 	@Override
