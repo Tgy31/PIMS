@@ -217,7 +217,7 @@ function InspectionViewModel() {
 		slots = slots.concat(self.studentOtherInspectionSlots);
 		slots = slots.concat(self.supervisorSlots);
 		slots = slots.concat(self.supervisorOtherInspectionSlots);
-		callback(slots);
+		callback(uniq(slots));
 	};
 	
 	
