@@ -47,6 +47,7 @@
 		    <h3 class="panel-title">Inspections</h3>
 		  </div>
 		  <div class="panel-body">
+		  		
 		  </div> <!-- panel body -->
 		  
 		  <table class="table">
@@ -115,6 +116,12 @@
 			    <label for="inputEmail" class="col-sm-2 control-label">Capacity</label>
 			    <div class="col-sm-10">
 			      <input type="number" class="form-control" id="inputCapacity" name="inputCapacity" value="${ inspector.getCapacity() }">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label class="col-sm-2 control-label">Actual load</label>
+			    <div class="col-sm-10">
+			      <p class="form-control-static">${ load }/${ inspector.getCapacity() }</p>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -235,6 +242,12 @@
 			    <label for="inputEmail" class="col-sm-2 control-label">Capacity</label>
 			    <div class="col-sm-10">
 			      <input type="number" class="form-control" id="inputCapacity" name="inputCapacity" value="${ inspector.getCapacity() }" disabled>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label class="col-sm-2 control-label">Actual load</label>
+			    <div class="col-sm-10">
+			      <p class="form-control-static">${ load }/${ inspector.getCapacity() }</p>
 			    </div>
 			  </div>
 			  <div class="form-group">

@@ -92,6 +92,10 @@ public class InspectorsServlet extends BootstrapServlet {
 		List<Inspection> inspections = inspectionDAO.findByInspector(inspector);
 		request.setAttribute("inspections", inspections);
 		
+		// Load 
+		List<Inspection> loadInspections = inspectionDAO.inspectionAsFirstInspectorOrSupervisor(inspector);
+		request.setAttribute("load", loadInspections.size());
+		
 		request.setAttribute("servlet", this);
 		this.proceedGet("/Inspector.jsp", request, response);
 	}
@@ -196,7 +200,7 @@ public class InspectorsServlet extends BootstrapServlet {
 	public String roleForInspectorInInspection(Inspector inspector, Inspection inspection) {
 		if (inspection.getFirst_inspector_id() == inspector.getInspector_id()) {
 			return "First Inspector";
-		} else if (inspection.getFirst_inspector_id() == inspector.getInspector_id()) {
+		} else if (inspection.getSecond_inspector_id() == inspector.getInspector_id()) {
 			return "Second Inspector";
 		} else {
 			return "Supervisor";
