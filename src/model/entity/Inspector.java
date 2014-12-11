@@ -52,8 +52,6 @@ public class Inspector extends User {
 		if (getClass() != obj.getClass())
 			return false;
 		Inspector other = (Inspector) obj;
-		if (capacity != other.capacity)
-			return false;
 		if (inspector_id != other.inspector_id)
 			return false;
 		return true;

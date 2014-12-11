@@ -71,7 +71,7 @@ function InspectionViewModel() {
     });
 	
 	self.allInspectors = ko.observableArray([]);
-	self.showOverloaded = ko.observable(false);
+	self.showOverloaded = ko.observable(true);
 	
 	// Splitted list of inspectors
 	self.filteredInspectors = function(isSuggested, canBeOverloaded) {

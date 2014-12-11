@@ -41,8 +41,8 @@ import model.entity.User;
 public class InspectionsServlet extends BootstrapServlet {
 	private static final long serialVersionUID = 1L;
 
-	private static final int minimumSuggestedInspectors = 5; // Minimum number of inspector returned by the suggestions
-	private static final int maximumSuggestedInspectors = 10; // Maximum number of inspector returned by the suggestions
+	private static final int minimumSuggestedInspectors = 3; // Minimum number of inspector returned by the suggestions
+	private static final int maximumSuggestedInspectors = 5; // Maximum number of inspector returned by the suggestions
        
     /**
      * @see HttpServlet#HttpServlet()
