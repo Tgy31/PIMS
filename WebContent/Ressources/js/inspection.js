@@ -1,8 +1,17 @@
+function uniq(a) {
+    var seen = {};
+    return a.filter(function(item) {
+        var k = item.id;
+        return k == null ? true : seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    });
+}
+
 var colorStudent = "#31708F";
 var colorSupervisor = "#A94442";
 var colorFirstInspector = "#8A6D3B";
 var colorSecondInspector = "#3C763D";
 var colorInspection = "#337AB7";
+var colorOtherInspection = colorSupervisor;
 
 function Inspector(json) {
 	var self = this;
@@ -36,6 +45,7 @@ function Inspector(json) {
 	};
 	
 	self.slots = [];
+	self.otherInspectionSlots = [];
 }
 
 
@@ -48,14 +58,16 @@ function InspectionViewModel() {
 	
 	self.studentID = null;
 	self.studentSlots = [];
+	self.studentOtherInspectionSlots = [];
 	
 	self.supervisorID = null;
 	self.supervisorSlots = [];
+	self.supervisorOtherInspectionSlots = [];
 	
 	self.inspectionSlot = ko.observable({
-            title  : 'Inspection',
+            title  : 'New inspection',
             constraint: "businessHours",
-            color: colorInspection
+            color: "orange"
     });
 	
 	self.allInspectors = ko.observableArray([]);
@@ -192,14 +204,18 @@ function InspectionViewModel() {
 		var slots = [];
 		if (self.firstInspector() != null) {
 			slots = slots.concat(self.firstInspector().slots);
+			slots = slots.concat(self.firstInspector().otherInspectionSlots);
 		}
 		if (self.secondInspector() != null) {
 			slots = slots.concat(self.secondInspector().slots);
+			slots = slots.concat(self.secondInspector().otherInspectionSlots);
 		}
 		slots = slots.concat(self.studentSlots);
+		slots = slots.concat(self.studentOtherInspectionSlots);
 		slots = slots.concat(self.supervisorSlots);
+		slots = slots.concat(self.supervisorOtherInspectionSlots);
 		slots.push(self.inspectionSlot());
-		callback(slots);
+		callback(uniq(slots));
 	};
 	
 	
@@ -253,6 +269,15 @@ function InspectionViewModel() {
             		slot.user = "first inspector";
             	});
             	self.firstInspector().slots = json.slots;
+            	
+            	json.inspections.forEach(function(slot) {
+            		slot.color = colorFirstInspector;
+            		slot.title = "First inspector";
+            		slot.overlap = false;
+            		slot.editable = false;
+            	});
+            	self.firstInspector().otherInspectionSlots = json.inspections;
+            	
             	self.setCalendarNeedUpdate();
         	});
     	}
@@ -272,6 +297,15 @@ function InspectionViewModel() {
             		slot.user = "second inspector";
             	});
             	self.secondInspector().slots = json.slots;
+            	
+            	json.inspections.forEach(function(slot) {
+            		slot.color = colorSecondInspector;
+            		slot.title = "Second inspector";
+            		slot.overlap = false;
+            		slot.editable = false;
+            	});
+            	self.secondInspector().otherInspectionSlots = json.inspections;
+            	
             	self.setCalendarNeedUpdate();
         	});
     	}
@@ -291,6 +325,15 @@ function InspectionViewModel() {
             		slot.user = "supervisor";
             	});
             	self.supervisorSlots = json.slots;
+            	
+            	json.inspections.forEach(function(slot) {
+            		slot.color = colorSupervisor;
+            		slot.title = "Supervisor";
+            		slot.overlap = false;
+            		slot.editable = false;
+            	});
+            	self.supervisorOtherInspectionSlots = json.inspections;
+            	
             	self.setCalendarNeedUpdate();
         	});
     	}
@@ -310,6 +353,15 @@ function InspectionViewModel() {
             		slot.user = "student";
             	});
             	self.studentSlots = json.slots;
+            	
+            	json.inspections.forEach(function(slot) {
+            		slot.color = colorStudent;
+            		slot.title = "Student";
+            		slot.overlap = false;
+            		slot.editable = false;
+            	});
+            	self.studentOtherInspectionSlots = json.inspections;
+            	
             	self.setCalendarNeedUpdate();
         	});
     	}

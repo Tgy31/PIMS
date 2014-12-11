@@ -223,6 +223,11 @@
 	    <h3 class="panel-title">Date</h3>
 	  </div>
 	  <div class="panel-body">
+	  	<p>
+	  		Drag and resize the <span class="inspection-legend">New inspection</span> slot to define the inspection date and time.<br />
+	  		You can decide to ignore anyone's unavailability but you can't overlap two inspections.
+	  	</p>
+	  
 		<div id="calendar"></div>
 	  </div> <!-- end panel body -->
 			

@@ -62,3 +62,16 @@ td.radio-cell {
 .readonly {
 	background-color: white !important;
 }
+
+.fc-content {
+	text-align: center !important;
+}
+
+.fc-time {
+	display: none !important;
+}
+
+.inspection-legend {
+	color: orange;
+	font-weight: 600;
+}
