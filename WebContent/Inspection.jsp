@@ -11,6 +11,8 @@
 
 	<div id="json-variables">
 	{
+		"firstInspectorID": ${ firstInspector },
+		"secondInspectorID": ${ secondInspector },
 		"studentID": ${ student.getStudent_id() },
 		"supervisorID": ${ supervisor.getInspector_id() },
 		"inspectionID": ${ inspection.getInspection_id() },
@@ -29,9 +31,7 @@
 				"keywords": "${ servlet.matchedKeywords(student, inspector) }",
 				"load": ${ servlet.loadForInspector(inspector, inspection) },
 				"capacity": ${ inspector.getCapacity() },
-				"suggested": true,
-				"isFirstInspector": ${ servlet.inspectorIsFirstInspector(inspector, inspection) },
-				"isSecondInspector": ${ servlet.inspectorIsSecondInspector(inspector, inspection) }
+				"suggested": true
 			}
 			<c:if test="${ inspectorStatus.index < suggestedInspectors.size() - 1 }">
 			,
@@ -47,9 +47,7 @@
 				"keywords": "${ servlet.matchedKeywords(student, inspector) }",
 				"load": ${ servlet.loadForInspector(inspector, inspection) },
 				"capacity": ${ inspector.getCapacity() },
-				"suggested": false,
-				"isFirstInspector": ${ servlet.inspectorIsFirstInspector(inspector, inspection) },
-				"isSecondInspector": ${ servlet.inspectorIsSecondInspector(inspector, inspection) }
+				"suggested": false
 			}
 			<c:if test="${ inspectorStatus.index < otherInspectors.size() - 1 }">
 			,
