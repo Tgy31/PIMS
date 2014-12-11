@@ -1,8 +1,18 @@
+var overlap = function(slot1, slot2) {
+	var slot1Start = moment(slot1.start);
+	var slot1End = moment(slot1.end);
+	var slot2Start = moment(slot2.start);
+	var slot2End = moment(slot2.end);
+	var isBefore = slot2End.isBefore(slot1Start, 'seconde');
+	var isAfter = slot1End.isBefore(slot2Start, 'seconde');
+	return !isBefore && !isAfter;
+};
+
 var shouldOverlap = function(fixedEvent, movingEvent) {
     return fixedEvent.type === 'inspector-unavailability';
 };
 
-var createCalendar = function(defaultDate) {
+var createCalendar = function(model) {
 
 	$('#calendar').fullCalendar({
 		header: {
@@ -12,7 +22,7 @@ var createCalendar = function(defaultDate) {
 		},
 		height: 542,
 		defaultView: 'agendaWeek',
-		defaultDate: defaultDate,
+		defaultDate: model.startDate,
 		slotDuration: '00:30:00',
 		snapDuration: '00:30:00',
 		minTime: '08:00:00',
@@ -28,9 +38,9 @@ var createCalendar = function(defaultDate) {
 		    // (Monday-Friday in this example)
 		},
 		editable: true,
-		events: availabilityKnockout.getSlots,
-		eventDrop: availabilityKnockout.slotChanged,
-		eventResize: availabilityKnockout.slotChanged
+		events: model.getSlots,
+		eventDrop: model.slotChanged,
+		eventResize: model.slotChanged
 	});
 	
 };

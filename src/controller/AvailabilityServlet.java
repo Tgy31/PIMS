@@ -19,7 +19,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import model.dao.InspectionDAO;
+import model.dao.InspectionweekDAO;
+import model.dao.ModuleDAO;
 import model.dao.SlotDAO;
+import model.entity.Inspection;
+import model.entity.Inspectionweek;
 import model.entity.Inspector;
 import model.entity.Module;
 import model.entity.Slot;
@@ -142,12 +147,13 @@ public class AvailabilityServlet extends BootstrapServlet {
 
 		String userType = request.getParameter("type");
 		String userID = request.getParameter("id");
+		int inspectionWeekID = Integer.parseInt(request.getParameter("week"));
 		
 		User user = this.getUserWithTypeAndID(userType, userID);
 		
 		SlotDAO slotDAO = new SlotDAO();
 		List<Slot> timeslots = null;
-		
+
 		switch (userType) {
 			case "student": {
 				Student student = (Student)user;
@@ -161,9 +167,37 @@ public class AvailabilityServlet extends BootstrapServlet {
 			}
 		}
 		request.setAttribute("timeslots", timeslots);
+
+		// Inspection week
+		InspectionweekDAO inspectionWeekDAO = new InspectionweekDAO();
+		Inspectionweek inspectionWeek = inspectionWeekDAO.findByID(inspectionWeekID);
+		request.setAttribute("inspectionWeek", inspectionWeek);
 		
-		request.setAttribute("maxUnavailableHours", 5);
-		request.setAttribute("inspectionDate", "2014-11-12");
+		// Module
+		ModuleDAO moduleDAO = new ModuleDAO();
+		Module module = moduleDAO.findByModuleID(inspectionWeek.getModule_id());
+		request.setAttribute("maxUnavailableHours", module.getUnavailability_hour_limit());
+		request.setAttribute("inspectionDate", inspectionWeek.getFormattedStartDate());
+		
+		// Inspections
+		InspectionDAO inspectionDAO = new InspectionDAO();
+		List<Inspection> inspections = new ArrayList<Inspection>();
+		switch (userType) {
+			case "student": {
+				Student student = (Student)user;
+				Inspection inspection = inspectionDAO.findByStudentAndInspectionWeek(student.getStudent_id(), inspectionWeekID);
+				if (inspection != null) {
+					inspections.add(inspection);
+				}
+				break;
+			}
+			case "inspector": {
+				Inspector inspector = (Inspector)user;
+				inspections = inspectionDAO.findByInspector(inspector);
+				break;
+			}
+		}
+		request.setAttribute("inspections", inspections);
 	
         this.layoutType = LayoutType.JSON;
         response.setContentType("application/json"); 

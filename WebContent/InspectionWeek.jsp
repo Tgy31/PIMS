@@ -40,7 +40,7 @@
 			    <label for="inputTitle" class="col-sm-2 control-label">Start Date</label>
 			    <div class="col-sm-10">
 					<div class="input-group">
-				      	<input type="text" class="form-control readonly" id="inputStartDate" name="inputStartDate" value="${ inspectionWeek.getFormattedStartDate() }" readonly>
+				      	<input type="text" class="form-control readonly" id="inputStartDate" name="inputStartDate" value="${ inspectionWeek.getDisplayableStartDate() }" readonly>
 						<span class="input-group-btn">
 							<a id="buttonStartDate" class="btn btn-default"><span class="glyphicon glyphicon-calendar"></span></a>
 						</span>

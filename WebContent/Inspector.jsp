@@ -24,7 +24,7 @@
 		  	<thead>
 			  	<tr>
 			  		<th>Inspection</th>
-			  		<th>Date</th>
+			  		<th>Week</th>
 			  		<th>Availability</th>
 			  	</tr>
 		  	</thead>
@@ -32,7 +32,7 @@
 		  		<c:forEach items="${ inspectionWeeks }" var="inspectionWeek" varStatus="i">
 			  		<tr>
 			  			<td>${ inspectionWeek.getInspection_title() }</td>
-			  			<td>${ inspectionWeek.getFormattedStartDate() }</td>
+			  			<td>${ inspectionWeek.getDisplayableStartDate() }</td>
 			  			<td>
 			  				<a href="${ rootPath }availability/?type=inspector&id=${ inspector.getInspector_id() }&week=${ inspectionWeek.getInspectionweek_id() }">Edit</a>
 			  			</td>
@@ -151,7 +151,7 @@
 		  	<thead>
 			  	<tr>
 			  		<th>Inspection</th>
-			  		<th>Date</th>
+			  		<th>Week</th>
 			  		<th>Availability</th>
 			  	</tr>
 		  	</thead>
@@ -159,7 +159,7 @@
 		  		<c:forEach items="${ inspectionWeeks }" var="inspectionWeek" varStatus="i">
 			  		<tr>
 			  			<td>${ inspectionWeek.getInspection_title() }</td>
-			  			<td>${ inspectionWeek.getFormattedStartDate() }</td>
+			  			<td>${ inspectionWeek.getDisplayableStartDate() }</td>
 			  			<td>
 			  				<a href="${ rootPath }availability/?type=inspector&id=${ inspector.getInspector_id() }&week=${ inspectionWeek.getInspectionweek_id() }">Edit</a>
 			  			</td>

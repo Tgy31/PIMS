@@ -24,7 +24,7 @@
 		  	<thead>
 			  	<tr>
 			  		<th>Inspection</th>
-			  		<th>Date</th>
+			  		<th>Week</th>
 			  		<th>Inspection</th>
 			  		<th>Availability</th>
 			  	</tr>
@@ -34,7 +34,7 @@
 					<c:set var="inspection" value="${ servlet.inspectionForInspectionWeek(student, inspectionWeek) }"/>
 			  		<tr>
 			  			<td>${ inspectionWeek.getInspection_title() }</td>
-			  			<td>${ inspectionWeek.getFormattedStartDate() }</td>
+			  			<td>${ inspectionWeek.getDisplayableStartDate() }</td>
 						<c:choose>
 			  				<c:when test="${ !empty inspection }">
 			  					<td>
@@ -164,7 +164,7 @@
 		  	<thead>
 			  	<tr>
 			  		<th>Inspection</th>
-			  		<th>Date</th>
+			  		<th>Week</th>
 			  		<th>Inspection</th>
 			  		<th>Availability</th>
 			  	</tr>
@@ -174,7 +174,7 @@
 					<c:set var="inspection" value="${ servlet.inspectionForInspectionWeek(student, inspectionWeek) }"/>
 			  		<tr>
 			  			<td>${ inspectionWeek.getInspection_title() }</td>
-			  			<td>${ inspectionWeek.getFormattedStartDate() }</td>
+			  			<td>${ inspectionWeek.getDisplayableStartDate() }</td>
 						<c:choose>
 			  				<c:when test="${ !empty inspection }">
 			  					<td>
