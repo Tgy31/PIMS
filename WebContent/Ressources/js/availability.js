@@ -211,7 +211,7 @@ function AvailabilityViewModel() {
     	var json = JSON.parse(result);
     	
     	self.startDate = moment(json.defaultDate).format('YYYY-MM-DD');
-    	self.endDate = moment(self.startDate).add(5, 'days').format('YYYY-MM-DD');
+    	self.endDate = moment(self.startDate).add(4, 'days').format('YYYY-MM-DD');
     	createCalendar(self);
     	
     	self.maxHours(json.maxUnavailability);

@@ -44,6 +44,7 @@ function InspectionViewModel() {
 
 	self.startDate = null;
 	self.endDate = null;
+	self.inspectionWeekID = null;
 	
 	self.studentID = null;
 	self.studentSlots = [];
@@ -132,13 +133,12 @@ function InspectionViewModel() {
     	var json = JSON.parse(jsonDiv.text());
     	
 		self.allInspectors([]);
+		self.readInspectionDate(json);
 		self.readStudent(json);
 		self.readSuggestedInspectors(json);
 		self.readOtherInspectors(json);
 		self.readFirstInspector(json);
 		self.readSecondInspector(json);
-		
-		self.readInspectionDate(json);
 	};
 	
 	self.readStudent = function(json) {
@@ -147,8 +147,9 @@ function InspectionViewModel() {
 	};
 	
 	self.readInspectionDate = function(json) {
-		self.startDate = json.firstDay;
-		self.endDate = moment(self.startDate).add(5, 'days').format("YYYY-MM-DD");
+		self.startDate = moment(json.firstDay).format("YYYY-MM-DD");
+		self.endDate = moment(self.startDate).add(4, 'days').format("YYYY-MM-DD");
+		self.inspectionWeekID = json.inspectionWeekID;
 		if (json.inspectionStart && json.inspectionEnd) {
 			self.inspectionSlot().start = json.inspectionStart;
 			self.inspectionSlot().end = json.inspectionEnd;
@@ -317,8 +318,11 @@ function InspectionViewModel() {
     self.fetchAvailability = function(userType, userID, success) {
     	var contentType = 'json';
 		$.ajax({
-			url: '/PIMS/availability/?type=' + userType + '&id=' + userID +'&content='+ contentType +'&start='+ self.startDate +'&end='+ self.endDate,
-			success: success,
+			url: '/PIMS/availability/?type=' + userType + '&id=' + userID +'&content='+ contentType +'&week='+ self.inspectionWeekID,
+			success: function(result) {
+				success(result);
+				self.updateAvailabilities();
+			},
 			error: null
 		});
     };
@@ -390,6 +394,10 @@ function InspectionViewModel() {
     	} else {
     		popError('Error');
     	}
+    };
+    
+    self.updateAvailabilities = function() {
+    	self.inspectionSlot.valueHasMutated();
     };
 	
 	// Start
